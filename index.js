@@ -19,7 +19,7 @@ obs.on('ConnectionOpened', () => {
   client.on('connected', onConnectedHandler);
   client.connect();
 
-  var videos = fs.readFileSync('scratch.txt').toString().split("\n");
+  var videos = fs.readFileSync('scratch.txt').toString().split("\r\n");
   var video = '';
   var maxBangs = 0;
   var bangerGrandChamp = null;
@@ -134,7 +134,7 @@ obs.on('ConnectionOpened', () => {
     }
 
     if (firstRun === true) {
-      setInterval(function() { startRandomDoubler(target) }, 20000);
+      setInterval(function() { startRandomDoubler(target) }, 60000);
       firstRun = false;
     }
   }
@@ -196,9 +196,12 @@ obs.on('ConnectionOpened', () => {
           if (response.name === "Main Pinball Scene" || response.name === "Tiki Cam" || response.name === "Face Cam") {
             randomDoublerActive = true;
             video = randomElementFromArray(videos);
-            client.say(target, `🚨!${video}🚨`);
+            fs.writeFile('st.txt', `!${video}`, function (err) {
+              if (err) return console.log(err);
+            });
             hideItem('s2');
             showItem('s1');
+            showItem('st');
             setTimeout(stopRandomDoubler, 30000, target);
           }
         });
@@ -212,6 +215,7 @@ obs.on('ConnectionOpened', () => {
         .then(response => {
           if (response.name === "Main Pinball Scene" || response.name === "Tiki Cam" || response.name === "Face Cam") {
             hideItem('s1');
+            hideItem('st');
             showItem('s2');
             setTimeout(hideItem, 4000, 's2');
             randomDoublerActive = false;
