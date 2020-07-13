@@ -23,6 +23,7 @@ obs.on('ConnectionOpened', () => {
   var video = '';
   var maxBangs = 0;
   var bangerGrandChamp = null;
+  var Map = require('sorted-map');
   var bangers = new Map();
   var firstRun = true;
 
@@ -109,23 +110,27 @@ obs.on('ConnectionOpened', () => {
     }
 
     else if (commandName === '!grandchampion' && bangerGrandChamp !== null) {
-      client.say(target, `@${bangerGrandChamp} is the current Bang Grand Champion`);
+      const bangs = bangers.get(context.username);
+      client.say(target, `@${bangerGrandChamp} is the current Grand Champion with ${bangs} bang(s)`);
     }
 
     else if (commandName === `!${video}` && randomDoublerActive === true) {
-      const bangs = bangers[context.username] = (bangers[context.username] || 0) + 1;
+      const bangs = bangers.get(context.username);
+      bangers.set(context.username, (bangs || 0) + 1);
       if (bangs > maxBangs) {
         maxBangs = bangs;
         bangerGrandChamp = context.username;
       }
 
-      if (bangs === 1) {
-        client.say(target, `@${context.username} has ${bangs} bang under their belt`);
-      }
-      else {
-        client.say(target, `@${context.username} has ${bangs} bangs under their belt`);
-      }
+      client.say(target, `@${context.username} has ${bangs} bang(s) under their belt`);
       stopRandomDoubler(target);
+    }
+
+    else if (commandName === '!leaderboard') {
+      const leaders = bangers.slice(bangers.length-3, bangers.length)
+      for (index = leaders.length-1; index >= 0; index--) {
+        client.say(target, `@${leaders[index].key} - ${leaders[index].value} bang(s)`)
+      }
     }
 
     if (randomCommandInvoked === false) {
