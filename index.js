@@ -56,25 +56,7 @@ obs.on('ConnectionOpened', () => {
     '!purple',
     '!yellow',
     '!yabbadabbadoo',
-    '!recipe',
-    "Big fat hairy deal.",
-    "Nice touch.",
-    "I hate Mondays.",
-    "Who ever [phrase] should be dragged out into the street and shot.",
-    "We're bachelors, baby.",
-    "Feed me.",
-    "Eat your heart out, [person].",
-    "I'm not overweight. I'm undertall.",
-    "I'm not known for my compassion.",
-    "I love lasagna.",
-    "Christmas: It's not the giving. It's not the getting. It's the loving.",
-    "It's not that I dislike you, I just don't like you near me.",
-    "Show me a good mouser and I'll show you a cat with bad breath.",
-    "Yeah Brick, don't hurt them!",
-    "I've got to do something.",
-    "Trust me, you don't want to know.",
-    "Momma ? Umm... I don't know, Penelope...",
-    "Be still my beating heart."
+    '!recipe'
   ];
 
   function onMessageHandler (target, context, msg, self) {
