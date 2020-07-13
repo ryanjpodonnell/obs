@@ -110,13 +110,14 @@ obs.on('ConnectionOpened', () => {
     }
 
     else if (commandName === '!grandchampion' && bangerGrandChamp !== null) {
-      const bangs = bangers.get(context.username);
+      let bangs = bangers.get(bangerGrandChamp);
       client.say(target, `@${bangerGrandChamp} is the current Grand Champion with ${bangs} bang(s)`);
     }
 
     else if (commandName === `!${video}` && randomDoublerActive === true) {
-      const bangs = bangers.get(context.username);
+      let bangs = bangers.get(context.username);
       bangers.set(context.username, (bangs || 0) + 1);
+      bangs = bangers.get(context.username);
       if (bangs > maxBangs) {
         maxBangs = bangs;
         bangerGrandChamp = context.username;
@@ -127,7 +128,9 @@ obs.on('ConnectionOpened', () => {
     }
 
     else if (commandName === '!leaderboard') {
-      const leaders = bangers.slice(bangers.length-3, bangers.length)
+      let startLength = bangers.length - 3;
+      if (startLength < 0) { startLength = 0 };
+      const leaders = bangers.slice(startLength, bangers.length)
       for (index = leaders.length-1; index >= 0; index--) {
         client.say(target, `@${leaders[index].key} - ${leaders[index].value} bang(s)`)
       }
@@ -203,11 +206,12 @@ obs.on('ConnectionOpened', () => {
             video = randomElementFromArray(videos);
             fs.writeFile('st.txt', `!${video}`, function (err) {
               if (err) return console.log(err);
+              hideItem('s2');
+              hideItem('st');
+              showItem('s1');
+              setTimeout(showItem, 3000, 'st');
+              setTimeout(stopRandomDoubler, 30000, target);
             });
-            hideItem('s2');
-            showItem('s1');
-            showItem('st');
-            setTimeout(stopRandomDoubler, 30000, target);
           }
         });
     }
