@@ -56,7 +56,13 @@ obs.on('ConnectionOpened', () => {
     '!purple',
     '!yellow',
     '!yabbadabbadoo',
-    '!recipe'
+    '!recipe',
+    "This is your brain. This is your brain on a frying pan.",
+    "Hi, I’m the baby. Brand new! Just came out! Gotta love me!",
+    "Not the Mama! Not the Mama! NOT THE MAMA!",
+    "Daddy! Daddy dad dad daddy dad daddy! NOT THE MAMA!",
+    "I’m gonna bite you now.",
+    "Whoa, I'm naked. Who's the mama? Where's the mama?"
   ];
 
   function onMessageHandler (target, context, msg, self) {
