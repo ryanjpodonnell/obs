@@ -19,7 +19,7 @@ obs.on('ConnectionOpened', () => {
   client.on('connected', onConnectedHandler);
   client.connect();
 
-  var videos = fs.readFileSync('scratch.txt').toString().split("\r\n");
+  var videos = fs.readFileSync('movies.txt').toString().split("\r\n");
   var video = '';
   var maxBangs = 0;
   var bangerGrandChamp = null;
@@ -57,12 +57,30 @@ obs.on('ConnectionOpened', () => {
     '!yellow',
     '!yabbadabbadoo',
     '!recipe',
-    "This is your brain. This is your brain on a frying pan.",
-    "Hi, I’m the baby. Brand new! Just came out! Gotta love me!",
-    "Not the Mama! Not the Mama! NOT THE MAMA!",
-    "Daddy! Daddy dad dad daddy dad daddy! NOT THE MAMA!",
-    "I’m gonna bite you now.",
-    "Whoa, I'm naked. Who's the mama? Where's the mama?"
+    "Three's Company, in which John Ritter had starred as Jack Tripper between 1977 and 1984.",
+    "Wayne's World – Duane's Underworld in a twisted zombie sketch show Saturday Night Dead (a parody of Saturday Night Live)[6]",
+    "The Silence of the Lambs – Silencer of the Lambs commercial, a couple binds and gags their kids to keep them quiet during a car trip",
+    "Three Men and a Baby, Rosemary's Baby – Three Men and Rosemary's Baby[4]",
+    "Driving Miss Daisy – Driving Over Miss Daisy[4]",
+    "Northern Exposure – Northern Overexposure[6]",
+    "Lifestyles of the Rich and Famous – Autopsies of the Rich and Famous[4]",
+    "The Exorcist – The Exorciseist",
+    "Murder, She Wrote – Murder, She Likes",
+    "Leave It to Beaver – Meet the Mansons",
+    "thirtysomething – thirtysomething-to-life[7] (in prison)",
+    "Beverly Hills, 90210 – Beverly Hills, 90666",
+    "I Love Lucy – I Love Lucifer[7]",
+    "The Golden Girls – The Golden Ghouls",
+    "Married... with Children – Unmarried with Children",
+    "Fresh Prince of Bel-Air – Fresh Prince of Darkness",
+    "The Facts of Life – Facts of Life Support",
+    "My Three Sons – My Three Sons of Bitches",
+    "Diff'rent Strokes – Different Strokes (about two elderly men literally having strokes)",
+    "World Wrestling Federation – Underworld Wrestling Foundation (includes a cameo by former professional wrestler/manager Lou Albano)",
+    "Star Trek: The Next Generation – Death Trek: The Next Generation (additional minor reference to William Shatner of the original Star Trek series)",
+    "Looney Tunes – Rooney Tunes, a cartoon, animated by Chuck Jones, depicting Roy and Helen as mice trying to evade a mechanical cat[6]",
+    "Home Shopping Club – Home Shoplifting Channel",
+    "Yogi Bear – Yogi Beer commercial, a kid drinks a beer that has no alcohol, but sounds just like his father",
   ];
 
   function onMessageHandler (target, context, msg, self) {
