@@ -43,7 +43,8 @@ obs.on('ConnectionOpened', () => {
     '!yellow',
     '!yabbadabbadoo',
     '!recipe',
-    '!grandchampion'
+    '!grandchampion',
+    '!leaderboard'
   ]
 
   var randomCommands = [
