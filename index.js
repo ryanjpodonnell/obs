@@ -19,7 +19,7 @@ obs.on('ConnectionOpened', () => {
   client.on('connected', onConnectedHandler);
   client.connect();
 
-  var videos = fs.readFileSync('recipes.txt').toString().split("\r\n");
+  var videos = fs.readFileSync('wizards.txt').toString().split("\r\n");
   var video = '';
   var maxBangs = 0;
   var bangerGrandChamp = null;
@@ -58,16 +58,17 @@ obs.on('ConnectionOpened', () => {
     '!yellow',
     '!yabbadabbadoo',
     '!recipe',
-    "I'm in.",
-    "If ripping throats gets that warhead back, I'll suck as many dicks as I've go— I'll rip as many throats as I have to!",
-    "You're loco, man! Subtited: You're crazy, man!",
-    "Never ever say 'never ever'.",
-    "Pound some Cunth.",
-    "I got a better idea, no fucking way!",
-    "I bet you wish your nose was a dick so you could fuck butts!",
-    "Classic Macgruber",
-    "That was fuckin' tits",
-    "Just tell me what you want me to fuck!"
+    "Bond. James Bond",
+    "A martini. Shaken, not stirred",
+    "There's a saying in England: Where there's smoke, there's fire",
+    "I think he got the point",
+    "Well, I like to do some things the old-fashioned way",
+    "Just a slight stiffness coming on...in the shoulder",
+    "I thought christmas only comes once a year",
+    "Shocking. positively shocking",
+    "That’s just as bad as listening to the Beatles without earmuffs!",
+    "Oh, I travel– a sort of licenced troubleshooter",
+    "I always enjoyed studying a new tongue"
   ];
 
   function onMessageHandler (target, context, msg, self) {
@@ -129,6 +130,10 @@ obs.on('ConnectionOpened', () => {
       }
     }
 
+    else if (commandName === '!wizards') {
+      setScene('Wizard');
+    }
+
     if (randomCommandInvoked === false) {
       randomCommand = setTimeout(executeRandomCommand, 60000, target);
       randomCommandInvoked = true;
@@ -170,9 +175,9 @@ obs.on('ConnectionOpened', () => {
     recipeActive = false;
   }
 
-  function endStream () {
+  function setScene (sceneName) {
     obs.send('SetCurrentScene', {
-      'scene-name': 'END'
+      'scene-name': sceneName
     });
   }
 
