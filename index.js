@@ -26,6 +26,7 @@ obs.on('ConnectionOpened', () => {
   var Map = require('sorted-map');
   var bangers = new Map();
   var firstRun = true;
+  var wizardInvoked = false;
 
   var randomCommand;
   var randomCommandInvoked = false;
@@ -95,8 +96,8 @@ obs.on('ConnectionOpened', () => {
         });
     }
     
-    else if (commandName === '!') {
-      endStream();
+    else if (commandName === '!wedonthavetotakeourclothezoff') {
+      setScene('END');
     }
 
     else if (commandName === '!grandchampion' && bangerGrandChamp === null) {
@@ -130,8 +131,9 @@ obs.on('ConnectionOpened', () => {
       }
     }
 
-    else if (commandName === '!wizards') {
-      setScene('Wizard');
+    else if (commandName === '!wizards' && wizardInvoked === false) {
+      wizardInvoked = true;
+      setScene('wizards');
     }
 
     if (randomCommandInvoked === false) {
@@ -196,6 +198,7 @@ obs.on('ConnectionOpened', () => {
 
   function startRandomDoubler (target) {
     if (randomDoublerActive === false && getRandomInt(4) === 0) {
+      client.say(target, `!yabbadabbadoo`)
       obs
         .send('GetCurrentScene')
         .then(response => {
