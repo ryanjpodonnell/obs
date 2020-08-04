@@ -19,41 +19,10 @@ obs.on('ConnectionOpened', () => {
   client.on('connected', onConnectedHandler);
   client.connect();
 
-  var videos = [
-    'alpacinoyellinginbath',
-    'eliwallachhidingguninbath',
-    'natalieportmandissociatinginbath',
-    'marilynmonroestressingoutinbath',
-    'kirstendunstletthemeatcakeinginbath',
-    'heatherlangenkampdraggedtohellinbath',
-    'nataliewoodlosingitinbath',
-    'taniasaulnierattackedbytinyslugmonsterinbath',
-    'glennclosekilledviolentlyinbath',
-    'leonardodicapriothrownbackwardsinchairinbath',
-    'sallyhawkinsmasturbatinginbath',
-    'jenniferconnellyscreamingunderwaterinbath',
-    'elizabethtaylorplayingwithboatinbath',
-    'jeffbridgesdealingwithferretinbath',
-    'joanallenlearningtoorgasminbath',
-    'bradpittsmokinginbath',
-    'michellepfeifferdrowninginbath',
-    'juliarobertssingingprinceinbath',
-    'rachelmcadamssulkinginbath',
-    'liabeldammoulderinginbath'
-  ]
-  var video;
-  var maxBangs = 0;
-  var bangerGrandChamp = null;
-  var Map = require('sorted-map');
-  var bangers = new Map();
-
-  // var firstRun = true;
-  var wizardInvoked = false;
-  var jizzMonsterInvoked = false;
   var randomCommand;
   var randomCommandInvoked = false;
   var recipeActive = false;
-  var randomDoublerActive = false;
+  var frenzyActive = false;
 
   var commands = [
     '!red',
@@ -65,9 +34,7 @@ obs.on('ConnectionOpened', () => {
     '!purple',
     '!yellow',
     '!yabbadabbadoo',
-    '!recipe',
-    '!grandchampion',
-    '!leaderboard'
+    '!recipe'
   ]
 
   var randomCommands = [
@@ -81,11 +48,28 @@ obs.on('ConnectionOpened', () => {
     '!yellow',
     '!yabbadabbadoo',
     '!recipe',
-    "I mean, you can do that work yourself gametime",
-    "I'm not gonna spit it out",
-    "Let's keep banging it out",
-    "I don't like killing bats cause they're the cutest",
-    "Let's get dangerous"
+    "Why was Newt afraid of Ripley & the Marines? They were human.",
+    "How long could Ripley have survived in her stasis pod while drifting through space if she hadn't been found after 57 years?",
+    "What is \"Aliens\" about?",
+    "Is \"Aliens\" based on a book?",
+    "Was Ripley really in hypersleep for 57 years or was this a dream?",
+    "During the inquest, Van Leuwen says a team went over the lifeboat \"centimeter by centimeter\" and found no trace of the Alien. However, in \"Alien\", it clearly drools quite a bit before Ripley \"blows it out of the airlock.\" Is the Company hiding this?",
+    "Why didn't the colonists on LV-426 pick up the warning beacon from the derelict ship?",
+    "Wouldn't the colonists have found the Derelict Ship by themselves in 20 years?",
+    "Why does Ripley agree to return to LV-426?",
+    "What was the Marines \"bug hunt\"? Is there a connection to Starship Troopers?",
+    "Why is Hudson so freaked out after the first encounter with the Aliens?",
+    "Why do the Alien heads look so different from the first film?",
+    "Why didn't the Facehuggers burn through their stasis tubes like through Kane's helmet in Alien?",
+    "Why didn't Ripley, Newt and the marines try to avoid the Aliens by crawling out the complex through the same tube as Bishop did?",
+    "Why did Burke unleash the two Facehuggers to kill Ripley?",
+    "How did Burke release the Facehuggers into the med lab without himself getting attacked by them?",
+    "Are the Aliens intelligent enough to intentionally \"cut the power\"?",
+    "How intelligent is the Queen?",
+    "How did Hicks' face get burned?",
+    "Who is Pvt. Wierzbowski? Is he even seen?",
+    "Does the alien species have an official name?",
+    "How does the movie end?"
   ];
 
   function onMessageHandler (target, context, msg, self) {
@@ -116,60 +100,35 @@ obs.on('ConnectionOpened', () => {
       setScene('END');
     }
 
-    else if (commandName === '!grandchampion' && bangerGrandChamp === null) {
-      client.say(target, `No puppy has yet to bang`);
-    }
-
-    else if (commandName === '!grandchampion' && bangerGrandChamp !== null) {
-      let bangs = bangers.get(bangerGrandChamp);
-      client.say(target, `@${bangerGrandChamp} is the current Grand Champion with ${bangs} bang(s)`);
-    }
-
-    else if (commandName === `!${video}` && randomDoublerActive === true) {
-      let bangs = bangers.get(context.username);
-      bangers.set(context.username, (bangs || 0) + 1);
-      bangs = bangers.get(context.username);
-      if (bangs > maxBangs) {
-        maxBangs = bangs;
-        bangerGrandChamp = context.username;
-      }
-
-      client.say(target, `@${context.username} has ${bangs} bang(s) under their belt`);
-      stopRandomDoubler(target);
-    }
-
-    else if (commandName === '!leaderboard') {
-      let startLength = bangers.length - 3;
-      if (startLength < 0) { startLength = 0 };
-      const leaders = bangers.slice(startLength, bangers.length)
-      for (index = leaders.length-1; index >= 0; index--) {
-        client.say(target, `@${leaders[index].key} - ${leaders[index].value} bang(s)`)
-      }
-    }
-
-    else if (commandName === '!jizzmonster' && jizzMonsterInvoked === false) {
-      jizzMonsterInvoked = true;
-      client.say(target, `@${context.username} has unlocked step 1 in today's innovation`);
-      setInterval(function() { startRandomDoubler(target) }, 60000);
-    }
-
-    else if (commandName === '!tubskit' && wizardInvoked === false) {
-      wizardInvoked = true;
-      setScene('tubskit');
+    else if (commandName === '!babysinclairfrenzy' && frenzyActive === false) {
+      obs
+        .send('GetCurrentScene')
+        .then(response => {
+          frenzyActive = true;
+          if (response.name === "Face Cam") {
+            showItem('b1');
+            showItem('b2');
+            showItem('b3');
+            setTimeout(hideItem, 10000, 'b1');
+            setTimeout(hideItem, 10000, 'b2');
+            setTimeout(hideItem, 10000, 'b3');
+            setTimeout(setFalse, 10000, frenzyActive);
+          }
+        });
     }
 
     if (randomCommandInvoked === false) {
       randomCommand = setTimeout(executeRandomCommand, 60000, target);
       randomCommandInvoked = true;
     }
-
-    // if (firstRun === true) {
-    //   firstRun = false;
-    // }
   }
 
   function onConnectedHandler (addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
+  }
+
+  function setFalse (innovation) {
+    innovation = false;
   }
 
   function showItem (item) {
@@ -215,44 +174,6 @@ obs.on('ConnectionOpened', () => {
   function executeRandomCommand (target) {
     const command = randomElementFromArray(randomCommands);
     client.say(target, command);
-  }
-
-  function startRandomDoubler (target) {
-    if (randomDoublerActive === false && getRandomInt(4) === 0) {
-      client.say(target, `!yabbadabbadoo`)
-      obs
-        .send('GetCurrentScene')
-        .then(response => {
-          if (response.name === "Main Pinball Scene" || response.name === "Tiki Cam" || response.name === "Face Cam") {
-            randomDoublerActive = true;
-            video = randomElementFromArray(videos);
-            fs.writeFile('st.txt', `!${video}`, function (err) {
-              if (err) return console.log(err);
-              hideItem('s2');
-              hideItem('st');
-              showItem('s1');
-              setTimeout(showItem, 3000, 'st');
-              setTimeout(stopRandomDoubler, 30000, target);
-            });
-          }
-        });
-    }
-  }
-
-  function stopRandomDoubler (target) {
-    if (randomDoublerActive === true) {
-      obs
-        .send('GetCurrentScene')
-        .then(response => {
-          if (response.name === "Main Pinball Scene" || response.name === "Tiki Cam" || response.name === "Face Cam") {
-            hideItem('s1');
-            hideItem('st');
-            showItem('s2');
-            setTimeout(hideItem, 4000, 's2');
-            randomDoublerActive = false;
-          }
-        });
-    }
   }
 });
 
