@@ -149,6 +149,7 @@ obs.on('ConnectionOpened', () => {
 
     else if (commandName === '!jizzmonster' && jizzMonsterInvoked === false) {
       jizzMonsterInvoked = true;
+      client.say(target, `@${context.username} has unlocked step 1 in today's innovation`);
       setInterval(function() { startRandomDoubler(target) }, 60000);
     }
 
