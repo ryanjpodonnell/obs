@@ -12,7 +12,6 @@ const client = new tmi.client({
     'gametimetelevision'
   ]
 });
-var frenzyActive = false;
 
 obs.on('ConnectionOpened', () => {
   console.log('* Connection Opened');
@@ -22,7 +21,17 @@ obs.on('ConnectionOpened', () => {
 
   var randomCommand;
   var randomCommandInvoked = false;
-  var recipeActive = false;
+  var camActive = false;
+  var randomBaby;
+
+  var babySinclairs = [
+    'b1',
+    'b2',
+    'b3',
+    'b4',
+    'b5',
+    'b6'
+  ];
 
   var commands = [
     '!red',
@@ -34,8 +43,9 @@ obs.on('ConnectionOpened', () => {
     '!purple',
     '!yellow',
     '!yabbadabbadoo',
-    '!recipe'
-  ]
+    '!recipe',
+    '!babysinclaircam'
+  ];
 
   var randomCommands = [
     '!red',
@@ -48,28 +58,7 @@ obs.on('ConnectionOpened', () => {
     '!yellow',
     '!yabbadabbadoo',
     '!recipe',
-    "Why was Newt afraid of Ripley & the Marines? They were human.",
-    "How long could Ripley have survived in her stasis pod while drifting through space if she hadn't been found after 57 years?",
-    "What is \"Aliens\" about?",
-    "Is \"Aliens\" based on a book?",
-    "Was Ripley really in hypersleep for 57 years or was this a dream?",
-    "During the inquest, Van Leuwen says a team went over the lifeboat \"centimeter by centimeter\" and found no trace of the Alien. However, in \"Alien\", it clearly drools quite a bit before Ripley \"blows it out of the airlock.\" Is the Company hiding this?",
-    "Why didn't the colonists on LV-426 pick up the warning beacon from the derelict ship?",
-    "Wouldn't the colonists have found the Derelict Ship by themselves in 20 years?",
-    "Why does Ripley agree to return to LV-426?",
-    "What was the Marines \"bug hunt\"? Is there a connection to Starship Troopers?",
-    "Why is Hudson so freaked out after the first encounter with the Aliens?",
-    "Why do the Alien heads look so different from the first film?",
-    "Why didn't the Facehuggers burn through their stasis tubes like through Kane's helmet in Alien?",
-    "Why didn't Ripley, Newt and the marines try to avoid the Aliens by crawling out the complex through the same tube as Bishop did?",
-    "Why did Burke unleash the two Facehuggers to kill Ripley?",
-    "How did Burke release the Facehuggers into the med lab without himself getting attacked by them?",
-    "Are the Aliens intelligent enough to intentionally \"cut the power\"?",
-    "How intelligent is the Queen?",
-    "How did Hicks' face get burned?",
-    "Who is Pvt. Wierzbowski? Is he even seen?",
-    "Does the alien species have an official name?",
-    "How does the movie end?"
+    '!babysinclaircam'
   ];
 
   function onMessageHandler (target, context, msg, self) {
@@ -85,36 +74,34 @@ obs.on('ConnectionOpened', () => {
       client.say(target, `The INNOVATIVE commands are: ${commands.join(', ')}`);
     }
 
-    else if (commandName === '!recipe' && recipeActive === false) {
+    else if (commandName === '!recipe' && camActive === false) {
       obs
         .send('GetCurrentScene')
         .then(response => {
           if (response.name === "Main Pinball Scene" || response.name === "Face Cam") {
-            showRecipe(target, context);
+            showRecipe();
             setTimeout(hideRecipe, 10000);
           }
         });
     }
-    
-    else if (commandName === '!wedonthavetotakeourclothezoff') {
-      setScene('END');
-    }
 
-    else if (commandName === '!babysinclairfrenzy' && frenzyActive === false) {
+    else if (commandName === '!babysinclaircam' && camActive === false) {
       obs
         .send('GetCurrentScene')
         .then(response => {
-          if (response.name === "Face Cam") {
-            frenzyActive = true;
-            showItem('b1');
-            showItem('b2');
-            showItem('b3');
-            setTimeout(hideItem, 30000, 'b1');
-            setTimeout(hideItem, 30000, 'b2');
-            setTimeout(hideItem, 30000, 'b3');
-            setTimeout(setFalse, 30000);
+          if (response.name === "Main Pinball Scene" || response.name === "Face Cam") {
+            showRandomBabySinclairFromGame();
+            setTimeout(hideRandomBabySinclairFromGame, 10000);
+          }
+          else if (response.name === "Tiki Cam") {
+            showRandomBabySinclairFromRecipe();
+            setTimeout(hideRandomBabySinclairFromRecipe, 10000);
           }
         });
+    }
+
+    else if (commandName === '!wedonthavetotakeourclothezoff') {
+      setScene('END');
     }
 
     if (randomCommandInvoked === false) {
@@ -125,10 +112,6 @@ obs.on('ConnectionOpened', () => {
 
   function onConnectedHandler (addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
-  }
-
-  function setFalse () {
-    frenzyActive = false;
   }
 
   function showItem (item) {
@@ -146,15 +129,41 @@ obs.on('ConnectionOpened', () => {
   }
 
   function showRecipe () {
+    camActive = true;
     showItem('recipe');
     hideItem('game');
-    recipeActive = true;
+  }
+
+  function showRandomBabySinclairFromGame () {
+    camActive = true;
+    randomBaby = randomElementFromArray(babySinclairs);
+    showItem(randomBaby);
+    hideItem('game');
+  }
+
+  function showRandomBabySinclairFromRecipe () {
+    camActive = true;
+    randomBaby = randomElementFromArray(babySinclairs);
+    showItem(randomBaby);
+    hideItem('recipe');
   }
 
   function hideRecipe () {
     showItem('game');
     hideItem('recipe');
-    recipeActive = false;
+    camActive = false;
+  }
+
+  function hideRandomBabySinclairFromGame () {
+    showItem('game');
+    hideItem(randomBaby);
+    camActive = false;
+  }
+
+  function hideRandomBabySinclairFromRecipe () {
+    showItem('recipe');
+    hideItem(randomBaby);
+    camActive = false;
   }
 
   function setScene (sceneName) {
