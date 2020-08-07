@@ -12,6 +12,7 @@ const client = new tmi.client({
     'gametimetelevision'
   ]
 });
+var frenzyActive = false;
 
 obs.on('ConnectionOpened', () => {
   console.log('* Connection Opened');
@@ -22,7 +23,6 @@ obs.on('ConnectionOpened', () => {
   var randomCommand;
   var randomCommandInvoked = false;
   var recipeActive = false;
-  var frenzyActive = false;
 
   var commands = [
     '!red',
@@ -104,15 +104,15 @@ obs.on('ConnectionOpened', () => {
       obs
         .send('GetCurrentScene')
         .then(response => {
-          frenzyActive = true;
           if (response.name === "Face Cam") {
+            frenzyActive = true;
             showItem('b1');
             showItem('b2');
             showItem('b3');
-            setTimeout(hideItem, 10000, 'b1');
-            setTimeout(hideItem, 10000, 'b2');
-            setTimeout(hideItem, 10000, 'b3');
-            setTimeout(setFalse, 10000, frenzyActive);
+            setTimeout(hideItem, 30000, 'b1');
+            setTimeout(hideItem, 30000, 'b2');
+            setTimeout(hideItem, 30000, 'b3');
+            setTimeout(setFalse, 30000);
           }
         });
     }
@@ -127,8 +127,8 @@ obs.on('ConnectionOpened', () => {
     console.log(`* Connected to ${addr}:${port}`);
   }
 
-  function setFalse (innovation) {
-    innovation = false;
+  function setFalse () {
+    frenzyActive = false;
   }
 
   function showItem (item) {
