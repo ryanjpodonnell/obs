@@ -19,10 +19,20 @@ obs.on('ConnectionOpened', () => {
   client.on('connected', onConnectedHandler);
   client.connect();
 
+  var question;
+  var answer;
+
+  var maxBangs = 0;
+  var bangerGrandChamp = null;
+  var Map = require('sorted-map');
+  var bangers = new Map();
+
   var randomCommand;
   var randomCommandInvoked = false;
   var camActive = false;
   var randomBaby;
+  var quizMonsterInvoked = false;
+  var quizMonsterActive = false;
 
   var babySinclairs = [
     'b1',
@@ -44,7 +54,9 @@ obs.on('ConnectionOpened', () => {
     '!yellow',
     '!yabbadabbadoo',
     '!recipe',
-    '!babysinclaircam'
+    '!babysinclaircam',
+    '!grandchampion',
+    '!leaderboard'
   ];
 
   var randomCommands = [
@@ -98,6 +110,43 @@ obs.on('ConnectionOpened', () => {
             setTimeout(hideRandomBabySinclairFromRecipe, 10000);
           }
         });
+    }
+
+    else if (commandName === '!grandchampion' && bangerGrandChamp === null) {
+      client.say(target, `No puppy has yet to bang`);
+    }
+
+    else if (commandName === '!grandchampion' && bangerGrandChamp !== null) {
+      let bangs = bangers.get(bangerGrandChamp);
+      client.say(target, `@${bangerGrandChamp} is the current Grand Champion with ${bangs} bang(s)`);
+    }
+
+    else if (commandName === `!${answer}` && quizMonsterActive === true) {
+      let bangs = bangers.get(context.username);
+      bangers.set(context.username, (bangs || 0) + 1);
+      bangs = bangers.get(context.username);
+      if (bangs > maxBangs) {
+        maxBangs = bangs;
+        bangerGrandChamp = context.username;
+      }
+
+      client.say(target, `@${context.username} has ${bangs} bang(s) under their belt`);
+      stopRandomDoubler(target);
+    }
+
+    else if (commandName === '!leaderboard') {
+      let startLength = bangers.length - 3;
+      if (startLength < 0) { startLength = 0 };
+      const leaders = bangers.slice(startLength, bangers.length)
+      for (index = leaders.length-1; index >= 0; index--) {
+        client.say(target, `@${leaders[index].key} - ${leaders[index].value} bang(s)`)
+      }
+    }
+
+    else if (commandName === '!quizmonster' && quizMonsterInvoked === false) {
+      quizMonsterInvoked = true;
+      client.say(target, `@${context.username} has awoken the quiz monster from their oily slumber`);
+      setInterval(function() { startQuizMonster(target) }, 60000);
     }
 
     else if (commandName === '!wedonthavetotakeourclothezoff') {
@@ -173,7 +222,26 @@ obs.on('ConnectionOpened', () => {
   }
 
   function randomElementFromArray (arr) {
-		return arr[Math.floor(Math.random() * arr.length)];
+    return arr[getRandomInt(arr.length)];
+  }
+
+  function setRandomQuestionAndAnswer () {
+    var quiz = {
+      'How many gallons of oil is a barrel?': '42',
+      'Which country has the largest oil reserve?': 'venezuela',
+      'Which country consumes the most oil?': 'us',
+      'What % of crude oil does gasoline make up?': '45',
+      'Petrochemicals is found in oil? (T/F)': 't',
+      'Oil is referred to as "Texas Tea" and ___"': 'blackgold',
+      'Oil can errupt like crazy (T/F)': 'true',
+      'There have been no oil opps in US? (T/F)': 'f',
+      'Ancient cultures used oil for sealant? (T/F)': 't',
+      'In 2014, TX accounted for what % of US oil?': '29'
+    };
+    var keys = Object.keys(quiz);
+
+    question = randomElementFromArray(keys);
+    answer = quiz[question];
   }
 
   function getRandomInt(max) {
@@ -183,6 +251,44 @@ obs.on('ConnectionOpened', () => {
   function executeRandomCommand (target) {
     const command = randomElementFromArray(randomCommands);
     client.say(target, command);
+  }
+
+  function startQuizMonster (target) {
+    if (quizMonsterActive === false && getRandomInt(4) === 0) {
+      client.say(target, `!yabbadabbadoo`)
+      obs
+        .send('GetCurrentScene')
+        .then(response => {
+          if (response.name === "Main Pinball Scene" || response.name === "Tiki Cam" || response.name === "Face Cam") {
+            quizMonsterActive = true;
+            setRandomQuestionAndAnswer;
+            fs.writeFile('st.txt', `!${question}`, function (err) {
+              if (err) return console.log(err);
+              hideItem('s2');
+              hideItem('st');
+              showItem('s1');
+              setTimeout(showItem, 3000, 'st');
+              setTimeout(stopRandomDoubler, 30000, target);
+            });
+          }
+        });
+    }
+  }
+
+  function stopQuizMonster (target) {
+    if (quizMonsterActive === true) {
+      obs
+        .send('GetCurrentScene')
+        .then(response => {
+          if (response.name === "Main Pinball Scene" || response.name === "Tiki Cam" || response.name === "Face Cam") {
+            hideItem('s1');
+            hideItem('st');
+            showItem('s2');
+            setTimeout(hideItem, 4000, 's2');
+            quizMonsterActive = false;
+          }
+        });
+    }
   }
 });
 
