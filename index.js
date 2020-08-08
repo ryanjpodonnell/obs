@@ -233,7 +233,7 @@ obs.on('ConnectionOpened', () => {
       'What % of crude oil does gasoline make up?': '45',
       'Petrochemicals is found in oil? (T/F)': 't',
       'Oil is referred to as "Texas Tea" and ___"': 'blackgold',
-      'Oil can errupt like crazy (T/F)': 'true',
+      'Oil can erupt like crazy (T/F)': 't',
       'There have been no oil opps in US? (T/F)': 'f',
       'Ancient cultures used oil for sealant? (T/F)': 't',
       'In 2014, TX accounted for what % of US oil?': '29'
