@@ -261,7 +261,7 @@ obs.on('ConnectionOpened', () => {
         .then(response => {
           if (response.name === "Main Pinball Scene" || response.name === "Tiki Cam" || response.name === "Face Cam") {
             quizMonsterActive = true;
-            setRandomQuestionAndAnswer;
+            setRandomQuestionAndAnswer();
             fs.writeFile('st.txt', `!${question}`, function (err) {
               if (err) return console.log(err);
               hideItem('s2');
