@@ -13,14 +13,14 @@ const client = new tmi.client({
   ]
 });
 
+var question;
+var answer;
+
 obs.on('ConnectionOpened', () => {
   console.log('* Connection Opened');
   client.on('message', onMessageHandler);
   client.on('connected', onConnectedHandler);
   client.connect();
-
-  var question;
-  var answer;
 
   var maxBangs = 0;
   var bangerGrandChamp = null;
@@ -131,7 +131,7 @@ obs.on('ConnectionOpened', () => {
       }
 
       client.say(target, `@${context.username} has ${bangs} bang(s) under their belt`);
-      stopRandomDoubler(target);
+      stopQuizMonster(target);
     }
 
     else if (commandName === '!leaderboard') {
@@ -146,7 +146,7 @@ obs.on('ConnectionOpened', () => {
     else if (commandName === '!quizmonster' && quizMonsterInvoked === false) {
       quizMonsterInvoked = true;
       client.say(target, `@${context.username} has awoken the quiz monster from their oily slumber`);
-      setInterval(function() { startQuizMonster(target) }, 60000);
+      setInterval(function() { startQuizMonster(target) }, 6000);
     }
 
     else if (commandName === '!wedonthavetotakeourclothezoff') {
@@ -268,7 +268,7 @@ obs.on('ConnectionOpened', () => {
               hideItem('st');
               showItem('s1');
               setTimeout(showItem, 3000, 'st');
-              setTimeout(stopRandomDoubler, 30000, target);
+              setTimeout(stopQuizMonster, 30000, target);
             });
           }
         });
