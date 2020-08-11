@@ -160,7 +160,7 @@ obs.on('ConnectionOpened', () => {
     else if (commandName === '!quizmonster' && quizMonsterInvoked === false) {
       quizMonsterInvoked = true;
       client.say(target, `@${context.username} has awoken the quiz monster from their oily slumber`);
-      setInterval(function() { startQuizMonster(target) }, 6000);
+      setInterval(function() { startQuizMonster(target) }, 60000);
     }
 
     else if (commandName === '!wedonthavetotakeourclothezoff') {
@@ -268,7 +268,7 @@ obs.on('ConnectionOpened', () => {
   }
 
   function startQuizMonster (target) {
-    if (quizMonsterActive === false && getRandomInt(4) === 0) {
+    if (quizMonsterActive === false && getRandomInt(5) === 0) {
       client.say(target, `!yabbadabbadoo`)
       obs
         .send('GetCurrentScene')
