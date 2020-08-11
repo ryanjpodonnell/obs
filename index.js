@@ -71,20 +71,16 @@ obs.on('ConnectionOpened', () => {
     '!yabbadabbadoo',
     '!recipe',
     '!babysinclaircam',
-    "It seems that Bill always repeats any question asked of him and repeats back any information given to him. What is the significance of this?",
-    "How many versions of Eyes Wide Shut are there?",
-    "What is Eyes Wide Shut actually about?",
-    "What does the chanting at the mansion party mean?",
-    "Is Eyes Wide Shut based on a book?",
-    "What exactly was the point of the party? Everyone walking around in masks only to stand and watch others have sex? Do they take turns having sex with the girls?",
-    "What's the deal with the costume shop owner's daughter? She was caught messing around with those two guys, and then the next day they were leaving like everything was okay? Also what was going on with the shop owner the next day, was he suggesting she was a hooker and he (Bill) could buy her company?",
-    "Who put the mask on Bill's pillow in bed next to his wife? Did she find it and then leave it there to confront him?",
-    "Was the hooker from the orgy party who saved Bill murdered by the cult members, or did she actually die from a drug overdose of her own doing?",
-    "What's with the guys on the street jeering at Bill and calling him gay?",
-    "How old was Milich's daughter?",
-    "Who are the masked couple in the orgy party, and why does the masked man with the three-cornered hat nod his head at Bill?",
-    "What were some of the references to Kubrick's other films?",
-    "Who was the masked cult leader in the red cloak?"
+    'Is The Good, the Bad and the Ugly a prequel to the two other Eastwood spaghetti westerns?',
+    'What was the large battle depicted later in the movie when the bridge was blown? Was it based on an actual battle?',
+    'What is a "spaghetti western"?',
+    'Should I watch the other two films first before "The Good, the Bad and the Ugly"?',
+    'Is the cemetery of Sad Hill a real location?',
+    'Wasn\'t dynamite invented in 1867?',
+    'Why does a dog appear in several of the scenes?',
+    'Does the Man With No Name actually have a name?',
+    'How does "The Good, the Bad and the Ugly" fit into the timeline of the Civil War?',
+    'How much would the $200,000 be today?'
   ];
 
   function onMessageHandler (target, context, msg, self) {
@@ -157,9 +153,9 @@ obs.on('ConnectionOpened', () => {
       }
     }
 
-    else if (commandName === '!quizmonster' && quizMonsterInvoked === false) {
+    else if (commandName === '!hottriv' && quizMonsterInvoked === false) {
       quizMonsterInvoked = true;
-      client.say(target, `@${context.username} has awoken the quiz monster from their oily slumber`);
+      client.say(target, `@${context.username} has awoken the quiz monster from their hot slumber`);
       setInterval(function() { startQuizMonster(target) }, 60000);
     }
 
@@ -241,16 +237,12 @@ obs.on('ConnectionOpened', () => {
 
   function setRandomQuestionAndAnswer () {
     var quiz = {
-      'How many gallons of oil is a barrel?': '42',
-      'Which country has the largest oil reserve?': 'venezuela',
-      'Which country consumes the most oil?': 'us',
-      'What % of crude oil does gasoline make up?': '45',
-      'Petrochemicals is found in oil? (T/F)': 't',
-      'Oil is referred to as "Texas Tea" and ___"': 'blackgold',
-      'Oil can erupt like crazy (T/F)': 't',
-      'There have been no oil opps in US? (T/F)': 'f',
-      'Ancient cultures used oil for sealant? (T/F)': 't',
-      'In 2014, TX accounted for what % of US oil?': '29'
+      'What tiki bar created the Q.O.?': 'paganidol',
+      'Who is known for the cinnamon/grapefruit flavor combo?': 'donthebeachcomber',
+      'Angostura bitters features notes of what spice?': 'cinnamon',
+      'The rum blend featured in the Q.O. is dubbed ___?': 'jamtropics',
+      'The Q.O. garnish includes: mint sprig, lime, and ___?': 'cherry',
+      'Who created the Q.O.': 'williamprestwood'
     };
     var keys = Object.keys(quiz);
 
