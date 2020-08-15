@@ -30,7 +30,7 @@ obs.on('ConnectionOpened', () => {
   var randomCommand;
   var randomCommandInvoked = false;
   var camActive = false;
-  var randomBaby;
+  var randomCam;
   var quizMonsterInvoked = false;
   var quizMonsterActive = false;
 
@@ -41,6 +41,12 @@ obs.on('ConnectionOpened', () => {
     'b4',
     'b5',
     'b6'
+  ];
+
+  var urkels = [
+    'u1',
+    'u2',
+    'u3'
   ];
 
   var commands = [
@@ -55,8 +61,7 @@ obs.on('ConnectionOpened', () => {
     '!yabbadabbadoo',
     '!recipe',
     '!babysinclaircam',
-    '!grandchampion',
-    '!leaderboard'
+    '!urkelcam'
   ];
 
   var randomCommands = [
@@ -68,19 +73,28 @@ obs.on('ConnectionOpened', () => {
     '!orange',
     '!purple',
     '!yellow',
-    '!yabbadabbadoo',
     '!recipe',
     '!babysinclaircam',
-    'Is The Good, the Bad and the Ugly a prequel to the two other Eastwood spaghetti westerns?',
-    'What was the large battle depicted later in the movie when the bridge was blown? Was it based on an actual battle?',
-    'What is a "spaghetti western"?',
-    'Should I watch the other two films first before "The Good, the Bad and the Ugly"?',
-    'Is the cemetery of Sad Hill a real location?',
-    'Wasn\'t dynamite invented in 1867?',
-    'Why does a dog appear in several of the scenes?',
-    'Does the Man With No Name actually have a name?',
-    'How does "The Good, the Bad and the Ugly" fit into the timeline of the Civil War?',
-    'How much would the $200,000 be today?'
+    '!urkelcam',
+    "Are those, frickin' sharks With frickin' laser beams attached to their heads?",
+    "Well, you might be a cunning linguist, but i’m a master debater.",
+    "No, this is me in a nutshell: Help! I’m in a nutshell!",
+    "You’re the diet coke of evil. Just one calorie. Not evil enough.",
+    "my father would womanize. He would drink. He would make outrageous claims like he invented the question mark.",
+    "I don't kiss and tell. I shag and brag, baby!",
+    "Throw me a frickin' bone here. I'm the boss. Need the info.",
+    "Get in my belly!",
+    "Allow myself to introduce... myself.",
+    "Name? Austin Danger Powers. Sex? Yes please!",
+    "Yeah, baby, yeah",
+    "Ooo, Behave!",
+    "Judo chop!",
+    "That's a man baby!",
+    "That ain't no woman! It's a man, man!",
+    "That's not your mother, it's a man, baby!",
+    "Why must I be surrounded by frickin' idiots?",
+    "Au contraire baby, you can't resist me.",
+    "Its time to swing, baby."
   ];
 
   function onMessageHandler (target, context, msg, self) {
@@ -112,54 +126,69 @@ obs.on('ConnectionOpened', () => {
         .send('GetCurrentScene')
         .then(response => {
           if (response.name === "Main Pinball Scene" || response.name === "Face Cam") {
-            showRandomBabySinclairFromGame();
-            setTimeout(hideRandomBabySinclairFromGame, 10000);
+            showRandomCamFromGame(babySinclairs);
+            setTimeout(hideRandomCamFromGame, 10000);
           }
           else if (response.name === "Tiki Cam") {
-            showRandomBabySinclairFromRecipe();
-            setTimeout(hideRandomBabySinclairFromRecipe, 10000);
+            showRandomCamFromRecipe(babySinclairs);
+            setTimeout(hideRandomCamFromRecipe, 10000);
           }
         });
     }
 
-    else if (commandName === '!grandchampion' && bangerGrandChamp === null) {
-      client.say(target, `No puppy has yet to bang`);
+    else if (commandName === '!urkelcam' && camActive === false) {
+      obs
+        .send('GetCurrentScene')
+        .then(response => {
+          if (response.name === "Main Pinball Scene" || response.name === "Face Cam") {
+            showRandomCamFromGame(babySinclairs);
+            setTimeout(hideRandomCamFromGame, 10000);
+          }
+          else if (response.name === "Tiki Cam") {
+            showRandomCamFromRecipe(babySinclairs);
+            setTimeout(hideRandomCamFromRecipe, 10000);
+          }
+        });
     }
 
-    else if (commandName === '!grandchampion' && bangerGrandChamp !== null) {
-      let bangs = bangers.get(bangerGrandChamp);
-      client.say(target, `@${bangerGrandChamp} is the current Grand Champion with ${bangs} bang(s)`);
-    }
+    // else if (commandName === '!grandchampion' && bangerGrandChamp === null) {
+    //   client.say(target, `No puppy has yet to bang`);
+    // }
 
-    else if (commandName === `!${answer}` && quizMonsterActive === true) {
-      let bangs = bangers.get(context.username);
-      bangers.set(context.username, (bangs || 0) + 1);
-      bangs = bangers.get(context.username);
-      if (bangs > maxBangs) {
-        maxBangs = bangs;
-        bangerGrandChamp = context.username;
-      }
+    // else if (commandName === '!grandchampion' && bangerGrandChamp !== null) {
+    //   let bangs = bangers.get(bangerGrandChamp);
+    //   client.say(target, `@${bangerGrandChamp} is the current Grand Champion with ${bangs} bang(s)`);
+    // }
 
-      client.say(target, `@${context.username} has ${bangs} bang(s) under their belt`);
-      stopQuizMonster(target);
-    }
+    // else if (commandName === `!${answer}` && quizMonsterActive === true) {
+    //   let bangs = bangers.get(context.username);
+    //   bangers.set(context.username, (bangs || 0) + 1);
+    //   bangs = bangers.get(context.username);
+    //   if (bangs > maxBangs) {
+    //     maxBangs = bangs;
+    //     bangerGrandChamp = context.username;
+    //   }
 
-    else if (commandName === '!leaderboard') {
-      let startLength = bangers.length - 3;
-      if (startLength < 0) { startLength = 0 };
-      const leaders = bangers.slice(startLength, bangers.length)
-      for (index = leaders.length-1; index >= 0; index--) {
-        client.say(target, `@${leaders[index].key} - ${leaders[index].value} bang(s)`)
-      }
-    }
+    //   client.say(target, `@${context.username} has ${bangs} bang(s) under their belt`);
+    //   stopQuizMonster(target);
+    // }
 
-    else if (commandName === '!hottriv' && quizMonsterInvoked === false) {
-      quizMonsterInvoked = true;
-      client.say(target, `@${context.username} has awoken the quiz monster from their hot slumber`);
-      setInterval(function() { startQuizMonster(target) }, 60000);
-    }
+    // else if (commandName === '!leaderboard') {
+    //   let startLength = bangers.length - 3;
+    //   if (startLength < 0) { startLength = 0 };
+    //   const leaders = bangers.slice(startLength, bangers.length)
+    //   for (index = leaders.length-1; index >= 0; index--) {
+    //     client.say(target, `@${leaders[index].key} - ${leaders[index].value} bang(s)`)
+    //   }
+    // }
 
-    else if (commandName === '!wedonthavetotakeourclothezoff') {
+    // else if (commandName === '!hottriv' && quizMonsterInvoked === false) {
+    //   quizMonsterInvoked = true;
+    //   client.say(target, `@${context.username} has awoken the quiz monster from their hot slumber`);
+    //   setInterval(function() { startQuizMonster(target) }, 60000);
+    // }
+
+    else if (commandName === '!acruelangelsthesis') {
       setScene('END');
     }
 
@@ -193,17 +222,17 @@ obs.on('ConnectionOpened', () => {
     hideItem('game');
   }
 
-  function showRandomBabySinclairFromGame () {
+  function showRandomCamFromGame (arr) {
     camActive = true;
-    randomBaby = randomElementFromArray(babySinclairs);
-    showItem(randomBaby);
+    randomCam = randomElementFromArray(arr);
+    showItem(randomCam);
     hideItem('game');
   }
 
-  function showRandomBabySinclairFromRecipe () {
+  function showRandomCamFromRecipe (arr) {
     camActive = true;
-    randomBaby = randomElementFromArray(babySinclairs);
-    showItem(randomBaby);
+    randomCam = randomElementFromArray(arr);
+    showItem(randomCam);
     hideItem('recipe');
   }
 
@@ -213,15 +242,15 @@ obs.on('ConnectionOpened', () => {
     camActive = false;
   }
 
-  function hideRandomBabySinclairFromGame () {
+  function hideRandomCamFromGame () {
     showItem('game');
-    hideItem(randomBaby);
+    hideItem(randomCam);
     camActive = false;
   }
 
-  function hideRandomBabySinclairFromRecipe () {
+  function hideRandomCamFromRecipe () {
     showItem('recipe');
-    hideItem(randomBaby);
+    hideItem(randomCam);
     camActive = false;
   }
 
