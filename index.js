@@ -26,6 +26,8 @@ obs.on('ConnectionOpened', () => {
   var bangerGrandChamp = null;
   var Map = require('sorted-map');
   var bangers = new Map();
+  var totalBangs = 0;
+  var frenzyGoal = 10;
 
   var randomCommand;
   var randomCommandInvoked = false;
@@ -33,6 +35,8 @@ obs.on('ConnectionOpened', () => {
   var randomCam;
   var quizMonsterInvoked = false;
   var quizMonsterActive = false;
+  var frenzyValid = false;
+  var frenzyActive = false;
 
   var babySinclairs = [
     'b1',
@@ -160,33 +164,48 @@ obs.on('ConnectionOpened', () => {
     //   client.say(target, `@${bangerGrandChamp} is the current Grand Champion with ${bangs} bang(s)`);
     // }
 
-    // else if (commandName === `!${answer}` && quizMonsterActive === true) {
-    //   let bangs = bangers.get(context.username);
-    //   bangers.set(context.username, (bangs || 0) + 1);
-    //   bangs = bangers.get(context.username);
-    //   if (bangs > maxBangs) {
-    //     maxBangs = bangs;
-    //     bangerGrandChamp = context.username;
-    //   }
+    else if (commandName === `!${answer}` && quizMonsterActive === true) {
+      let bangs = bangers.get(context.username);
+      bangers.set(context.username, (bangs || 0) + 1);
+      bangs = bangers.get(context.username);
+      if (bangs > maxBangs) {
+        maxBangs = bangs;
+        bangerGrandChamp = context.username;
+      }
 
-    //   client.say(target, `@${context.username} has ${bangs} bang(s) under their belt`);
-    //   stopQuizMonster(target);
-    // }
+      totalBangs += 1;
+      client.say(target, `@${context.username} has contributed ${bangs} points towards the Urkel Frenzy!`);
+      if (totalBangs < frenzyGoal) {
+        client.say(target, `Urkel Frenzy progress: ${totalBangs}/${frenzyGoal}`);
+      }
+      if (totalBangs >= frenzyGoal && frenzyValid === false) {
+        client.say(target, `Urkel Frenzy achieved`);
+        frenzyValid = true;
+      }
 
-    // else if (commandName === '!leaderboard') {
-    //   let startLength = bangers.length - 3;
-    //   if (startLength < 0) { startLength = 0 };
-    //   const leaders = bangers.slice(startLength, bangers.length)
-    //   for (index = leaders.length-1; index >= 0; index--) {
-    //     client.say(target, `@${leaders[index].key} - ${leaders[index].value} bang(s)`)
-    //   }
-    // }
+      stopQuizMonster(target);
+    }
 
-    // else if (commandName === '!hottriv' && quizMonsterInvoked === false) {
-    //   quizMonsterInvoked = true;
-    //   client.say(target, `@${context.username} has awoken the quiz monster from their hot slumber`);
-    //   setInterval(function() { startQuizMonster(target) }, 60000);
-    // }
+    else if (commandName === '!leaderboard') {
+      let startLength = bangers.length - 3;
+      if (startLength < 0) { startLength = 0 };
+      const leaders = bangers.slice(startLength, bangers.length)
+      for (index = leaders.length-1; index >= 0; index--) {
+        client.say(target, `@${leaders[index].key} - ${leaders[index].value} bang(s)`)
+      }
+    }
+
+    else if (commandName === '!quizidothat' && quizMonsterInvoked === false) {
+      quizMonsterInvoked = true;
+      client.say(target, `@${context.username} has awoken the quiz monster from their cheesy slumber`);
+      setInterval(function() { startQuizMonster(target) }, 60000);
+    }
+
+    else if (commandName === '!urkelfrenzy' && frenzyActive === false && frenzyValid === true) {
+      frenzyActive = true;
+      showItem('frenzy');
+      setTimeout(hideItem, 30000, 'frenzy');
+    }
 
     else if (commandName === '!acruelangelsthesis') {
       setScene('END');
@@ -266,12 +285,12 @@ obs.on('ConnectionOpened', () => {
 
   function setRandomQuestionAndAnswer () {
     var quiz = {
-      'What tiki bar created the Q.O.?': 'paganidol',
-      'Who is known for the cinnamon/grapefruit flavor combo?': 'donthebeachcomber',
-      'Angostura bitters features notes of what spice?': 'cinnamon',
-      'The rum blend featured in the Q.O. is dubbed ___?': 'jamtropics',
-      'The Q.O. garnish includes: mint sprig, lime, and ___?': 'cherry',
-      'Who created the Q.O.': 'williamprestwood'
+      'Family Matters was a spinoff of what show?': 'perfectstrangers',
+      'Where city does Family Matters take place?': 'chicago',
+      'What is Steve Urkel\'s favorite food?': 'cheese',
+      'What musical instrument does Steve Urkel play?': 'accordian',
+      'FILL IN THE BLANK: Did I do ___?': 'that',
+      'Who is Steve Urkel\'s one true love?': 'laura'
     };
     var keys = Object.keys(quiz);
 
