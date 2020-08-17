@@ -34,6 +34,7 @@ obs.on('ConnectionOpened', () => {
   var camActive = false;
   var randomCam;
   var quizMonsterInvoked = false;
+  var quizMonsterEnded = false;
   var quizMonsterActive = false;
   var frenzyValid = false;
   var frenzyActive = false;
@@ -65,7 +66,9 @@ obs.on('ConnectionOpened', () => {
     '!yabbadabbadoo',
     '!recipe',
     '!babysinclaircam',
-    '!urkelcam'
+    '!urkelcam',
+    '!leaderboard',
+    '!urkelfrenzy'
   ];
 
   var randomCommands = [
@@ -79,26 +82,7 @@ obs.on('ConnectionOpened', () => {
     '!yellow',
     '!recipe',
     '!babysinclaircam',
-    '!urkelcam',
-    "Are those, frickin' sharks With frickin' laser beams attached to their heads?",
-    "Well, you might be a cunning linguist, but i’m a master debater.",
-    "No, this is me in a nutshell: Help! I’m in a nutshell!",
-    "You’re the diet coke of evil. Just one calorie. Not evil enough.",
-    "my father would womanize. He would drink. He would make outrageous claims like he invented the question mark.",
-    "I don't kiss and tell. I shag and brag, baby!",
-    "Throw me a frickin' bone here. I'm the boss. Need the info.",
-    "Get in my belly!",
-    "Allow myself to introduce... myself.",
-    "Name? Austin Danger Powers. Sex? Yes please!",
-    "Yeah, baby, yeah",
-    "Ooo, Behave!",
-    "Judo chop!",
-    "That's a man baby!",
-    "That ain't no woman! It's a man, man!",
-    "That's not your mother, it's a man, baby!",
-    "Why must I be surrounded by frickin' idiots?",
-    "Au contraire baby, you can't resist me.",
-    "Its time to swing, baby."
+    '!urkelcam'
   ];
 
   function onMessageHandler (target, context, msg, self) {
@@ -181,6 +165,7 @@ obs.on('ConnectionOpened', () => {
       if (totalBangs >= frenzyGoal && frenzyValid === false) {
         client.say(target, `Urkel Frenzy achieved`);
         frenzyValid = true;
+        quizMonsterEnded = true;
       }
 
       stopQuizMonster(target);
@@ -205,6 +190,14 @@ obs.on('ConnectionOpened', () => {
       frenzyActive = true;
       showItem('frenzy');
       setTimeout(hideItem, 30000, 'frenzy');
+    }
+
+    else if (commandName === '!urkelfrenzy' && frenzyActive === false && frenzyValid === false) {
+      client.say(target, `Urkel Frenzy not yet achieved`);
+    }
+
+    else if (commandName === '!urkelfrenzy' && frenzyActive === true && frenzyValid === true) {
+      client.say(target, `We already did that`);
     }
 
     else if (commandName === '!acruelangelsthesis') {
@@ -308,7 +301,7 @@ obs.on('ConnectionOpened', () => {
   }
 
   function startQuizMonster (target) {
-    if (quizMonsterActive === false && getRandomInt(5) === 0) {
+    if (quizMonsterEnded === false && quizMonsterActive === false && getRandomInt(5) === 0) {
       client.say(target, `!yabbadabbadoo`)
       obs
         .send('GetCurrentScene')
