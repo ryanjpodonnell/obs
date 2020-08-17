@@ -145,11 +145,11 @@ obs.on('ConnectionOpened', () => {
         .send('GetCurrentScene')
         .then(response => {
           if (response.name === "Main Pinball Scene" || response.name === "Face Cam") {
-            showRandomCamFromGame(babySinclairs);
+            showRandomCamFromGame(urkels);
             setTimeout(hideRandomCamFromGame, 10000);
           }
           else if (response.name === "Tiki Cam") {
-            showRandomCamFromRecipe(babySinclairs);
+            showRandomCamFromRecipe(urkels);
             setTimeout(hideRandomCamFromRecipe, 10000);
           }
         });
