@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "log-timestamp": "^0.3.0",
+    "node-fetch": "^2.6.0",
     "obs-websocket-js": "^4.0.1",
     "sorted-map": "^0.1.8",
     "tmi.js": "^1.5.0",

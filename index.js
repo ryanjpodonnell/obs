@@ -2,6 +2,7 @@ require('log-timestamp')
 const fs = require('fs');
 const OBSWebSocket = require('obs-websocket-js');
 const tmi = require('tmi.js');
+const fetch = require("node-fetch");
 const obs = new OBSWebSocket();
 const client = new tmi.client({
   identity: {
@@ -198,6 +199,15 @@ obs.on('ConnectionOpened', () => {
 
     else if (commandName === '!urkelfrenzy' && frenzyActive === true && frenzyValid === true) {
       client.say(target, `We already did that`);
+    }
+
+    else if (commandName === 'stinkycheese') {
+      fetch("http://localhost:4567/", {
+        method: "POST",
+        body: ''
+      }).then(res => {
+        console.log("Request complete! response:");
+      });
     }
 
     else if (commandName === '!acruelangelsthesis') {
