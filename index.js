@@ -28,7 +28,7 @@ obs.on('ConnectionOpened', () => {
   var Map = require('sorted-map');
   var bangers = new Map();
   var totalBangs = 0;
-  var frenzyGoal = 10;
+  var frenzyGoal = 20;
 
   var randomCommand;
   var randomCommandInvoked = false;
@@ -39,6 +39,7 @@ obs.on('ConnectionOpened', () => {
   var quizMonsterActive = false;
   var frenzyValid = false;
   var frenzyActive = false;
+  var frenzyInvoked = false;
 
   var babySinclairs = [
     'b1',
@@ -181,27 +182,26 @@ obs.on('ConnectionOpened', () => {
       }
     }
 
-    else if (commandName === '!quizidothat' && quizMonsterInvoked === false) {
+    else if (commandName === '!gotanyqueez' && quizMonsterInvoked === false) {
       quizMonsterInvoked = true;
       client.say(target, `@${context.username} has awoken the quiz monster from their cheesy slumber`);
       setInterval(function() { startQuizMonster(target) }, 60000);
     }
 
-    else if (commandName === '!urkelfrenzy' && frenzyActive === false && frenzyValid === true) {
-      frenzyActive = true;
-      showItem('frenzy');
-      setTimeout(hideItem, 30000, 'frenzy');
-    }
-
-    else if (commandName === '!urkelfrenzy' && frenzyActive === false && frenzyValid === false) {
+    else if (commandName === '!urkelfrenzy' && frenzyValid === false) {
       client.say(target, `Urkel Frenzy not yet achieved`);
     }
 
-    else if (commandName === '!urkelfrenzy' && frenzyActive === true && frenzyValid === true) {
+    else if (commandName === '!urkelfrenzy' && frenzyInvoked === false && frenzyValid === true) {
+      startFrenzy();
+      setTimeout(stopFrenzy, 120000);
+    }
+
+    else if (commandName === '!urkelfrenzy' && frenzyInvoked === true) {
       client.say(target, `We already did that`);
     }
 
-    else if (commandName === 'stinkycheese') {
+    else if (commandName.includes('stinkycheese') && frenzyActive === true) {
       fetch("http://localhost:4567/", {
         method: "POST",
         body: ''
@@ -288,12 +288,29 @@ obs.on('ConnectionOpened', () => {
 
   function setRandomQuestionAndAnswer () {
     var quiz = {
-      'Family Matters was a spinoff of what show?': 'perfectstrangers',
-      'Where city does Family Matters take place?': 'chicago',
-      'What is Steve Urkel\'s favorite food?': 'cheese',
-      'What musical instrument does Steve Urkel play?': 'accordian',
-      'FILL IN THE BLANK: Did I do ___?': 'that',
-      'Who is Steve Urkel\'s one true love?': 'laura'
+      "Berg_nost": 'e',
+      "Bri_k cheese": 'c',
+      "Chedd_r cheese": 'a',
+      "Cheese cu_ds": 'r',
+      "Col_y cheese": 'b',
+      "Colby-J_ck cheese": 'a',
+      "Cream chee_e": 's',
+      "Creo_e cream cheese": 'l',
+      "_up Cheese": 'c',
+      "_armer cheese": 'f',
+      "_oop cheese": 'h',
+      "Humbol_t Fog": 'd',
+      "Liederkran_ cheese": 'z',
+      "Mon_erey Jack": 't',
+      "Mu_nster cheese": 'e',
+      "Nac_o cheese": 'h',
+      "Pep_er jack cheese": 'p',
+      "Pinconnin_ cheese": 'g',
+      "Pro_el cheese": 'v',
+      "Red _awk": 'h',
+      "St_ing cheese": 'r',
+      "Swi_s cheese": 's',
+      "Tele_e cheese": 'm'
     };
     var keys = Object.keys(quiz);
 
@@ -311,7 +328,7 @@ obs.on('ConnectionOpened', () => {
   }
 
   function startQuizMonster (target) {
-    if (quizMonsterEnded === false && quizMonsterActive === false && getRandomInt(5) === 0) {
+    if (quizMonsterEnded === false && quizMonsterActive === false && getRandomInt(4) === 0) {
       client.say(target, `!yabbadabbadoo`)
       obs
         .send('GetCurrentScene')
@@ -346,6 +363,17 @@ obs.on('ConnectionOpened', () => {
           }
         });
     }
+  }
+
+  function startFrenzy () {
+    frenzyActive = true;
+    frenzyInvoked = true;
+    showItem('frenzy');
+  }
+
+  function stopFrenzy () {
+    frenzyActive = false;
+    hideItem('frenzy');
   }
 });
 
