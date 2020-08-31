@@ -1,11 +1,14 @@
 require('log-timestamp')
+require('dotenv').config()
+
+const ComfyJS = require('comfy.js');
 const OBSWebSocket = require('obs-websocket-js');
 const tmi = require('tmi.js');
 const obs = new OBSWebSocket();
 const client = new tmi.client({
   identity: {
     username: 'roddog_hogbot',
-    password: ''
+    password: process.env.RODDOGPASSWORD
   },
   channels: [
     'gametimetelevision'
@@ -17,6 +20,9 @@ obs.on('ConnectionOpened', () => {
   client.on('message', onMessageHandler);
   client.on('connected', onConnectedHandler);
   client.connect();
+
+  ComfyJS.onReward = onRewardHander;
+  ComfyJS.Init('gametimetelevision', process.env.OAUTH);
 
   var randomCommand;
   var randomCommandInvoked = false;
@@ -76,7 +82,27 @@ obs.on('ConnectionOpened', () => {
     '!timallencam'
   ];
 
+  var anagrams = [
+    'URBANOLOGY DIET',
+    'OBLIGATORY NUDE',
+    'BLOODYING URATE',
+    'AIRBOUND TOY LEG',
+    'BUNGALOID TOYER',
+    'LEGIONARY DOUBT',
+    'URANOLOGY BIDET',
+    'REGULATION DOBY'
+  ];
+
+  function onRewardHander (user, reward, cost, extra) {
+    console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
+
+    if (reward === 'Rod Anagram (1 DAY ONLY!)') {
+      postRandomAnagram('#gametimetelevision');
+    }
+  }
+
   function onMessageHandler (target, context, msg, self) {
+    console.log(target);
     console.log(`${context.username} - ${msg}`);
     const commandName = msg.trim().toLowerCase();
 
@@ -124,6 +150,11 @@ obs.on('ConnectionOpened', () => {
 
   function onConnectedHandler (addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
+  }
+
+  function postRandomAnagram (target) {
+    var anagram = randomElementFromArray(anagrams);
+    client.say(target, `DOUBLE GYRATION <=> ${anagram}`);
   }
 
   function showItem (item) {
@@ -213,4 +244,4 @@ obs.on('ConnectionOpened', () => {
   }
 });
 
-obs.connect({ address: '10.0.1.57:4444', password: ''});
+obs.connect({ address: '10.0.1.57:4444', password: process.env.OBSPASSWORD});
