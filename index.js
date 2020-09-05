@@ -51,6 +51,12 @@ obs.on('ConnectionOpened', () => {
     't4'
   ];
 
+  var jarJars = [
+    'j1',
+    'j2',
+    'j3'
+  ];
+
   var commands = [
     '!red',
     '!aqua',
@@ -82,27 +88,15 @@ obs.on('ConnectionOpened', () => {
     '!timallencam'
   ];
 
-  var anagrams = [
-    'URBANOLOGY DIET',
-    'OBLIGATORY NUDE',
-    'BLOODYING URATE',
-    'AIRBOUND TOY LEG',
-    'BUNGALOID TOYER',
-    'LEGIONARY DOUBT',
-    'URANOLOGY BIDET',
-    'REGULATION DOBY'
-  ];
-
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
 
-    if (reward === 'Rod Anagram (1 DAY ONLY!)') {
-      postRandomAnagram('#gametimetelevision');
+    if (reward === 'Jar Jar Cam (DELUXE)') {
+      showAndHideCam(jarJars);
     }
   }
 
   function onMessageHandler (target, context, msg, self) {
-    console.log(target);
     console.log(`${context.username} - ${msg}`);
     const commandName = msg.trim().toLowerCase();
 
@@ -152,11 +146,6 @@ obs.on('ConnectionOpened', () => {
     console.log(`* Connected to ${addr}:${port}`);
   }
 
-  function postRandomAnagram (target) {
-    var anagram = randomElementFromArray(anagrams);
-    client.say(target, `DOUBLE GYRATION <=> ${anagram}`);
-  }
-
   function showItem (item) {
     obs.send('SetSceneItemProperties', {
       'item': item,
@@ -193,6 +182,9 @@ obs.on('ConnectionOpened', () => {
   }
 
   function showRandomCamFromGame (arr) {
+    if (camActive === true && typeof randomCam !== "undefined") {
+      hideItem(randomCam);
+    }
     camActive = true;
     randomCam = randomElementFromArray(arr);
     showItem(randomCam);
@@ -200,6 +192,9 @@ obs.on('ConnectionOpened', () => {
   }
 
   function showRandomCamFromRecipe (arr) {
+    if (camActive === true && typeof randomCam !== "undefined") {
+      hideItem(randomCam);
+    }
     camActive = true;
     randomCam = randomElementFromArray(arr);
     showItem(randomCam);
