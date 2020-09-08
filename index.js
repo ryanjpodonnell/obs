@@ -21,13 +21,24 @@ obs.on('ConnectionOpened', () => {
   client.on('connected', onConnectedHandler);
   client.connect();
 
+  obs.on('SwitchScenes', data => {
+    if (data['scene-name'] === 'Tiki Cam') {
+      showMainCam('recipe');
+    }
+    else if (data['scene-name'] === 'Main Pinball Scene' || data['scene-name'] === 'Face Cam') {
+      showMainCam('game');
+    }
+  });
+
   ComfyJS.onReward = onRewardHander;
   ComfyJS.Init('gametimetelevision', process.env.OAUTH);
 
   var randomCommand;
   var randomCommandInvoked = false;
-  var camActive = false;
+  var mainCam;
   var randomCam;
+  var randomCamActive = false;
+  var randomCamTimeout;
 
   var babySinclairs = [
     'b1',
@@ -68,6 +79,7 @@ obs.on('ConnectionOpened', () => {
     '!yellow',
     '!yabbadabbadoo',
     '!recipe',
+    '!game',
     '!babysinclaircam',
     '!urkelcam',
     '!timallencam'
@@ -83,6 +95,7 @@ obs.on('ConnectionOpened', () => {
     '!purple',
     '!yellow',
     '!recipe',
+    '!game',
     '!babysinclaircam',
     '!urkelcam',
     '!timallencam'
@@ -92,7 +105,7 @@ obs.on('ConnectionOpened', () => {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
 
     if (reward === 'Jar Jar Cam (DELUXE)') {
-      showAndHideCam(jarJars);
+      showRandomCam(jarJars);
     }
   }
 
@@ -109,31 +122,24 @@ obs.on('ConnectionOpened', () => {
       client.say(target, `The INNOVATIVE commands are: ${commands.join(', ')}`);
     }
 
-    else if (commandName === '!recipe' && camActive === false) {
-      obs
-        .send('GetCurrentScene')
-        .then(response => {
-          if (response.name === "Main Pinball Scene" || response.name === "Face Cam") {
-            showRecipe();
-            setTimeout(hideRecipe, 10000);
-          }
-        });
+    else if (commandName === '!recipe') {
+      showRandomCam(['recipe']);
     }
 
-    else if (commandName === '!babysinclaircam' && camActive === false) {
-      showAndHideCam(babySinclairs);
+    else if (commandName === '!game') {
+      showRandomCam(['game']);
     }
 
-    else if (commandName === '!urkelcam' && camActive === false) {
-      showAndHideCam(urkels);
+    else if (commandName === '!babysinclaircam') {
+      showRandomCam(babySinclairs);
     }
 
-    else if (commandName === '!timallencam' && camActive === false) {
-      showAndHideCam(timAllens);
+    else if (commandName === '!urkelcam') {
+      showRandomCam(urkels);
     }
 
-    else if (commandName === '!acruelangelsthesis') {
-      setScene('END');
+    else if (commandName === '!timallencam') {
+      showRandomCam(timAllens);
     }
 
     if (randomCommandInvoked === false) {
@@ -144,85 +150,64 @@ obs.on('ConnectionOpened', () => {
 
   function onConnectedHandler (addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
+
+    obs
+      .send('GetCurrentScene')
+      .then(response => {
+        if (response.name === 'Main Pinball Scene' || response.name === 'Face Cam') {
+          mainCam = 'game';
+        }
+        else if (response.name === 'Tiki Cam') {
+          mainCam = 'recipe';
+        }
+
+        showMainCam(mainCam);
+      });
   }
 
-  function showItem (item) {
+  function showItemWithinScene (item, scene) {
     obs.send('SetSceneItemProperties', {
       'item': item,
+      'scene-name': scene,
       'visible': true
     });
   }
 
-  function hideItem (item) {
+  function hideItemWithinScene (item, scene) {
     obs.send('SetSceneItemProperties', {
       'item': item,
+      'scene-name': scene,
       'visible': false
     });
   }
 
-  function showAndHideCam (collection) {
-    obs
-      .send('GetCurrentScene')
-      .then(response => {
-        if (response.name === "Main Pinball Scene" || response.name === "Face Cam") {
-          showRandomCamFromGame(collection);
-          setTimeout(hideRandomCamFromGame, 10000);
-        }
-        else if (response.name === "Tiki Cam") {
-          showRandomCamFromRecipe(collection);
-          setTimeout(hideRandomCamFromRecipe, 10000);
-        }
-      });
-  }
-
-  function showRecipe () {
-    camActive = true;
-    showItem('recipe');
-    hideItem('game');
-  }
-
-  function showRandomCamFromGame (arr) {
-    if (camActive === true && typeof randomCam !== "undefined") {
-      hideItem(randomCam);
+  function showMainCam (cam) {
+    if (randomCamActive === true) {
+      hideItemWithinScene(randomCam, '- Sidebar Cam');
+      clearTimeout(randomCamTimeout);
     }
-    camActive = true;
-    randomCam = randomElementFromArray(arr);
-    showItem(randomCam);
-    hideItem('game');
+    hideItemWithinScene(mainCam, '- Sidebar Cam');
+    mainCam = cam;
+    showItemWithinScene(mainCam, '- Sidebar Cam');
   }
 
-  function showRandomCamFromRecipe (arr) {
-    if (camActive === true && typeof randomCam !== "undefined") {
-      hideItem(randomCam);
+  function showRandomCam (arr) {
+    if (randomCamActive === true) {
+      hideItemWithinScene(randomCam, '- Sidebar Cam');
+      clearTimeout(randomCamTimeout);
     }
-    camActive = true;
+
+    hideItemWithinScene(mainCam, '- Sidebar Cam');
     randomCam = randomElementFromArray(arr);
-    showItem(randomCam);
-    hideItem('recipe');
+    showItemWithinScene(randomCam, '- Sidebar Cam');
+    randomCamActive = true;
+    randomCamTimeout = setTimeout(hideRandomCam, 10000);
   }
 
-  function hideRecipe () {
-    showItem('game');
-    hideItem('recipe');
-    camActive = false;
-  }
-
-  function hideRandomCamFromGame () {
-    showItem('game');
-    hideItem(randomCam);
-    camActive = false;
-  }
-
-  function hideRandomCamFromRecipe () {
-    showItem('recipe');
-    hideItem(randomCam);
-    camActive = false;
-  }
-
-  function setScene (sceneName) {
-    obs.send('SetCurrentScene', {
-      'scene-name': sceneName
-    });
+  function hideRandomCam () {
+    hideItemWithinScene(randomCam, '- Sidebar Cam');
+    showItemWithinScene(mainCam, '- Sidebar Cam');
+    randomCamActive = false;
   }
 
   function randomElementFromArray (arr) {
