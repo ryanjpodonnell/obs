@@ -22,10 +22,10 @@ obs.on('ConnectionOpened', () => {
   client.connect();
 
   obs.on('SwitchScenes', data => {
-    if (data['scene-name'] === 'Tiki Cam') {
+    if (data['scene-name'] === 'Tiki Scene') {
       showMainCam('recipe');
     }
-    else if (data['scene-name'] === 'Main Pinball Scene' || data['scene-name'] === 'Face Cam') {
+    else if (data['scene-name'] === 'Main Pinball Scene' || data['scene-name'] === 'Face Scene') {
       showMainCam('game');
     }
   });
@@ -154,10 +154,10 @@ obs.on('ConnectionOpened', () => {
     obs
       .send('GetCurrentScene')
       .then(response => {
-        if (response.name === 'Main Pinball Scene' || response.name === 'Face Cam') {
+        if (response.name === 'Main Pinball Scene' || response.name === 'Face Scene') {
           mainCam = 'game';
         }
-        else if (response.name === 'Tiki Cam') {
+        else if (response.name === 'Tiki Scene') {
           mainCam = 'recipe';
         }
 
