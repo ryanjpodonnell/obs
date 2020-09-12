@@ -107,6 +107,12 @@ obs.on('ConnectionOpened', () => {
     if (reward === 'Jar Jar Cam (DELUXE)') {
       showRandomCam(jarJars);
     }
+
+    if (reward === 'Bananas on Rod and Les') {
+      client.say('#gametimetelevision', `!yabbadabbadoo`);
+      showItemWithinScene('bananas', '- Player Cam');
+      setTimeout(hideItemWithinScene, 10000, 'bananas', '- Player Cam');
+    }
   }
 
   function onMessageHandler (target, context, msg, self) {
@@ -159,6 +165,9 @@ obs.on('ConnectionOpened', () => {
         }
         else if (response.name === 'Tiki Scene') {
           mainCam = 'recipe';
+        }
+        else {
+          mainCam = 'game';
         }
 
         showMainCam(mainCam);
