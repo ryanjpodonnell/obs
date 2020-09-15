@@ -62,10 +62,11 @@ obs.on('ConnectionOpened', () => {
     't4'
   ];
 
-  var jarJars = [
-    'j1',
-    'j2',
-    'j3'
+  var masks = [
+    'm1',
+    'm2',
+    'm3',
+    'm4'
   ];
 
   var commands = [
@@ -104,14 +105,20 @@ obs.on('ConnectionOpened', () => {
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
 
-    if (reward === 'Jar Jar Cam (DELUXE)') {
-      showRandomCam(jarJars);
+    if (reward === 'The Mask Cam (1 WEEK ONLY ACT NOW)') {
+      showRandomCam(masks);
     }
 
     if (reward === 'Bananas on Rod and Les') {
       client.say('#gametimetelevision', `!yabbadabbadoo`);
       showItemWithinScene('bananas', '- Player Cam');
       setTimeout(hideItemWithinScene, 10000, 'bananas', '- Player Cam');
+    }
+
+    if (reward === 'Pokeball on Rod and Les') {
+      client.say('#gametimetelevision', `!yabbadabbadoo`);
+      showItemWithinScene('pokeball', '- Player Cam');
+      setTimeout(hideItemWithinScene, 10000, 'pokeball', '- Player Cam');
     }
   }
 

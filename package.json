@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.7.2",
     "comfy.js": "^1.1.3",
     "dotenv": "^8.2.0",
     "log-timestamp": "^0.3.0",
