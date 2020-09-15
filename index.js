@@ -14,6 +14,8 @@ const client = new tmi.client({
     'gametimetelevision'
   ]
 });
+const fetch = require('node-fetch');
+const Promise = require("bluebird");
 
 obs.on('ConnectionOpened', () => {
   console.log('* Connection Opened');
@@ -83,7 +85,9 @@ obs.on('ConnectionOpened', () => {
     '!game',
     '!babysinclaircam',
     '!urkelcam',
-    '!timallencam'
+    '!timallencam',
+    '!bestgame',
+    '!worstgame'
   ];
 
   var randomCommands = [
@@ -101,6 +105,77 @@ obs.on('ConnectionOpened', () => {
     '!urkelcam',
     '!timallencam'
   ];
+
+  var previousGameId;
+  var bestGame = 0;
+  var worstGame = 0;
+  var weedCamActive = false;
+
+  function numberWithCommas(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  function checkStatus(res) {
+    if (res.ok) {
+      return res;
+    } else {
+      console.log(res.statusText);
+      throw(res.statusText);
+    }
+  }
+
+  function parseResponse (response) {
+    var session = response["data"][0]["session"];
+
+    console.log(session);
+
+    if (previousGameId === undefined) {
+      previousGameId = session["id"];
+    }
+
+    if (session["settled_on"] !== null && previousGameId !== session["id"]) {
+      session["scores"].forEach(score => {
+        if (bestGame === 0 && worstGame === 0) {
+          bestGame = score["score"];
+          worstGame = score["score"];
+        }
+
+        if (score["score"] > 0 && score["score"] > bestGame) {
+          bestGame = score["score"];
+        }
+        if (score["score"] > 0 && score["score"] < worstGame) {
+          worstGame = score["score"];
+        }
+      });
+    }
+
+    var currentScoresContainWeed = false;
+    session["scores"].forEach(score => {
+      if (score["score"].toString().includes("420")) {
+        currentScoresContainWeed = true;
+      }
+    });
+
+    if (currentScoresContainWeed === true && weedCamActive === false) {
+      weedCamActive = true;
+      showItemWithinScene('weed', '- Score Cam');
+    } else if (currentScoresContainWeed === false && weedCamActive === true) {
+      weedCamActive = false;
+      hideItemWithinScene('weed', '- Score Cam');
+    }
+  }
+
+  function pingScorbit () {
+    fetch('https://' + process.env.SCORBIT_AUTH + '@api.scorbit.io/api/scoreboard/49/scores/')
+      .then(checkStatus)
+      .then(res => res.json())
+      .then(json => parseResponse(json))
+      .then(() => Promise.delay(2000))
+      .then(() => pingScorbit())
+      .catch(function(error) { Promise.delay(2000).then(() => pingScorbit()) });
+  }
+
+  pingScorbit();
 
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
@@ -153,6 +228,14 @@ obs.on('ConnectionOpened', () => {
 
     else if (commandName === '!timallencam') {
       showRandomCam(timAllens);
+    }
+
+    else if (commandName === '!bestgame') {
+      client.say(target, `The Best Game Brought To You By Scorbit: ${numberWithCommas(bestGame)}`);
+    }
+
+    else if (commandName === '!worstgame') {
+      client.say(target, `The Worst Game Brought To You By Scorbit: ${numberWithCommas(worstGame)}`);
     }
 
     if (randomCommandInvoked === false) {
