@@ -2,7 +2,6 @@ require('log-timestamp');
 require('dotenv').config();
 require("./helpers.js")();
 require("./obs-helpers.js")();
-require("./scorbit.js")();
 require("./sidebar-cam.js")();
 
 const ComfyJS = require('comfy.js');
@@ -25,15 +24,6 @@ obs.on('ConnectionOpened', () => {
   client.on('connected', onConnectedHandler);
   client.connect();
 
-  obs.on('SwitchScenes', data => {
-    if (data['scene-name'] === 'Tiki Scene') {
-      showMainCam(obs, 'recipe');
-    }
-    else if (data['scene-name'] === 'Main Pinball Scene' || data['scene-name'] === 'Face Scene') {
-      showMainCam(obs, 'game');
-    }
-  });
-
   ComfyJS.onReward = onRewardHander;
   ComfyJS.Init('gametimetelevision', process.env.OAUTH);
 
@@ -55,15 +45,10 @@ obs.on('ConnectionOpened', () => {
     '!purple',
     '!yellow',
     '!yabbadabbadoo',
-    '!recipe',
-    '!game',
     '!babysinclaircam',
     '!urkelcam',
     '!timallencam',
     '!klumpscam',
-    '!highscore',
-    '!lowscore',
-    '!gamesplayed',
     '!setcolor'
   ];
 
@@ -76,29 +61,37 @@ obs.on('ConnectionOpened', () => {
     '!orange',
     '!purple',
     '!yellow',
-    '!recipe',
-    '!game',
     '!babysinclaircam',
     '!urkelcam',
     '!timallencam',
-    '!klumpscam',
+    '!klumpscam'
   ];
-
-  initializeScorbit(obs);
 
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
 
-    if (reward === 'Bananas on Rod and Les') {
+    if (reward === 'Bananas on Rod') {
       client.say('#gametimetelevision', `!yabbadabbadoo`);
-      showItemWithinScene(obs, 'bananas', '- Player Cam');
+      showItemWithinScene(obs, 'bananas-left', '- Logi-Left');
       setTimeout(hideItemWithinScene, 10000, obs, 'bananas', '- Player Cam');
     }
 
-    if (reward === 'Pokeball on Rod and Les') {
+    else if (reward === 'Bananas on Les') {
       client.say('#gametimetelevision', `!yabbadabbadoo`);
-      showItemWithinScene(obs, 'pokeball', '- Player Cam');
-      setTimeout(hideItemWithinScene, 10000, obs, 'pokeball', '- Player Cam');
+      showItemWithinScene(obs, 'bananas-right', '- Logi-Right');
+      setTimeout(hideItemWithinScene, 10000, obs, 'bananas', '- Player Cam');
+    }
+
+    else if (reward === 'Pokeball on Rod') {
+      client.say('#gametimetelevision', `!yabbadabbadoo`);
+      showItemWithinScene(obs, 'pokeball-left', '- Logi-Left');
+      setTimeout(hideItemWithinScene, 10000, obs, 'pokeball-left', '- Logi-Left');
+    }
+
+    else if (reward === 'Pokeball on Les') {
+      client.say('#gametimetelevision', `!yabbadabbadoo`);
+      showItemWithinScene(obs, 'pokeball-right', '- Logi-Right');
+      setTimeout(hideItemWithinScene, 10000, obs, 'pokeball-right', '- Logi-Right');
     }
   }
 
@@ -115,14 +108,6 @@ obs.on('ConnectionOpened', () => {
       client.say(target, `The INNOVATIVE commands are: ${commands.join(', ')}`);
     }
 
-    else if (commandName === '!recipe') {
-      showRandomCam(obs, ['recipe']);
-    }
-
-    else if (commandName === '!game') {
-      showRandomCam(obs, ['game']);
-    }
-
     else if (commandName === '!babysinclaircam') {
       showRandomCam(obs, babySinclairs);
     }
@@ -137,18 +122,6 @@ obs.on('ConnectionOpened', () => {
 
     else if (commandName === '!klumpscam') {
       showRandomCam(obs, klumps);
-    }
-
-    else if (commandName === '!highscore') {
-      client.say(target, `The High Score brought to you by Scorbit: ${numberWithCommas(bestScore())}`);
-    }
-
-    else if (commandName === '!lowscore') {
-      client.say(target, `The Low Score brought to you by Scorbit: ${numberWithCommas(worstScore())}`);
-    }
-
-    else if (commandName === '!gamesplayed') {
-      client.say(target, `The Number of Games Played brought to you by Scorbit: ${gamesPlayed()}`);
     }
 
     else if (commandName === '!red' ||
@@ -176,7 +149,7 @@ obs.on('ConnectionOpened', () => {
     }
 
     if (randomCommandInvoked === false) {
-      randomCommand = setTimeout(executeRandomCommand, 60000, target);
+      randomCommand = setTimeout(executeRandomCommand, 300000, target);
       randomCommandInvoked = true;
     }
   }
@@ -184,20 +157,7 @@ obs.on('ConnectionOpened', () => {
   function onConnectedHandler (addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
 
-    hideItemWithinScene(obs, 'game', '- Sidebar Cam');
-    hideItemWithinScene(obs, 'recipe', '- Sidebar Cam');
-
     setSidebarColor(obs, 4278190080);
-
-    obs
-      .send('GetCurrentScene')
-      .then(response => {
-        if (response.name === 'Tiki Scene') {
-          showMainCam(obs, 'recipe');
-        } else {
-          showMainCam(obs, 'game');
-        }
-      });
   }
 
   function executeRandomCommand (target) {
