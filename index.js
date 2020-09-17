@@ -62,8 +62,8 @@ obs.on('ConnectionOpened', () => {
     '!babysinclaircam',
     '!urkelcam',
     '!timallencam',
-    '!bestscore',
-    '!worstscore'
+    '!highscore',
+    '!lowscore'
   ];
 
   var randomCommands = [
@@ -137,11 +137,11 @@ obs.on('ConnectionOpened', () => {
       showRandomCam(obs, timAllens);
     }
 
-    else if (commandName === '!bestscore') {
+    else if (commandName === '!highscore') {
       client.say(target, `The Best Score brought to you by Scorbit: ${numberWithCommas(bestScore())}`);
     }
 
-    else if (commandName === '!worstscore') {
+    else if (commandName === '!lowscore') {
       client.say(target, `The Worst Score brought to you by Scorbit: ${numberWithCommas(worstScore())}`);
     }
 
