@@ -14,4 +14,18 @@ module.exports = function() {
       'visible': false
     });
   };
+
+  this.showItem = function (obs, item) {
+    obs.send('SetSceneItemProperties', {
+      'item': item,
+      'visible': true
+    });
+  }
+
+  this.hideItem = function (obs, item) {
+    obs.send('SetSceneItemProperties', {
+      'item': item,
+      'visible': false
+    });
+  }
 }

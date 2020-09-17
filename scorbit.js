@@ -110,10 +110,12 @@ module.exports = function() {
 
     if (gameOver === true && frenzyGameId !== undefined) {
       frenzy = false;
+      hideItem(obs, '- Frenzy);
     }
 
     if (gameOver === false && frenzyGameId === undefined) {
       frenzyGameId = session["id"];
+      showItem(obs, '- Frenzy);
     }
 
     var currentScore = 0;
