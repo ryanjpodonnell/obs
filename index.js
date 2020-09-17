@@ -172,7 +172,6 @@ obs.on('ConnectionOpened', () => {
           showMainCam(obs, 'game');
         }
       });
-
   }
 
   function executeRandomCommand (target) {
