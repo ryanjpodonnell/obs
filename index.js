@@ -1,5 +1,7 @@
-require('log-timestamp')
-require('dotenv').config()
+require('log-timestamp');
+require('dotenv').config();
+require("./scorbit.js")();
+require("./obs-helpers.js")();
 
 const ComfyJS = require('comfy.js');
 const OBSWebSocket = require('obs-websocket-js');
@@ -14,8 +16,6 @@ const client = new tmi.client({
     'gametimetelevision'
   ]
 });
-const fetch = require('node-fetch');
-const Promise = require("bluebird");
 
 obs.on('ConnectionOpened', () => {
   console.log('* Connection Opened');
@@ -42,34 +42,12 @@ obs.on('ConnectionOpened', () => {
   var randomCamActive = false;
   var randomCamTimeout;
 
-  var babySinclairs = [
-    'b1',
-    'b2',
-    'b3',
-    'b4',
-    'b5',
-    'b6'
-  ];
+  var frenzyActivated = false;
 
-  var urkels = [
-    'u1',
-    'u2',
-    'u3'
-  ];
-
-  var timAllens = [
-    't1',
-    't2',
-    't3',
-    't4'
-  ];
-
-  var masks = [
-    'm1',
-    'm2',
-    'm3',
-    'm4'
-  ];
+  var babySinclairs = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6'];
+  var urkels = ['u1', 'u2', 'u3'];
+  var timAllens = ['t1', 't2', 't3', 't4'];
+  var masks = ['m1', 'm2', 'm3', 'm4'];
 
   var commands = [
     '!red',
@@ -86,8 +64,8 @@ obs.on('ConnectionOpened', () => {
     '!babysinclaircam',
     '!urkelcam',
     '!timallencam',
-    '!bestgame',
-    '!worstgame'
+    '!bestscore',
+    '!worstscore'
   ];
 
   var randomCommands = [
@@ -106,76 +84,7 @@ obs.on('ConnectionOpened', () => {
     '!timallencam'
   ];
 
-  var previousGameId;
-  var bestGame = 0;
-  var worstGame = 0;
-  var weedCamActive = false;
-
-  function numberWithCommas(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-
-  function checkStatus(res) {
-    if (res.ok) {
-      return res;
-    } else {
-      console.log(res.statusText);
-      throw(res.statusText);
-    }
-  }
-
-  function parseResponse (response) {
-    var session = response["data"][0]["session"];
-
-    console.log(session);
-
-    if (previousGameId === undefined) {
-      previousGameId = session["id"];
-    }
-
-    if (session["settled_on"] !== null && previousGameId !== session["id"]) {
-      session["scores"].forEach(score => {
-        if (bestGame === 0 && worstGame === 0) {
-          bestGame = score["score"];
-          worstGame = score["score"];
-        }
-
-        if (score["score"] > 0 && score["score"] > bestGame) {
-          bestGame = score["score"];
-        }
-        if (score["score"] > 0 && score["score"] < worstGame) {
-          worstGame = score["score"];
-        }
-      });
-    }
-
-    var currentScoresContainWeed = false;
-    session["scores"].forEach(score => {
-      if (score["score"].toString().includes("420")) {
-        currentScoresContainWeed = true;
-      }
-    });
-
-    if (currentScoresContainWeed === true && weedCamActive === false) {
-      weedCamActive = true;
-      showItemWithinScene('weed', '- Score Cam');
-    } else if (currentScoresContainWeed === false && weedCamActive === true) {
-      weedCamActive = false;
-      hideItemWithinScene('weed', '- Score Cam');
-    }
-  }
-
-  function pingScorbit () {
-    fetch('https://' + process.env.SCORBIT_AUTH + '@api.scorbit.io/api/scoreboard/49/scores/')
-      .then(checkStatus)
-      .then(res => res.json())
-      .then(json => parseResponse(json))
-      .then(() => Promise.delay(2000))
-      .then(() => pingScorbit())
-      .catch(function(error) { Promise.delay(2000).then(() => pingScorbit()) });
-  }
-
-  pingScorbit();
+  initializeScorbit(obs);
 
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
@@ -186,14 +95,14 @@ obs.on('ConnectionOpened', () => {
 
     if (reward === 'Bananas on Rod and Les') {
       client.say('#gametimetelevision', `!yabbadabbadoo`);
-      showItemWithinScene('bananas', '- Player Cam');
-      setTimeout(hideItemWithinScene, 10000, 'bananas', '- Player Cam');
+      showItemWithinScene(obs, 'bananas', '- Player Cam');
+      setTimeout(hideItemWithinScene, 10000, obs, 'bananas', '- Player Cam');
     }
 
     if (reward === 'Pokeball on Rod and Les') {
       client.say('#gametimetelevision', `!yabbadabbadoo`);
-      showItemWithinScene('pokeball', '- Player Cam');
-      setTimeout(hideItemWithinScene, 10000, 'pokeball', '- Player Cam');
+      showItemWithinScene(obs, 'pokeball', '- Player Cam');
+      setTimeout(hideItemWithinScene, 10000, obs, 'pokeball', '- Player Cam');
     }
   }
 
@@ -230,12 +139,18 @@ obs.on('ConnectionOpened', () => {
       showRandomCam(timAllens);
     }
 
-    else if (commandName === '!bestgame') {
-      client.say(target, `The Best Game Brought To You By Scorbit: ${numberWithCommas(bestGame)}`);
+    else if (commandName === '!bestscore') {
+      client.say(target, `The Best Score brought to you by Scorbit: ${numberWithCommas(bestScore())}`);
     }
 
-    else if (commandName === '!worstgame') {
-      client.say(target, `The Worst Game Brought To You By Scorbit: ${numberWithCommas(worstGame)}`);
+    else if (commandName === '!worstscore') {
+      client.say(target, `The Worst Score brought to you by Scorbit: ${numberWithCommas(worstScore())}`);
+    }
+
+    else if (commandName === '!roddogsecretcommand' && frenzyActivated === false) {
+      client.say(target, `Frenzy brought to you by Scorbit`);
+      frenzyActivated = true;
+      startFrenzy();
     }
 
     if (randomCommandInvoked === false) {
@@ -264,48 +179,32 @@ obs.on('ConnectionOpened', () => {
       });
   }
 
-  function showItemWithinScene (item, scene) {
-    obs.send('SetSceneItemProperties', {
-      'item': item,
-      'scene-name': scene,
-      'visible': true
-    });
-  }
-
-  function hideItemWithinScene (item, scene) {
-    obs.send('SetSceneItemProperties', {
-      'item': item,
-      'scene-name': scene,
-      'visible': false
-    });
-  }
-
   function showMainCam (cam) {
     if (randomCamActive === true) {
-      hideItemWithinScene(randomCam, '- Sidebar Cam');
+      hideItemWithinScene(obs, randomCam, '- Sidebar Cam');
       clearTimeout(randomCamTimeout);
     }
-    hideItemWithinScene(mainCam, '- Sidebar Cam');
+    hideItemWithinScene(obs, mainCam, '- Sidebar Cam');
     mainCam = cam;
-    showItemWithinScene(mainCam, '- Sidebar Cam');
+    showItemWithinScene(obs, mainCam, '- Sidebar Cam');
   }
 
   function showRandomCam (arr) {
     if (randomCamActive === true) {
-      hideItemWithinScene(randomCam, '- Sidebar Cam');
+      hideItemWithinScene(obs, randomCam, '- Sidebar Cam');
       clearTimeout(randomCamTimeout);
     }
 
-    hideItemWithinScene(mainCam, '- Sidebar Cam');
+    hideItemWithinScene(obs, mainCam, '- Sidebar Cam');
     randomCam = randomElementFromArray(arr);
-    showItemWithinScene(randomCam, '- Sidebar Cam');
+    showItemWithinScene(obs, randomCam, '- Sidebar Cam');
     randomCamActive = true;
     randomCamTimeout = setTimeout(hideRandomCam, 10000);
   }
 
   function hideRandomCam () {
-    hideItemWithinScene(randomCam, '- Sidebar Cam');
-    showItemWithinScene(mainCam, '- Sidebar Cam');
+    hideItemWithinScene(obs, randomCam, '- Sidebar Cam');
+    showItemWithinScene(obs, mainCam, '- Sidebar Cam');
     randomCamActive = false;
   }
 
@@ -315,6 +214,10 @@ obs.on('ConnectionOpened', () => {
 
   function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
+  }
+
+  function numberWithCommas(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   function executeRandomCommand (target) {
