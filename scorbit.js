@@ -129,10 +129,6 @@ module.exports = function() {
     delta = delta / 100_000;
     delta = Math.floor(delta);
 
-    console.log(currentScore);
-    console.log(delta);
-    console.log(tonysSent);
-
     if (delta > 0) {
       fetch("http://localhost:4567/" + delta, {
         method: "POST"

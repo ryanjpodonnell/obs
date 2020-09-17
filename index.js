@@ -1,7 +1,9 @@
 require('log-timestamp');
 require('dotenv').config();
-require("./scorbit.js")();
+require("./helpers.js")();
 require("./obs-helpers.js")();
+require("./scorbit.js")();
+require("./sidebar-cam.js")();
 
 const ComfyJS = require('comfy.js');
 const OBSWebSocket = require('obs-websocket-js');
@@ -25,10 +27,10 @@ obs.on('ConnectionOpened', () => {
 
   obs.on('SwitchScenes', data => {
     if (data['scene-name'] === 'Tiki Scene') {
-      showMainCam('recipe');
+      showMainCam(obs, 'recipe');
     }
     else if (data['scene-name'] === 'Main Pinball Scene' || data['scene-name'] === 'Face Scene') {
-      showMainCam('game');
+      showMainCam(obs, 'game');
     }
   });
 
@@ -37,10 +39,6 @@ obs.on('ConnectionOpened', () => {
 
   var randomCommand;
   var randomCommandInvoked = false;
-  var mainCam;
-  var randomCam;
-  var randomCamActive = false;
-  var randomCamTimeout;
 
   var frenzyActivated = false;
 
@@ -90,7 +88,7 @@ obs.on('ConnectionOpened', () => {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
 
     if (reward === 'The Mask Cam (1 WEEK ONLY ACT NOW)') {
-      showRandomCam(masks);
+      showRandomCam(obs, masks);
     }
 
     if (reward === 'Bananas on Rod and Les') {
@@ -120,23 +118,23 @@ obs.on('ConnectionOpened', () => {
     }
 
     else if (commandName === '!recipe') {
-      showRandomCam(['recipe']);
+      showRandomCam(obs, ['recipe']);
     }
 
     else if (commandName === '!game') {
-      showRandomCam(['game']);
+      showRandomCam(obs, ['game']);
     }
 
     else if (commandName === '!babysinclaircam') {
-      showRandomCam(babySinclairs);
+      showRandomCam(obs, babySinclairs);
     }
 
     else if (commandName === '!urkelcam') {
-      showRandomCam(urkels);
+      showRandomCam(obs, urkels);
     }
 
     else if (commandName === '!timallencam') {
-      showRandomCam(timAllens);
+      showRandomCam(obs, timAllens);
     }
 
     else if (commandName === '!bestscore') {
@@ -162,62 +160,19 @@ obs.on('ConnectionOpened', () => {
   function onConnectedHandler (addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
 
+    hideItemWithinScene(obs, 'game', '- Sidebar Cam');
+    hideItemWithinScene(obs, 'recipe', '- Sidebar Cam');
+
     obs
       .send('GetCurrentScene')
       .then(response => {
-        if (response.name === 'Main Pinball Scene' || response.name === 'Face Scene') {
-          mainCam = 'game';
+        if (response.name === 'Tiki Scene') {
+          showMainCam(obs, 'recipe');
+        } else {
+          showMainCam(obs, 'game');
         }
-        else if (response.name === 'Tiki Scene') {
-          mainCam = 'recipe';
-        }
-        else {
-          mainCam = 'game';
-        }
-
-        showMainCam(mainCam);
       });
-  }
 
-  function showMainCam (cam) {
-    if (randomCamActive === true) {
-      hideItemWithinScene(obs, randomCam, '- Sidebar Cam');
-      clearTimeout(randomCamTimeout);
-    }
-    hideItemWithinScene(obs, mainCam, '- Sidebar Cam');
-    mainCam = cam;
-    showItemWithinScene(obs, mainCam, '- Sidebar Cam');
-  }
-
-  function showRandomCam (arr) {
-    if (randomCamActive === true) {
-      hideItemWithinScene(obs, randomCam, '- Sidebar Cam');
-      clearTimeout(randomCamTimeout);
-    }
-
-    hideItemWithinScene(obs, mainCam, '- Sidebar Cam');
-    randomCam = randomElementFromArray(arr);
-    showItemWithinScene(obs, randomCam, '- Sidebar Cam');
-    randomCamActive = true;
-    randomCamTimeout = setTimeout(hideRandomCam, 10000);
-  }
-
-  function hideRandomCam () {
-    hideItemWithinScene(obs, randomCam, '- Sidebar Cam');
-    showItemWithinScene(obs, mainCam, '- Sidebar Cam');
-    randomCamActive = false;
-  }
-
-  function randomElementFromArray (arr) {
-    return arr[getRandomInt(arr.length)];
-  }
-
-  function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
-  }
-
-  function numberWithCommas(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   function executeRandomCommand (target) {
