@@ -72,26 +72,26 @@ obs.on('ConnectionOpened', () => {
 
     if (reward === 'Bananas on Rod') {
       client.say('#gametimetelevision', `!yabbadabbadoo`);
-      showItemWithinScene(obs, 'bananas-left', '- Logi-Left');
-      setTimeout(hideItemWithinScene, 10000, obs, 'bananas', '- Player Cam');
+      showItemWithinScene(obs, 'bananas-rod', '- Logi Rod');
+      setTimeout(hideItemWithinScene, 10000, obs, 'bananas-rod', '- Logi Rod');
     }
 
     else if (reward === 'Bananas on Les') {
       client.say('#gametimetelevision', `!yabbadabbadoo`);
-      showItemWithinScene(obs, 'bananas-right', '- Logi-Right');
-      setTimeout(hideItemWithinScene, 10000, obs, 'bananas', '- Player Cam');
+      showItemWithinScene(obs, 'bananas-les', '- Logi Les');
+      setTimeout(hideItemWithinScene, 10000, obs, 'bananas-les', '- Logi Les');
     }
 
     else if (reward === 'Pokeball on Rod') {
       client.say('#gametimetelevision', `!yabbadabbadoo`);
-      showItemWithinScene(obs, 'pokeball-left', '- Logi-Left');
-      setTimeout(hideItemWithinScene, 10000, obs, 'pokeball-left', '- Logi-Left');
+      showItemWithinScene(obs, 'pokeball-rod', '- Logi Rod');
+      setTimeout(hideItemWithinScene, 10000, obs, 'pokeball-rod', '- Logi Rod');
     }
 
     else if (reward === 'Pokeball on Les') {
       client.say('#gametimetelevision', `!yabbadabbadoo`);
-      showItemWithinScene(obs, 'pokeball-right', '- Logi-Right');
-      setTimeout(hideItemWithinScene, 10000, obs, 'pokeball-right', '- Logi-Right');
+      showItemWithinScene(obs, 'pokeball-les', '- Logi Les');
+      setTimeout(hideItemWithinScene, 10000, obs, 'pokeball-les', '- Logi Les');
     }
   }
 
