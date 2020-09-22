@@ -7,7 +7,6 @@ module.exports = function() {
   var obs;
 
   var previousGameId;
-  var newGame = false;
   var ingestedGameOverData = false;
   var startScorbitIngestion = false;
 

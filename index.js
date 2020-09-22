@@ -134,6 +134,10 @@ obs.on('ConnectionOpened', () => {
       showRandomCam(obs, timAllens);
     }
 
+    else if (commandName === '!klumpscam') {
+      showRandomCam(obs, klumps);
+    }
+
     else if (commandName === '!highscore') {
       client.say(target, `The High Score brought to you by Scorbit: ${numberWithCommas(bestScore())}`);
     }
@@ -143,7 +147,7 @@ obs.on('ConnectionOpened', () => {
     }
 
     else if (commandName === '!gamesplayed') {
-      client.say(target, `The Number of Games Played brought to you by Scorbit: ${numberWithCommas(worstScore())}`);
+      client.say(target, `The Number of Games Played brought to you by Scorbit: ${gamesPlayed()}`);
     }
 
     if (randomCommandInvoked === false) {
