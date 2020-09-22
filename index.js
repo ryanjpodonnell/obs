@@ -40,12 +40,10 @@ obs.on('ConnectionOpened', () => {
   var randomCommand;
   var randomCommandInvoked = false;
 
-  var frenzyActivated = false;
-
   var babySinclairs = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6'];
-  var urkels = ['u1', 'u2', 'u3'];
+  var urkels = ['u1', 'u2', 'u3', 'u4'];
   var timAllens = ['t1', 't2', 't3', 't4'];
-  var masks = ['m1', 'm2', 'm3', 'm4'];
+  var klumps = ['k1', 'k2', 'k3'];
 
   var commands = [
     '!red',
@@ -62,8 +60,10 @@ obs.on('ConnectionOpened', () => {
     '!babysinclaircam',
     '!urkelcam',
     '!timallencam',
+    '!klumpscam',
     '!highscore',
-    '!lowscore'
+    '!lowscore',
+    '!gamesplayed'
   ];
 
   var randomCommands = [
@@ -79,17 +79,14 @@ obs.on('ConnectionOpened', () => {
     '!game',
     '!babysinclaircam',
     '!urkelcam',
-    '!timallencam'
+    '!timallencam',
+    '!klumpscam',
   ];
 
   initializeScorbit(obs);
 
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
-
-    if (reward === 'The Mask Cam (1 WEEK ONLY ACT NOW)') {
-      showRandomCam(obs, masks);
-    }
 
     if (reward === 'Bananas on Rod and Les') {
       client.say('#gametimetelevision', `!yabbadabbadoo`);
@@ -138,17 +135,15 @@ obs.on('ConnectionOpened', () => {
     }
 
     else if (commandName === '!highscore') {
-      client.say(target, `The Best Score brought to you by Scorbit: ${numberWithCommas(bestScore())}`);
+      client.say(target, `The High Score brought to you by Scorbit: ${numberWithCommas(bestScore())}`);
     }
 
     else if (commandName === '!lowscore') {
-      client.say(target, `The Worst Score brought to you by Scorbit: ${numberWithCommas(worstScore())}`);
+      client.say(target, `The Low Score brought to you by Scorbit: ${numberWithCommas(worstScore())}`);
     }
 
-    else if (commandName === '!roddogsecretcommand' && frenzyActivated === false) {
-      client.say(target, `Frenzy brought to you by Scorbit`);
-      frenzyActivated = true;
-      startFrenzy();
+    else if (commandName === '!gamesplayed') {
+      client.say(target, `The Number of Games Played brought to you by Scorbit: ${numberWithCommas(worstScore())}`);
     }
 
     if (randomCommandInvoked === false) {

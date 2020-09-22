@@ -6,14 +6,15 @@ module.exports = function() {
 
   var obs;
 
-  var frenzy = false;
-  var frenzyGameId;
-
-  var tonysSent = 0;
-  var previousScore;
   var previousGameId;
+  var newGame = false;
+  var ingestedGameOverData = false;
+  var startScorbitIngestion = false;
+
   var bestGame = 0;
   var worstGame = 0;
+  var gameCount = 0;
+
   var weedCamActive = false;
 
   this.bestScore = function () {
@@ -24,8 +25,8 @@ module.exports = function() {
     return worstGame;
   }
 
-  this.startFrenzy = function () {
-    frenzy = true;
+  this.gamesPlayed = function () {
+    return gameCount;
   }
 
   this.initializeScorbit = function (obsInstance) {
@@ -34,7 +35,7 @@ module.exports = function() {
   }
 
   pingScorbit = function () {
-    fetch('https://' + process.env.SCORBIT_AUTH + '@api.scorbit.io/api/scoreboard/49/scores/')
+    fetch('https://' + process.env.SCORBIT_AUTH + '@api.scorbit.io/api/scoreboard/43/scores/')
       .then(checkStatus)
       .then(res => res.json())
       .then(json => parseResponse(json))
@@ -56,34 +57,54 @@ module.exports = function() {
     var session = response["data"][0]["session"];
 
     console.log(session);
-    checkScores(session);
-    checkWeed(session);
-    if (frenzy === true) {
-      checkScoreDelta(session);
-    }
-  };
 
-  checkScores = function (session) {
     if (previousGameId === undefined) {
       previousGameId = session["id"];
     }
+    if (startScorbitIngestion === false) {
+      startScorbitIngestion = (previousGameId !== session["id"])
+    }
 
-    if (session["settled_on"] !== null && previousGameId !== session["id"]) {
-      session["scores"].forEach(score => {
-        if (bestGame === 0 && worstGame === 0) {
-          bestGame = score["score"];
-          worstGame = score["score"];
-        }
-
-        if (score["score"] > 0 && score["score"] > bestGame) {
-          bestGame = score["score"];
-        }
-        if (score["score"] > 0 && score["score"] < worstGame) {
-          worstGame = score["score"];
-        }
-      });
+    if (startScorbitIngestion === true) {
+      ingestScoritSession(session);
     }
   };
+
+  ingestScoritSession = function (session) {
+    var gameOver = (session["settled_on"] !== null);
+
+    if (gameOver === false && ingestedGameOverData === true) {
+      ingestedGameOverData = false;
+    }
+
+    if (gameOver === true && ingestedGameOverData === false) {
+      ingestFinalScores(session);
+      incrementGameCount();
+      ingestedGameOverData = true;
+    }
+
+    checkWeed(session);
+  }
+
+  ingestFinalScores = function (session) {
+    session["scores"].forEach(score => {
+      if (bestGame === 0 && worstGame === 0) {
+        bestGame = score["score"];
+        worstGame = score["score"];
+      }
+
+      if (score["score"] > 0 && score["score"] > bestGame) {
+        bestGame = score["score"];
+      }
+      if (score["score"] > 0 && score["score"] < worstGame) {
+        worstGame = score["score"];
+      }
+    });
+  };
+
+  incrementGameCount = function () {
+    gameCount += 1;
+  }
 
   checkWeed = function (session) {
     var currentScoresContainWeed = false;
@@ -100,43 +121,5 @@ module.exports = function() {
       weedCamActive = false;
       hideItemWithinScene(obs, 'weed', '- Score Cam');
     }
-  };
-
-  checkScoreDelta = function (session) {
-    var gameOver = (session["settled_on"] !== null);
-    if (gameOver === true && frenzyGameId === undefined) {
-      return;
-    }
-
-    if (gameOver === true && frenzyGameId !== undefined) {
-      frenzy = false;
-      hideItem(obs, '- Frenzy');
-    }
-
-    if (gameOver === false && frenzyGameId === undefined) {
-      frenzyGameId = session["id"];
-      showItem(obs, '- Frenzy');
-    }
-
-    var currentScore = 0;
-    session["scores"].forEach(score => {
-      if (score["score"] > currentScore) {
-        currentScore = score["score"];
-      }
-    });
-
-    var delta = currentScore - (tonysSent * 100_000);
-    delta = delta / 100_000;
-    delta = Math.floor(delta);
-
-    if (delta > 0) {
-      fetch("http://localhost:4567/" + delta, {
-        method: "POST"
-      }).then(res => {
-        console.log("Request complete!");
-      });
-    }
-
-    tonysSent += delta;
   };
 };
