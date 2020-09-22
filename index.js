@@ -63,7 +63,8 @@ obs.on('ConnectionOpened', () => {
     '!klumpscam',
     '!highscore',
     '!lowscore',
-    '!gamesplayed'
+    '!gamesplayed',
+    '!setcolor'
   ];
 
   var randomCommands = [
@@ -162,6 +163,18 @@ obs.on('ConnectionOpened', () => {
       setSidebarColor(obs, commandName);
     }
 
+    else if (commandName.startsWith('!setcolor')) {
+      var arr = commandName.split('#');
+      if (arr.length !== 1) {
+        var hex = arr[arr.length - 1]
+        console.log(`ff${hex}`);
+        hex = parseInt(`ff${hex}`, 16)
+        if (hex >= 4278190080 && hex <= 4294967295) {
+          setSidebarColor(obs, hex)
+        }
+      }
+    }
+
     if (randomCommandInvoked === false) {
       randomCommand = setTimeout(executeRandomCommand, 60000, target);
       randomCommandInvoked = true;
@@ -174,7 +187,7 @@ obs.on('ConnectionOpened', () => {
     hideItemWithinScene(obs, 'game', '- Sidebar Cam');
     hideItemWithinScene(obs, 'recipe', '- Sidebar Cam');
 
-    setSidebarColor(obs, null);
+    setSidebarColor(obs, 4278190080);
 
     obs
       .send('GetCurrentScene')

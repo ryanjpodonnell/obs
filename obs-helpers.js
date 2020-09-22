@@ -49,7 +49,7 @@ module.exports = function() {
     } else if (color === '!yellow') {
       colorId = 4278255615;
     } else {
-      colorId = 4278190080;
+      colorId = color
     }
 
     obs.send('SetSourceSettings', {
