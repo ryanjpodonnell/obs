@@ -150,6 +150,18 @@ obs.on('ConnectionOpened', () => {
       client.say(target, `The Number of Games Played brought to you by Scorbit: ${gamesPlayed()}`);
     }
 
+    else if (commandName === '!red' ||
+      commandName === '!aqua' ||
+      commandName === '!blue' ||
+      commandName === '!pink' ||
+      commandName === '!green' ||
+      commandName === '!orange' ||
+      commandName === '!purple' ||
+      commandName === '!yellow'
+    ) {
+      setSidebarColor(obs, commandName);
+    }
+
     if (randomCommandInvoked === false) {
       randomCommand = setTimeout(executeRandomCommand, 60000, target);
       randomCommandInvoked = true;
@@ -161,6 +173,8 @@ obs.on('ConnectionOpened', () => {
 
     hideItemWithinScene(obs, 'game', '- Sidebar Cam');
     hideItemWithinScene(obs, 'recipe', '- Sidebar Cam');
+
+    setSidebarColor(obs, null);
 
     obs
       .send('GetCurrentScene')
