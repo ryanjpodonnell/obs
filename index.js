@@ -93,6 +93,18 @@ obs.on('ConnectionOpened', () => {
       showItemWithinScene(obs, 'pokeball-les', '- Logi Les');
       setTimeout(hideItemWithinScene, 10000, obs, 'pokeball-les', '- Logi Les');
     }
+
+    else if (reward === 'Phurba on Rod') {
+      client.say('#gametimetelevision', `!yabbadabbadoo`);
+      showItemWithinScene(obs, 'phurba-rod', '- Logi Rod');
+      setTimeout(hideItemWithinScene, 30000, obs, 'phurba-rod', '- Logi Rod');
+    }
+
+    else if (reward === 'Phurba on Les') {
+      client.say('#gametimetelevision', `!yabbadabbadoo`);
+      showItemWithinScene(obs, 'phurba-les', '- Logi Les');
+      setTimeout(hideItemWithinScene, 30000, obs, 'phurba-les', '- Logi Les');
+    }
   }
 
   function onMessageHandler (target, context, msg, self) {
