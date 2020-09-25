@@ -53,7 +53,7 @@ module.exports = function() {
     }
 
     obs.send('SetSourceSettings', {
-      'sourceName': 'PICK BG COLOR HERE',
+      'sourceName': 'PICK BG COLOR',
       'sourceType': 'color_source_v2',
       'sourceSettings': { 'color': colorId }
     });
