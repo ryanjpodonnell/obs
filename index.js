@@ -7,6 +7,7 @@ require("./sidebar-cam.js")();
 
 const ComfyJS = require('comfy.js');
 const OBSWebSocket = require('obs-websocket-js');
+const randomHexColor = require('random-hex-color')
 const tmi = require('tmi.js');
 const obs = new OBSWebSocket();
 const client = new tmi.client({
@@ -54,6 +55,7 @@ obs.on('ConnectionOpened', () => {
     '!orange',
     '!purple',
     '!yellow',
+    '!setcolor',
     '!yabbadabbadoo',
     '!recipe',
     '!game',
@@ -63,8 +65,7 @@ obs.on('ConnectionOpened', () => {
     '!klumpscam',
     '!highscore',
     '!lowscore',
-    '!gamesplayed',
-    '!setcolor'
+    '!gamesplayed'
   ];
 
   var randomCommands = [
@@ -76,12 +77,11 @@ obs.on('ConnectionOpened', () => {
     '!orange',
     '!purple',
     '!yellow',
-    '!recipe',
-    '!game',
+    '!setcolor',
     '!babysinclaircam',
     '!urkelcam',
     '!timallencam',
-    '!klumpscam',
+    '!klumpscam'
   ];
 
   initializeScorbit(obs);
@@ -99,6 +99,12 @@ obs.on('ConnectionOpened', () => {
       client.say('#gametimetelevision', `!yabbadabbadoo`);
       showItemWithinScene(obs, 'pokeball', '- Player Cam');
       setTimeout(hideItemWithinScene, 10000, obs, 'pokeball', '- Player Cam');
+    }
+
+    if (reward === 'Phurba on Rod and Les') {
+      client.say('#gametimetelevision', `!yabbadabbadoo`);
+      showItemWithinScene(obs, 'phurba', '- Player Cam');
+      setTimeout(hideItemWithinScene, 27000, obs, 'phurba', '- Player Cam');
     }
   }
 
@@ -167,7 +173,6 @@ obs.on('ConnectionOpened', () => {
       var arr = commandName.split('#');
       if (arr.length !== 1) {
         var hex = arr[arr.length - 1]
-        console.log(`ff${hex}`);
         hex = parseInt(`ff${hex}`, 16)
         if (hex >= 4278190080 && hex <= 4294967295) {
           setSidebarColor(obs, hex)
@@ -201,7 +206,11 @@ obs.on('ConnectionOpened', () => {
   }
 
   function executeRandomCommand (target) {
-    const command = randomElementFromArray(randomCommands);
+    var command = randomElementFromArray(randomCommands);
+    if (command === '!setcolor') {
+      command = `!setcolor${randomHexColor()}`;
+    }
+
     client.say(target, command);
   }
 });
