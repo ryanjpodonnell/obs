@@ -15,6 +15,7 @@ module.exports = function() {
   var gameCount = 0;
 
   var weedCamActive = false;
+  var devilCamActive = false;
 
   this.bestScore = function () {
     return bestGame;
@@ -34,7 +35,7 @@ module.exports = function() {
   }
 
   pingScorbit = function () {
-    fetch('https://' + process.env.SCORBIT_AUTH + '@api.scorbit.io/api/scoreboard/43/scores/')
+    fetch('https://' + process.env.SCORBIT_AUTH + '@api.scorbit.io/api/scoreboard/49/scores/')
       .then(checkStatus)
       .then(res => res.json())
       .then(json => parseResponse(json))
@@ -83,6 +84,7 @@ module.exports = function() {
     }
 
     checkWeed(session);
+    checkDevil(session);
   }
 
   ingestFinalScores = function (session) {
@@ -119,6 +121,23 @@ module.exports = function() {
     } else if (currentScoresContainWeed === false && weedCamActive === true) {
       weedCamActive = false;
       hideItemWithinScene(obs, 'weed', '- Score Cam');
+    }
+  };
+
+  checkDevil = function (session) {
+    var currentScoresContainDevil = false;
+    session["scores"].forEach(score => {
+      if (score["score"].toString().includes("666")) {
+        currentScoresContainDevil = true;
+      }
+    });
+
+    if (currentScoresContainDevil === true && devilCamActive === false) {
+      devilCamActive = true;
+      showItemWithinScene(obs, 'devil', '- Score Cam');
+    } else if (currentScoresContainDevil === false && devilCamActive === true) {
+      devilCamActive = false;
+      hideItemWithinScene(obs, 'devil', '- Score Cam');
     }
   };
 };
