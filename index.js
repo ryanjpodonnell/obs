@@ -6,6 +6,7 @@ require("./sidebar-cam.js")();
 
 const ComfyJS = require('comfy.js');
 const OBSWebSocket = require('obs-websocket-js');
+const randomHexColor = require('random-hex-color');
 const tmi = require('tmi.js');
 const obs = new OBSWebSocket();
 const client = new tmi.client({
@@ -44,12 +45,12 @@ obs.on('ConnectionOpened', () => {
     '!orange',
     '!purple',
     '!yellow',
+    '!setcolor',
     '!yabbadabbadoo',
     '!babysinclaircam',
     '!urkelcam',
     '!timallencam',
-    '!klumpscam',
-    '!setcolor'
+    '!klumpscam'
   ];
 
   var randomCommands = [
@@ -61,6 +62,7 @@ obs.on('ConnectionOpened', () => {
     '!orange',
     '!purple',
     '!yellow',
+    '!setcolor',
     '!babysinclaircam',
     '!urkelcam',
     '!timallencam',
@@ -152,8 +154,10 @@ obs.on('ConnectionOpened', () => {
       var arr = commandName.split('#');
       if (arr.length !== 1) {
         var hex = arr[arr.length - 1]
-        console.log(`ff${hex}`);
-        hex = parseInt(`ff${hex}`, 16)
+        var r = hex.substring(4, 6);
+        var g = hex.substring(2, 4);
+        var b = hex.substring(0, 2);
+        hex = parseInt(`ff${r}${g}${b}`, 16);
         if (hex >= 4278190080 && hex <= 4294967295) {
           setSidebarColor(obs, hex)
         }
@@ -173,7 +177,11 @@ obs.on('ConnectionOpened', () => {
   }
 
   function executeRandomCommand (target) {
-    const command = randomElementFromArray(randomCommands);
+    var command = randomElementFromArray(randomCommands);
+    if (command === '!setcolor') {
+      command = `!setcolor${randomHexColor()}`;
+    }
+
     client.say(target, command);
   }
 });
