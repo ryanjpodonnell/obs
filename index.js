@@ -2,7 +2,6 @@ require('log-timestamp');
 require('dotenv').config();
 require("./helpers.js")();
 require("./obs-helpers.js")();
-require("./scorbit.js")();
 require("./sidebar-cam.js")();
 
 const ComfyJS = require('comfy.js');
@@ -42,9 +41,8 @@ obs.on('ConnectionOpened', () => {
   var randomCommandInvoked = false;
 
   var babySinclairs = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6'];
-  var urkels = ['u1', 'u2', 'u3', 'u4'];
-  var timAllens = ['t1', 't2', 't3', 't4'];
-  var klumps = ['k1', 'k2', 'k3'];
+  var urkels = ['u1', 'u2', 'u3', 'u4', 'u5'];
+  var timAllens = ['t1', 't2', 't3', 't4', 't5'];
 
   var commands = [
     '!red',
@@ -61,11 +59,7 @@ obs.on('ConnectionOpened', () => {
     '!game',
     '!babysinclaircam',
     '!urkelcam',
-    '!timallencam',
-    '!klumpscam',
-    '!highscore',
-    '!lowscore',
-    '!gamesplayed'
+    '!timallencam'
   ];
 
   var randomCommands = [
@@ -80,31 +74,36 @@ obs.on('ConnectionOpened', () => {
     '!setcolor',
     '!babysinclaircam',
     '!urkelcam',
-    '!timallencam',
-    '!klumpscam'
+    '!timallencam'
   ];
-
-  initializeScorbit(obs);
 
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
 
     if (reward === 'Bananas on Rod and Les') {
-      client.say('#gametimetelevision', `!yabbadabbadoo`);
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
       showItemWithinScene(obs, 'bananas', '- Player Cam');
       setTimeout(hideItemWithinScene, 10000, obs, 'bananas', '- Player Cam');
     }
 
     if (reward === 'Pokeball on Rod and Les') {
-      client.say('#gametimetelevision', `!yabbadabbadoo`);
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
       showItemWithinScene(obs, 'pokeball', '- Player Cam');
       setTimeout(hideItemWithinScene, 10000, obs, 'pokeball', '- Player Cam');
     }
 
     if (reward === 'Phurba on Rod and Les') {
-      client.say('#gametimetelevision', `!yabbadabbadoo`);
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
       showItemWithinScene(obs, 'phurba', '- Player Cam');
       setTimeout(hideItemWithinScene, 27000, obs, 'phurba', '- Player Cam');
+    }
+
+    if (reward === 'Capser ft. Devon Sawa + Father Guido Sarducci') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
+      showItemWithinScene(obs, 'ghost', '- Player Cam');
+      showItemWithinScene(obs, 'transform', '- Player Cam');
+      setTimeout(hideItemWithinScene, 60000, obs, 'ghost', '- Player Cam');
+      setTimeout(hideItemWithinScene, 60000, obs, 'transform', '- Player Cam');
     }
   }
 
@@ -139,22 +138,6 @@ obs.on('ConnectionOpened', () => {
 
     else if (commandName === '!timallencam') {
       showRandomCam(obs, timAllens);
-    }
-
-    else if (commandName === '!klumpscam') {
-      showRandomCam(obs, klumps);
-    }
-
-    else if (commandName === '!highscore') {
-      client.say(target, `The High Score brought to you by Scorbit: ${numberWithCommas(bestScore())}`);
-    }
-
-    else if (commandName === '!lowscore') {
-      client.say(target, `The Low Score brought to you by Scorbit: ${numberWithCommas(worstScore())}`);
-    }
-
-    else if (commandName === '!gamesplayed') {
-      client.say(target, `The Number of Games Played brought to you by Scorbit: ${gamesPlayed()}`);
     }
 
     else if (commandName === '!red' ||
