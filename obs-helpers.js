@@ -33,21 +33,21 @@ module.exports = function() {
     var colorId;
 
     if (color === '!red') {
-      colorId = 4278190335;
+      colorId = 4279900884;
     } else if (color === '!aqua') {
-      colorId = 4294967040;
+      colorId = 4291874360;
     } else if (color === '!blue') {
-      colorId = 4294901760;
+      colorId = 4286654229;
     } else if (color === '!pink') {
-      colorId = 4294902015;
+      colorId = 4285212592;
     } else if (color === '!green') {
-      colorId = 4278255360;
+      colorId = 4278611986;
     } else if (color === '!orange') {
-      colorId = 4278212095;
+      colorId = 4279666156;
     } else if (color === '!purple') {
-      colorId = 4286513237;
+      colorId = 4285338940;
     } else if (color === '!yellow') {
-      colorId = 4278255615;
+      colorId = 4282105542;
     } else {
       colorId = color
     }

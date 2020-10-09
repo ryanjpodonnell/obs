@@ -32,9 +32,8 @@ obs.on('ConnectionOpened', () => {
   var randomCommandInvoked = false;
 
   var babySinclairs = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6'];
-  var urkels = ['u1', 'u2', 'u3', 'u4'];
-  var timAllens = ['t1', 't2', 't3', 't4'];
-  var klumps = ['k1', 'k2', 'k3'];
+  var urkels = ['u1', 'u2', 'u3', 'u4', 'u5'];
+  var timAllens = ['t1', 't2', 't3', 't4', 't5'];
 
   var commands = [
     '!red',
@@ -49,8 +48,7 @@ obs.on('ConnectionOpened', () => {
     '!yabbadabbadoo',
     '!babysinclaircam',
     '!urkelcam',
-    '!timallencam',
-    '!klumpscam'
+    '!timallencam'
   ];
 
   var randomCommands = [
@@ -65,45 +63,44 @@ obs.on('ConnectionOpened', () => {
     '!setcolor',
     '!babysinclaircam',
     '!urkelcam',
-    '!timallencam',
-    '!klumpscam'
+    '!timallencam'
   ];
 
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
 
     if (reward === 'Bananas on Rod') {
-      client.say('#gametimetelevision', `!yabbadabbadoo`);
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
       showItemWithinScene(obs, 'bananas-rod', '- Logi Rod');
       setTimeout(hideItemWithinScene, 10000, obs, 'bananas-rod', '- Logi Rod');
     }
 
     else if (reward === 'Bananas on Les') {
-      client.say('#gametimetelevision', `!yabbadabbadoo`);
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
       showItemWithinScene(obs, 'bananas-les', '- Logi Les');
       setTimeout(hideItemWithinScene, 10000, obs, 'bananas-les', '- Logi Les');
     }
 
     else if (reward === 'Pokeball on Rod') {
-      client.say('#gametimetelevision', `!yabbadabbadoo`);
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
       showItemWithinScene(obs, 'pokeball-rod', '- Logi Rod');
       setTimeout(hideItemWithinScene, 10000, obs, 'pokeball-rod', '- Logi Rod');
     }
 
     else if (reward === 'Pokeball on Les') {
-      client.say('#gametimetelevision', `!yabbadabbadoo`);
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
       showItemWithinScene(obs, 'pokeball-les', '- Logi Les');
       setTimeout(hideItemWithinScene, 10000, obs, 'pokeball-les', '- Logi Les');
     }
 
     else if (reward === 'Phurba on Rod') {
-      client.say('#gametimetelevision', `!yabbadabbadoo`);
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
       showItemWithinScene(obs, 'phurba-rod', '- Logi Rod');
       setTimeout(hideItemWithinScene, 30000, obs, 'phurba-rod', '- Logi Rod');
     }
 
     else if (reward === 'Phurba on Les') {
-      client.say('#gametimetelevision', `!yabbadabbadoo`);
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
       showItemWithinScene(obs, 'phurba-les', '- Logi Les');
       setTimeout(hideItemWithinScene, 30000, obs, 'phurba-les', '- Logi Les');
     }
@@ -132,10 +129,6 @@ obs.on('ConnectionOpened', () => {
 
     else if (commandName === '!timallencam') {
       showRandomCam(obs, timAllens);
-    }
-
-    else if (commandName === '!klumpscam') {
-      showRandomCam(obs, klumps);
     }
 
     else if (commandName === '!red' ||
