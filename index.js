@@ -159,7 +159,7 @@ obs.on('ConnectionOpened', () => {
         var r = hex.substring(4, 6);
         var g = hex.substring(2, 4);
         var b = hex.substring(0, 2);
-        hex = parseInt(`ff${r}${g}${b}`, 16)
+        hex = parseInt(`ff${r}${g}${b}`, 16);
         if (hex >= 4278190080 && hex <= 4294967295) {
           setSidebarColor(obs, hex)
         }
