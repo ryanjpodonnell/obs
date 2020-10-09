@@ -6,7 +6,7 @@ require("./sidebar-cam.js")();
 
 const ComfyJS = require('comfy.js');
 const OBSWebSocket = require('obs-websocket-js');
-const randomHexColor = require('random-hex-color')
+const randomHexColor = require('random-hex-color');
 const tmi = require('tmi.js');
 const obs = new OBSWebSocket();
 const client = new tmi.client({
