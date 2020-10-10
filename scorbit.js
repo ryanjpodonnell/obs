@@ -16,6 +16,7 @@ module.exports = function() {
 
   var weedCamActive = false;
   var devilCamActive = false;
+  var elrodCamActive = false;
 
   this.bestScore = function () {
     return bestGame;
@@ -35,7 +36,7 @@ module.exports = function() {
   }
 
   pingScorbit = function () {
-    fetch('https://' + process.env.SCORBIT_AUTH + '@api.scorbit.io/api/scoreboard/49/scores/')
+    fetch('https://' + process.env.SCORBIT_AUTH + '@api.scorbit.io/api/scoreboard/56/scores/')
       .then(checkStatus)
       .then(res => res.json())
       .then(json => parseResponse(json))
@@ -85,6 +86,7 @@ module.exports = function() {
 
     checkWeed(session);
     checkDevil(session);
+    checkElrod(session);
   }
 
   ingestFinalScores = function (session) {
@@ -117,10 +119,10 @@ module.exports = function() {
 
     if (currentScoresContainWeed === true && weedCamActive === false) {
       weedCamActive = true;
-      showItemWithinScene(obs, 'weed', '- Score Cam');
+      showItemWithinScene(obs, 'weed', '- Scorbit Cam');
     } else if (currentScoresContainWeed === false && weedCamActive === true) {
       weedCamActive = false;
-      hideItemWithinScene(obs, 'weed', '- Score Cam');
+      hideItemWithinScene(obs, 'weed', '- Scorbit Cam');
     }
   };
 
@@ -134,10 +136,27 @@ module.exports = function() {
 
     if (currentScoresContainDevil === true && devilCamActive === false) {
       devilCamActive = true;
-      showItemWithinScene(obs, 'devil', '- Score Cam');
+      showItemWithinScene(obs, 'devil', '- Scorbit Cam');
     } else if (currentScoresContainDevil === false && devilCamActive === true) {
       devilCamActive = false;
-      hideItemWithinScene(obs, 'devil', '- Score Cam');
+      hideItemWithinScene(obs, 'devil', '- Scorbit Cam');
+    }
+  };
+
+  checkElrod = function (session) {
+    var currentScoresContainElrod = false;
+    session["scores"].forEach(score => {
+      if (score["score"].toString().includes("311")) {
+        currentScoresContainElrod = true;
+      }
+    });
+
+    if (currentScoresContainElrod === true && elrodCamActive === false) {
+      elrodCamActive = true;
+      showItemWithinScene(obs, 'elrod', '- Scorbit Cam');
+    } else if (currentScoresContainElrod === false && elrodCamActive === true) {
+      elrodCamActive = false;
+      hideItemWithinScene(obs, 'elrod', '- Scorbit Cam');
     }
   };
 };
