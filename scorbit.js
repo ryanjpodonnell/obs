@@ -36,7 +36,7 @@ module.exports = function() {
   }
 
   pingScorbit = function () {
-    fetch('https://' + process.env.SCORBIT_AUTH + '@api.scorbit.io/api/scoreboard/56/scores/')
+    fetch('https://' + process.env.SCORBIT_AUTH + '@api.scorbit.io/api/scoreboard/49/scores/')
       .then(checkStatus)
       .then(res => res.json())
       .then(json => parseResponse(json))

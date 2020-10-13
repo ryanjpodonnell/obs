@@ -44,6 +44,7 @@ obs.on('ConnectionOpened', () => {
   var babySinclairs = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6'];
   var urkels = ['u1', 'u2', 'u3', 'u4', 'u5'];
   var timAllens = ['t1', 't2', 't3', 't4', 't5'];
+  var toomgis = ['z1', 'z2', 'z3'];
 
   var commands = [
     '!red',
@@ -59,21 +60,27 @@ obs.on('ConnectionOpened', () => {
     '!recipe',
     '!game',
     '!babysinclaircam',
-    '!urkelcam',
+    '!grittycam',
     '!timallencam',
+    '!toomgiscam',
+    '!urkelcam',
     '!scorbit'
   ];
 
   var randomCommands = [
+    '!red',
+    '!aqua',
+    '!blue',
+    '!pink',
+    '!green',
+    '!orange',
+    '!purple',
+    '!yellow',
     '!setcolor',
-    '!scorbit',
-    "World’s largest zombie was concocted in 2009. A coffin was used as the bowl and it used an entire bottle of bitters.",
-    "Zombie’s '2 drink max' rule was a marketing tool to get more men to come drink at Don the Beachcomber’s bar. Macho mountain baby!",
-    "Legend has it that Don whipped up what became the Zombie because a customer was hungover and needed something to get through a business meeting. ",
-    "Don’s recipes used secret codes like 'Don’s Mix' and 'Spices #2'. Everyone wanted to crack what was in a Zombie, but they couldn’t which led to bad knockoffs.",
-    "The original Zombie was created in 1934 at Don the Beachcomber’s Hollywood bar.",
-    "In 1939, ‘Dirty Harry’ filmmaker Don Siegel had 3 zombies. He quit drinking the next day FOR LIFE.",
-    "Don’s secrecy to the Zombie also led to bad press who said it was just a marketing stunt. Even Trader Vic said HARUMPH! Why do people drink these!?"
+    '!grittycam',
+    '!timallencam',
+    '!toomgiscam',
+    '!urkelcam'
   ];
 
   initializeScorbit(obs);
