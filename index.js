@@ -148,6 +148,10 @@ obs.on('ConnectionOpened', () => {
       showRandomCam(obs, timAllens);
     }
 
+    else if (commandName === '!grittycam' || commandName === '!toomgiscam') {
+      showRandomCam(obs, toomgis);
+    }
+
     else if (commandName === '!scorbit') {
       client.say(target, `The High Score brought to you by Scorbit: ${numberWithCommas(bestScore())}`);
       client.say(target, `The Low Score brought to you by Scorbit: ${numberWithCommas(worstScore())}`);
