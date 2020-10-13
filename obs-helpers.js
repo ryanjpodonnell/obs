@@ -29,6 +29,12 @@ module.exports = function() {
     });
   }
 
+  this.setScene = function (obs, sceneName) {
+    obs.send('SetCurrentScene', {
+      'scene-name': sceneName
+    });
+  }
+
   this.setSidebarColor = function (obs, color) {
     var colorId;
 
