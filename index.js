@@ -45,7 +45,6 @@ obs.on('ConnectionOpened', () => {
   var urkels = ['u1', 'u2', 'u3', 'u4', 'u5'];
   var timAllens = ['t1', 't2', 't3', 't4', 't5'];
   var toomgis = ['z1', 'z2', 'z3'];
-  var ampms = ['T1', 'T2', 'T3', 'T4'];
 
   var commands = [
     '!red',
@@ -113,20 +112,6 @@ obs.on('ConnectionOpened', () => {
       showItemWithinScene(obs, 'transform', '- Player Cam');
       setTimeout(hideItemWithinScene, 60000, obs, 'ghost', '- Player Cam');
       setTimeout(hideItemWithinScene, 60000, obs, 'transform', '- Player Cam');
-    }
-
-    if (reward === 'ampm Commercial Break ft. Toomgis 1 WEEK ONLY') {
-      obs
-        .send('GetCurrentScene')
-        .then(response => {
-          var scene = response.name;
-          if (ampms.includes(scene) === false) {
-            client.say('#gametimetelevision', `!yabbadabbaboo`);
-            var randomCommercial = randomElementFromArray(ampms);
-            setScene(obs, randomCommercial);
-            setTimeout(setScene, 15000, obs, scene);
-          }
-        });
     }
   }
 
