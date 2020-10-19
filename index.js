@@ -30,7 +30,7 @@ obs.on('ConnectionOpened', () => {
     if (data['scene-name'] === 'Tiki Scene') {
       showMainCam(obs, 'recipe');
     }
-    else if (data['scene-name'] === 'Main Pinball Scene' || data['scene-name'] === 'Face Scene') {
+    else if (data['scene-name'].startsWith('Main Pinball Scene') || data['scene-name'] === 'Face Scene') {
       showMainCam(obs, 'game');
     }
   });
