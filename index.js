@@ -126,8 +126,6 @@ obs.on('ConnectionOpened', () => {
             var jumpscareTimeout = getRandomInt(60) * 1000;
             var returnTimeout = jumpscareTimeout + 4000;
             var randomJumpscare = randomElementFromArray(birds);
-            console.log(jumpscareTimeout);
-            console.log(returnTimeout);
 
             client.say('#gametimetelevision', `!yabbadabbaboo`);
             setTimeout(setScene, jumpscareTimeout, obs, randomJumpscare);
