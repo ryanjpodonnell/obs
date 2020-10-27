@@ -44,6 +44,7 @@ obs.on('ConnectionOpened', () => {
   var urkels = ['u1', 'u2', 'u3', 'u4', 'u5'];
   var timAllens = ['t1', 't2', 't3', 't4', 't5'];
   var toomgis = ['z1', 'z2', 'z3'];
+  var birds = ['J1', 'J2', 'J3', 'J4'];
 
   var commands = [
     '!red',
@@ -114,6 +115,25 @@ obs.on('ConnectionOpened', () => {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
       showItemWithinScene(obs, 'jumpscare', '- Overlay');
       setTimeout(hideItemWithinScene, 10000, obs, 'jumpscare', '- Overlay');
+    }
+
+    if (reward === 'Gimme A JUMPSCARE, Daddy!') {
+      obs
+        .send('GetCurrentScene')
+        .then(response => {
+          var scene = response.name;
+          if (birds.includes(scene) === false) {
+            var jumpscareTimeout = getRandomInt(60) * 1000;
+            var returnTimeout = jumpscareTimeout + 4000;
+            var randomJumpscare = randomElementFromArray(birds);
+            console.log(jumpscareTimeout);
+            console.log(returnTimeout);
+
+            client.say('#gametimetelevision', `!yabbadabbaboo`);
+            setTimeout(setScene, jumpscareTimeout, obs, randomJumpscare);
+            setTimeout(setScene, returnTimeout, obs, scene);
+          }
+        });
     }
   }
 
