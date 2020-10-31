@@ -2,6 +2,7 @@ require('log-timestamp');
 require('dotenv').config();
 require("./helpers.js")();
 require("./obs-helpers.js")();
+require("./scorbit.js")();
 require("./sidebar-cam.js")();
 
 const ComfyJS = require('comfy.js');
@@ -64,6 +65,7 @@ obs.on('ConnectionOpened', () => {
     '!timallencam',
     '!toomgiscam',
     '!urkelcam',
+    '!scorbit'
   ];
 
   var randomCommands = [
@@ -81,6 +83,8 @@ obs.on('ConnectionOpened', () => {
     '!toomgiscam',
     '!urkelcam'
   ];
+
+  initializeScorbit(obs);
 
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
@@ -170,6 +174,12 @@ obs.on('ConnectionOpened', () => {
 
     else if (commandName === '!grittycam' || commandName === '!toomgiscam') {
       showRandomCam(obs, toomgis);
+    }
+
+    else if (commandName === '!scorbit') {
+      client.say(target, `The High Score brought to you by Scorbit: ${numberWithCommas(bestScore())}`);
+      client.say(target, `The Low Score brought to you by Scorbit: ${numberWithCommas(worstScore())}`);
+      client.say(target, `The Number of Games Played brought to you by Scorbit: ${gamesPlayed()}`);
     }
 
     else if (commandName === '!red' ||
