@@ -45,7 +45,7 @@ obs.on('ConnectionOpened', () => {
   var urkels = ['u1', 'u2', 'u3', 'u4', 'u5'];
   var timAllens = ['t1', 't2', 't3', 't4', 't5'];
   var toomgis = ['z1', 'z2', 'z3'];
-  var birds = ['J1', 'J2', 'J3', 'J4'];
+  var rods = ['r1', 'r2', 'r3'];
 
   var commands = [
     '!red',
@@ -65,6 +65,7 @@ obs.on('ConnectionOpened', () => {
     '!timallencam',
     '!toomgiscam',
     '!urkelcam',
+    '!rodcam',
     '!scorbit'
   ];
 
@@ -81,6 +82,7 @@ obs.on('ConnectionOpened', () => {
     '!grittycam',
     '!timallencam',
     '!toomgiscam',
+    '!rodcam',
     '!urkelcam'
   ];
 
@@ -106,37 +108,6 @@ obs.on('ConnectionOpened', () => {
       showItemWithinScene(obs, 'phurba', '- Player Cam');
       setTimeout(hideItemWithinScene, 27000, obs, 'phurba', '- Player Cam');
     }
-
-    if (reward === 'Capser ft. Devon Sawa + Father Guido Sarducci') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'ghost', '- Player Cam');
-      showItemWithinScene(obs, 'transform', '- Player Cam');
-      setTimeout(hideItemWithinScene, 60000, obs, 'ghost', '- Player Cam');
-      setTimeout(hideItemWithinScene, 60000, obs, 'transform', '- Player Cam');
-    }
-
-    if (reward === "I'm A Scardy Widdle Baby") {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'jumpscare', '- Overlay');
-      setTimeout(hideItemWithinScene, 10000, obs, 'jumpscare', '- Overlay');
-    }
-
-    if (reward === 'Gimme A JUMPSCARE, Daddy!') {
-      obs
-        .send('GetCurrentScene')
-        .then(response => {
-          var scene = response.name;
-          if (birds.includes(scene) === false) {
-            var jumpscareTimeout = getRandomInt(60) * 1000;
-            var returnTimeout = jumpscareTimeout + 4000;
-            var randomJumpscare = randomElementFromArray(birds);
-
-            client.say('#gametimetelevision', `!yabbadabbaboo`);
-            setTimeout(setScene, jumpscareTimeout, obs, randomJumpscare);
-            setTimeout(setScene, returnTimeout, obs, scene);
-          }
-        });
-    }
   }
 
   function onMessageHandler (target, context, msg, self) {
@@ -152,37 +123,41 @@ obs.on('ConnectionOpened', () => {
       client.say(target, `The INNOVATIVE commands are: ${commands.join(', ')}`);
     }
 
-    else if (commandName === '!recipe') {
+    if (commandName === '!recipe') {
       showRandomCam(obs, ['recipe']);
     }
 
-    else if (commandName === '!game') {
+    if (commandName === '!game') {
       showRandomCam(obs, ['game']);
     }
 
-    else if (commandName === '!babysinclaircam') {
+    if (commandName === '!babysinclaircam') {
       showRandomCam(obs, babySinclairs);
     }
 
-    else if (commandName === '!urkelcam') {
+    if (commandName === '!urkelcam') {
       showRandomCam(obs, urkels);
     }
 
-    else if (commandName === '!timallencam') {
+    if (commandName === '!timallencam') {
       showRandomCam(obs, timAllens);
     }
 
-    else if (commandName === '!grittycam' || commandName === '!toomgiscam') {
+    if (commandName === '!grittycam' || commandName === '!toomgiscam') {
       showRandomCam(obs, toomgis);
     }
 
-    else if (commandName === '!scorbit') {
+    if (commandName === '!rodcam') {
+      showRandomCam(obs, rods);
+    }
+
+    if (commandName === '!scorbit') {
       client.say(target, `The High Score brought to you by Scorbit: ${numberWithCommas(bestScore())}`);
       client.say(target, `The Low Score brought to you by Scorbit: ${numberWithCommas(worstScore())}`);
       client.say(target, `The Number of Games Played brought to you by Scorbit: ${gamesPlayed()}`);
     }
 
-    else if (commandName === '!red' ||
+    if (commandName === '!red' ||
       commandName === '!aqua' ||
       commandName === '!blue' ||
       commandName === '!pink' ||
@@ -194,7 +169,7 @@ obs.on('ConnectionOpened', () => {
       setSidebarColor(obs, commandName);
     }
 
-    else if (commandName.startsWith('!setcolor')) {
+    if (commandName.startsWith('!setcolor')) {
       var arr = commandName.split('#');
       if (arr.length !== 1) {
         var hex = arr[arr.length - 1]
