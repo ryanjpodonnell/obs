@@ -280,13 +280,13 @@ obs.on('ConnectionOpened', () => {
 
   function startFrenzy() {
     frenzyActivated = true;
-    showItemWithinScene(obs, 'frenzy', '- Overlay');
+    showItemWithinScene(obs, '- Frenzy', '- Overlay');
   }
 
   function stopFrenzy() {
     clearInterval(quizMonsterInterval);
 
-    hideItemWithinScene(obs, 'frenzy', '- Overlay');
+    hideItemWithinScene(obs, '- Frenzy', '- Overlay');
     stopQuizMonster();
   }
 
@@ -294,13 +294,13 @@ obs.on('ConnectionOpened', () => {
     if (quizMonsterActive === false && getRandomInt(2) === 0) {
       quizMonsterActive = true;
       answer = randomElementFromArray(goldenGirls);
-      showItemWithinScene(obs, answer, '- Overlay');
+      showItemWithinScene(obs, answer, '- Frenzy');
     }
   }
 
   function stopQuizMonster() {
     if (quizMonsterActive === true) {
-      hideItemWithinScene(obs, answer, '- Overlay');
+      hideItemWithinScene(obs, answer, '- Frenzy');
       quizMonsterActive = false;
     }
   }
