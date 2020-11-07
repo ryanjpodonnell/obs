@@ -57,7 +57,7 @@ obs.on('ConnectionOpened', () => {
   var timAllens = ['t1', 't2', 't3', 't4', 't5'];
   var toomgis = ['z1', 'z2', 'z3'];
   var rods = ['r1', 'r2', 'r3'];
-  var goldenGirls = ['dorothy', 'dorothy', 'rose', 'sophia'];
+  var goldenGirls = ['dorothy', 'blanche', 'rose', 'sophia'];
 
   var commands = [
     '!red',
