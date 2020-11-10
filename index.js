@@ -2,7 +2,6 @@ require('log-timestamp');
 require('dotenv').config();
 require("./helpers.js")();
 require("./obs-helpers.js")();
-require("./scorbit.js")();
 require("./sidebar-cam.js")();
 
 const ComfyJS = require('comfy.js');
@@ -19,7 +18,6 @@ const client = new tmi.client({
     'gametimetelevision'
   ]
 });
-const fetch = require('node-fetch');
 
 obs.on('ConnectionOpened', () => {
   console.log('* Connection Opened');
@@ -42,22 +40,11 @@ obs.on('ConnectionOpened', () => {
   var randomCommand;
   var randomCommandInvoked = false;
 
-  var frenzyActivated = false;
-  var quizMonsterActive = false;
-  var quizMonsterInterval;
-  var answer;
-
-  var maxBangs = 0;
-  var bangerGrandChamp = null;
-  var Map = require('sorted-map');
-  var bangers = new Map();
-
   var babySinclairs = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6'];
   var urkels = ['u1', 'u2', 'u3', 'u4', 'u5'];
   var timAllens = ['t1', 't2', 't3', 't4', 't5'];
   var toomgis = ['z1', 'z2', 'z3'];
-  var rods = ['r1', 'r2', 'r3'];
-  var goldenGirls = ['dorothy', 'blanche', 'rose', 'sophia'];
+  var rods = ['r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7'];
 
   var commands = [
     '!red',
@@ -77,10 +64,7 @@ obs.on('ConnectionOpened', () => {
     '!timallencam',
     '!toomgiscam',
     '!urkelcam',
-    '!rodcam',
-    '!scorbit',
-    '!leaderboard',
-    '!grandchampion',
+    '!rodcam'
   ];
 
   var randomCommands = [
@@ -97,10 +81,9 @@ obs.on('ConnectionOpened', () => {
     '!timallencam',
     '!toomgiscam',
     '!rodcam',
-    '!urkelcam'
+    '!urkelcam',
+    '!rodcam'
   ];
-
-  initializeScorbit(obs);
 
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
@@ -165,12 +148,6 @@ obs.on('ConnectionOpened', () => {
       showRandomCam(obs, rods);
     }
 
-    if (commandName === '!scorbit') {
-      client.say(target, `The High Score brought to you by Scorbit: ${numberWithCommas(bestScore())}`);
-      client.say(target, `The Low Score brought to you by Scorbit: ${numberWithCommas(worstScore())}`);
-      client.say(target, `The Number of Games Played brought to you by Scorbit: ${gamesPlayed()}`);
-    }
-
     if (commandName === '!red' ||
       commandName === '!aqua' ||
       commandName === '!blue' ||
@@ -196,53 +173,6 @@ obs.on('ConnectionOpened', () => {
         }
       }
     }
-
-    if (commandName === '!rodisthebugsbunnyoftwitch' && frenzyActivated === false) {
-      client.say(target, `Frenzy brought to you by @zzzgodinezzz`);
-      startFrenzy();
-      setTimeout(stopFrenzy, 180000);
-
-      quizMonsterInterval = setInterval(function() { startQuizMonster(target) }, 1000);
-    }
-
-    if (commandName === '!grandchampion' && bangerGrandChamp === null) {
-      client.say(target, `No puppy has yet to bang`);
-    }
-
-    if (commandName === '!grandchampion' && bangerGrandChamp !== null) {
-      let bangs = bangers.get(bangerGrandChamp);
-      client.say(target, `@${bangerGrandChamp} is the current Grand Champion with ${bangs} bang(s)`);
-    }
-
-    if (commandName === '!leaderboard') {
-      let startLength = bangers.length - 3;
-      if (startLength < 0) { startLength = 0 };
-      const leaders = bangers.slice(startLength, bangers.length)
-      for (index = leaders.length-1; index >= 0; index--) {
-        client.say(target, `@${leaders[index].key} - ${leaders[index].value} bang(s)`)
-      }
-    }
-
-    if (commandName === `!${answer}` && quizMonsterActive === true) {
-      let bangs = bangers.get(context.username);
-      bangers.set(context.username, (bangs || 0) + 1);
-      bangs = bangers.get(context.username);
-      if (bangs > maxBangs) {
-        maxBangs = bangs;
-        bangerGrandChamp = context.username;
-      }
-
-      fetch("http://localhost:4567/1", {
-        method: "POST",
-        body: ''
-      }).then(res => {
-        console.log("Request complete! response:");
-      });
-
-      client.say(target, `@${context.username} has ${bangs} bang(s) under their belt`);
-      stopQuizMonster();
-    }
-
 
     if (randomCommandInvoked === false) {
       randomCommand = setTimeout(executeRandomCommand, 60000, target);
@@ -276,33 +206,6 @@ obs.on('ConnectionOpened', () => {
     }
 
     client.say(target, command);
-  }
-
-  function startFrenzy() {
-    frenzyActivated = true;
-    showItemWithinScene(obs, '- Frenzy', '- Overlay');
-  }
-
-  function stopFrenzy() {
-    clearInterval(quizMonsterInterval);
-
-    hideItemWithinScene(obs, '- Frenzy', '- Overlay');
-    stopQuizMonster();
-  }
-
-  function startQuizMonster() {
-    if (quizMonsterActive === false && getRandomInt(2) === 0) {
-      quizMonsterActive = true;
-      answer = randomElementFromArray(goldenGirls);
-      showItemWithinScene(obs, answer, '- Frenzy');
-    }
-  }
-
-  function stopQuizMonster() {
-    if (quizMonsterActive === true) {
-      hideItemWithinScene(obs, answer, '- Frenzy');
-      quizMonsterActive = false;
-    }
   }
 });
 
