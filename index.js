@@ -6,7 +6,6 @@ require("./sidebar-cam.js")();
 
 const ComfyJS = require('comfy.js');
 const OBSWebSocket = require('obs-websocket-js');
-const randomHexColor = require('random-hex-color');
 const tmi = require('tmi.js');
 const obs = new OBSWebSocket();
 const client = new tmi.client({
@@ -28,14 +27,11 @@ obs.on('ConnectionOpened', () => {
   ComfyJS.onReward = onRewardHander;
   ComfyJS.Init('gametimetelevision', process.env.OAUTH);
 
-  var randomCommand;
-  var randomCommandInvoked = false;
-
   var babySinclairs = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6'];
   var urkels = ['u1', 'u2', 'u3', 'u4', 'u5'];
   var timAllens = ['t1', 't2', 't3', 't4', 't5'];
   var toomgis = ['z1', 'z2', 'z3'];
-  var birds = ['J1', 'J2', 'J3', 'J4'];
+  var bossBabies = ['bb1', 'bb2', 'bb3'];
 
   var commands = [
     '!red',
@@ -49,23 +45,7 @@ obs.on('ConnectionOpened', () => {
     '!setcolor',
     '!yabbadabbadoo',
     '!babysinclaircam',
-    '!grittycam',
-    '!urkelcam',
-    '!toomgiscam',
-    '!timallencam'
-  ];
-
-  var randomCommands = [
-    '!red',
-    '!aqua',
-    '!blue',
-    '!pink',
-    '!green',
-    '!orange',
-    '!purple',
-    '!yellow',
-    '!setcolor',
-    '!babysinclaircam',
+    '!bossbabycam',
     '!grittycam',
     '!urkelcam',
     '!toomgiscam',
@@ -99,62 +79,23 @@ obs.on('ConnectionOpened', () => {
       setTimeout(hideItemWithinScene, 10000, obs, 'pokeball-les', '- Logi Les');
     }
 
-    if (reward === 'Phurba on Rod') {
+    if (reward === 'Böbl on Rod') {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'phurba-rod', '- Logi Rod');
-      setTimeout(hideItemWithinScene, 30000, obs, 'phurba-rod', '- Logi Rod');
+      showItemWithinScene(obs, 'bobl-rod', '- Logi Rod');
+      setTimeout(hideItemWithinScene, 20000, obs, 'bobl-rod', '- Logi Rod');
     }
 
-    if (reward === 'Phurba on Les') {
+    if (reward === 'Böbl on Les') {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'phurba-les', '- Logi Les');
-      setTimeout(hideItemWithinScene, 30000, obs, 'phurba-les', '- Logi Les');
+      showItemWithinScene(obs, 'bobl-les', '- Logi Les');
+      setTimeout(hideItemWithinScene, 20000, obs, 'bobl-les', '- Logi Les');
     }
 
-    if (reward === 'Rod Do Something Funny') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'funny', '- Logi Rod');
-      setTimeout(hideItemWithinScene, 10000, obs, 'funny', '- Logi Rod');
-    }
-
-    if (reward === 'Rod Do Something Unfunny') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'unfunny', '- Logi Rod');
-      setTimeout(hideItemWithinScene, 10000, obs, 'unfunny', '- Logi Rod');
-    }
-
-    if (reward === "I'm A Scardy Widdle Baby") {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'jumpscare', '- Sidebar Big');
-      setTimeout(hideItemWithinScene, 10000, obs, 'jumpscare', '- Sidebar Big');
-    }
-
-    if (reward === 'Gimme A JUMPSCARE, Daddy!') {
-      obs
-        .send('GetCurrentScene')
-        .then(response => {
-          var scene = response.name;
-          if (birds.includes(scene) === false) {
-            var jumpscareTimeout = getRandomInt(60) * 1000;
-            var returnTimeout = jumpscareTimeout + 4000;
-            var randomJumpscare = randomElementFromArray(birds);
-
-            client.say('#gametimetelevision', `!yabbadabbaboo`);
-            setTimeout(setScene, jumpscareTimeout, obs, randomJumpscare);
-            setTimeout(setScene, returnTimeout, obs, scene);
-          }
-        });
-    }
   }
 
   function onMessageHandler (target, context, msg, self) {
     console.log(`${context.username} - ${msg}`);
     const commandName = msg.trim().toLowerCase();
-
-    if (randomCommandInvoked === true) {
-      clearTimeout(randomCommand);
-      randomCommandInvoked = false;
-    }
 
     if (commandName === '!commands') {
       client.say(target, `The INNOVATIVE commands are: ${commands.join(', ')}`);
@@ -174,6 +115,10 @@ obs.on('ConnectionOpened', () => {
 
     if (commandName === '!grittycam' || commandName === '!toomgiscam') {
       showRandomCam(obs, toomgis);
+    }
+
+    if (commandName === '!bossbabycam') {
+      showRandomCam(obs, bossBabies);
     }
 
     if (commandName === '!red' ||
@@ -201,26 +146,12 @@ obs.on('ConnectionOpened', () => {
         }
       }
     }
-
-    if (randomCommandInvoked === false) {
-      randomCommand = setTimeout(executeRandomCommand, 300000, target);
-      randomCommandInvoked = true;
-    }
   }
 
   function onConnectedHandler (addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
 
     setSidebarColor(obs, 4278190080);
-  }
-
-  function executeRandomCommand (target) {
-    var command = randomElementFromArray(randomCommands);
-    if (command === '!setcolor') {
-      command = `!setcolor${randomHexColor()}`;
-    }
-
-    client.say(target, command);
   }
 });
 
