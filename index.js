@@ -79,6 +79,12 @@ obs.on('ConnectionOpened', () => {
       showItemWithinScene(obs, 'pokeball', '- Player Cam');
       setTimeout(hideItemWithinScene, 10000, obs, 'pokeball', '- Player Cam');
     }
+
+    if (reward === 'Böbl on Rod and Les') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
+      showItemWithinScene(obs, 'bobl', '- Player Cam');
+      setTimeout(hideItemWithinScene, 20000, obs, 'bobl', '- Player Cam');
+    }
   }
 
   function onMessageHandler (target, context, msg, self) {
