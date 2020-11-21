@@ -85,6 +85,20 @@ obs.on('ConnectionOpened', () => {
       showItemWithinScene(obs, 'bobl', '- Player Cam');
       setTimeout(hideItemWithinScene, 20000, obs, 'bobl', '- Player Cam');
     }
+
+    if (reward === 'Upside Down Böbl on Rod and Les') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
+      showItemWithinScene(obs, 'bobl2', '- Player Cam');
+      setTimeout(hideItemWithinScene, 20000, obs, 'bobl2', '- Player Cam');
+    }
+
+    if (reward === 'Rightside Up/Upside Down Böbl on Rod and Les') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
+      showItemWithinScene(obs, 'bobl3-1', '- Player Cam');
+      showItemWithinScene(obs, 'bobl3-2', '- Player Cam');
+      setTimeout(hideItemWithinScene, 20000, obs, 'bobl3-1', '- Player Cam');
+      setTimeout(hideItemWithinScene, 20000, obs, 'bobl3-2', '- Player Cam');
+    }
   }
 
   function onMessageHandler (target, context, msg, self) {
