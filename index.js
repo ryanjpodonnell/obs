@@ -37,12 +37,9 @@ obs.on('ConnectionOpened', () => {
   ComfyJS.onReward = onRewardHander;
   ComfyJS.Init('gametimetelevision', process.env.OAUTH);
 
-  var babySinclairs = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6'];
-  var urkels = ['u1', 'u2', 'u3', 'u4', 'u5'];
-  var timAllens = ['t1', 't2', 't3', 't4', 't5'];
-  var toomgis = ['z1', 'z2', 'z3'];
-  var rods = ['r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7'];
-  var bossBabies = ['bb1', 'bb2', 'bb3'];
+  var urkels = ['u1', 'u2', 'u3'];
+  var timAllens = ['t1', 't2', 't3', 't4'];
+  var masks = ['g1', 'g2', 'g3'];
 
   var commands = [
     '!red',
@@ -57,32 +54,12 @@ obs.on('ConnectionOpened', () => {
     '!yabbadabbadoo',
     '!recipe',
     '!game',
-    '!babysinclaircam',
-    '!bossbabycam',
-    '!grittycam',
-    '!rodcam',
     '!timallencam',
-    '!toomgiscam',
-    '!urkelcam',
-    '!scorbit'
+    '!urkelcam'
   ];
-
-  initializeScorbit(obs);
 
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
-
-    if (reward === 'Bananas on Rod and Les') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'bananas', '- Player Cam');
-      setTimeout(hideItemWithinScene, 10000, obs, 'bananas', '- Player Cam');
-    }
-
-    if (reward === 'Pokeball on Rod and Les') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'pokeball', '- Player Cam');
-      setTimeout(hideItemWithinScene, 10000, obs, 'pokeball', '- Player Cam');
-    }
 
     if (reward === 'Böbl on Rod and Les') {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
@@ -103,6 +80,10 @@ obs.on('ConnectionOpened', () => {
       setTimeout(hideItemWithinScene, 20000, obs, 'bobl3-1', '- Player Cam');
       setTimeout(hideItemWithinScene, 20000, obs, 'bobl3-2', '- Player Cam');
     }
+
+    if (reward === 'The Mask Cam (DECEMBER SPECIAL)') {
+      showRandomCam(obs, masks);
+    }
   }
 
   function onMessageHandler (target, context, msg, self) {
@@ -121,10 +102,6 @@ obs.on('ConnectionOpened', () => {
       showRandomCam(obs, ['game']);
     }
 
-    if (commandName === '!babysinclaircam') {
-      showRandomCam(obs, babySinclairs);
-    }
-
     if (commandName === '!urkelcam') {
       showRandomCam(obs, urkels);
     }
@@ -133,16 +110,10 @@ obs.on('ConnectionOpened', () => {
       showRandomCam(obs, timAllens);
     }
 
-    if (commandName === '!grittycam' || commandName === '!toomgiscam') {
-      showRandomCam(obs, toomgis);
-    }
-
-    if (commandName === '!rodcam') {
-      showRandomCam(obs, rods);
-    }
-
-    if (commandName === '!bossbabycam') {
-      showRandomCam(obs, bossBabies);
+    if (commandName === '!bobl' || commandName === '!böbl') {
+      client.say(target, `I am way better at Böbl than my man ChucklesW69. But you should follow him anyways. Remember when Danny Torrance was maybe molested?`);
+      client.say(target, `http://twitch.tv/chucklesw73`);
+      client.say(target, `https://morphcatgames.itch.io/bobl`);
     }
 
     if (commandName === '!red' ||
@@ -169,12 +140,6 @@ obs.on('ConnectionOpened', () => {
           setSidebarColor(obs, hex)
         }
       }
-    }
-
-    if (commandName === '!scorbit') {
-      client.say(target, `The High Score brought to you by Scorbit: ${numberWithCommas(bestScore())}`);
-      client.say(target, `The Low Score brought to you by Scorbit: ${numberWithCommas(worstScore())}`);
-      client.say(target, `The Number of Games Played brought to you by Scorbit: ${gamesPlayed()}`);
     }
   }
 
