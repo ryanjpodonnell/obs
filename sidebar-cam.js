@@ -11,7 +11,7 @@ module.exports = function() {
       hideItemWithinScene(obs, randomCam, '- Sidebar Cam');
       clearTimeout(randomCamTimeout);
     } else {
-      hideItemWithinScene(obs, '- Sidebar Game', '- Sidebar Cam');
+      hideItemWithinScene(obs, 'game', '- Sidebar Cam');
     }
 
     randomCam = randomElementFromArray(arr);
@@ -22,7 +22,7 @@ module.exports = function() {
 
   hideRandomCam = function (obs) {
     hideItemWithinScene(obs, randomCam, '- Sidebar Cam');
-    showItemWithinScene(obs, '- Sidebar Game', '- Sidebar Cam');
+    showItemWithinScene(obs, 'game', '- Sidebar Cam');
     randomCamActive = false;
   }
 };

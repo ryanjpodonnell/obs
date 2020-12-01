@@ -121,6 +121,12 @@ obs.on('ConnectionOpened', () => {
       showRandomCam(obs, bossBabies);
     }
 
+    if (commandName === '!bobl' || commandName === '!böbl') {
+      client.say(target, `I am way better at böbl than my man ChucklesW69. But you should follow him anyways. He is v handsome and I find it baffling that he does not have a face camera. Think about the VIEWS! Remember when Danny Torrence was maybe molested?`);
+      client.say(target, `https://morphcatgames.itch.io/bobl`);
+      client.say(target, `http://twitch.tv/chucklesw73`);
+    }
+
     if (commandName === '!red' ||
       commandName === '!aqua' ||
       commandName === '!blue' ||
