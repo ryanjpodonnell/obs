@@ -29,6 +29,7 @@ obs.on('ConnectionOpened', () => {
 
   var urkels = ['u1', 'u2', 'u3'];
   var timAllens = ['t1', 't2', 't3', 't4'];
+  var masks = ['g1', 'g2', 'g3'];
 
   var commands = [
     '!red',
@@ -84,6 +85,11 @@ obs.on('ConnectionOpened', () => {
       setTimeout(hideItemWithinScene, 20000, obs, 'bobl-les', '- Logi Les');
     }
 
+    if (reward === 'The Mask Cam (DECEMBER SPECIAL)') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
+      showRandomCam(obs, masks);
+    }
+
     if (reward === 'BIGGER') {
       let width = null;
       let height = null;
@@ -93,6 +99,8 @@ obs.on('ConnectionOpened', () => {
       let positionY = null;
 
       client.say('#gametimetelevision', `!yabbadabbaboo`);
+      showItemWithinScene(obs, 'blurp', '- Sidebar Big');
+      setTimeout(hideItemWithinScene, 10000, obs, 'blurp', '- Sidebar Big');
 
       obs.send('GetSceneItemProperties',{
         'scene-name': '- Sidebar Big',
@@ -123,6 +131,8 @@ obs.on('ConnectionOpened', () => {
       let positionY = null;
 
       client.say('#gametimetelevision', `!yabbadabbaboo`);
+      showItemWithinScene(obs, 'blurp', '- Sidebar Big');
+      setTimeout(hideItemWithinScene, 10000, obs, 'blurp', '- Sidebar Big');
 
       obs.send('GetSceneItemProperties',{
         'scene-name': '- Sidebar Big',
