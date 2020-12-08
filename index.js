@@ -55,34 +55,29 @@ obs.on('ConnectionOpened', () => {
     '!recipe',
     '!game',
     '!timallencam',
-    '!urkelcam'
+    '!urkelcam',
+    '!scorbit'
   ];
+
+  initializeScorbit(obs);
 
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
 
-    if (reward === 'Böbl on Rod and Les') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'bobl', '- Player Cam');
-      setTimeout(hideItemWithinScene, 20000, obs, 'bobl', '- Player Cam');
-    }
-
-    if (reward === 'Upside Down Böbl on Rod and Les') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'bobl2', '- Player Cam');
-      setTimeout(hideItemWithinScene, 20000, obs, 'bobl2', '- Player Cam');
-    }
-
-    if (reward === 'Rightside Up/Upside Down Böbl on Rod and Les') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'bobl3-1', '- Player Cam');
-      showItemWithinScene(obs, 'bobl3-2', '- Player Cam');
-      setTimeout(hideItemWithinScene, 20000, obs, 'bobl3-1', '- Player Cam');
-      setTimeout(hideItemWithinScene, 20000, obs, 'bobl3-2', '- Player Cam');
-    }
-
     if (reward === 'The Mask Cam (DECEMBER SPECIAL)') {
       showRandomCam(obs, masks);
+    }
+
+    if (reward === 'Alfred Molina on Rod and Les') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
+      showItemWithinScene(obs, 'dococ', '- Player Cam');
+      setTimeout(hideItemWithinScene, 17000, obs, 'dococ', '- Player Cam');
+    }
+
+    if (reward === 'Bananas on Rod and Les') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
+      showItemWithinScene(obs, 'bananas', '- Player Cam');
+      setTimeout(hideItemWithinScene, 8000, obs, 'bananas', '- Player Cam');
     }
   }
 
@@ -140,6 +135,12 @@ obs.on('ConnectionOpened', () => {
           setSidebarColor(obs, hex)
         }
       }
+    }
+
+    if (commandName === '!scorbit') {
+      client.say(target, `The High Score brought to you by Scorbit: ${numberWithCommas(bestScore())}`);
+      client.say(target, `The Low Score brought to you by Scorbit: ${numberWithCommas(worstScore())}`);
+      client.say(target, `The Number of Games Played brought to you by Scorbit: ${gamesPlayed()}`);
     }
   }
 
