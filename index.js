@@ -99,12 +99,12 @@ obs.on('ConnectionOpened', () => {
       let positionY = null;
 
       client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'blurp', '- Sidebar Big');
-      setTimeout(hideItemWithinScene, 10000, obs, 'blurp', '- Sidebar Big');
+      showItemWithinScene(obs, 'bassoon', '- Sidebar Big');
+      setTimeout(hideItemWithinScene, 5000, obs, 'bassoon', '- Sidebar Big');
 
       obs.send('GetSceneItemProperties',{
         'scene-name': '- Sidebar Big',
-        'item': 'broccoli',
+        'item': 'mom',
       }).then(data => {
         scaleX = (Math.round(data.scale.x * 10) / 10) + 0.1;
         scaleY = (Math.round(data.scale.y * 10) / 10) + 0.1;
@@ -115,7 +115,14 @@ obs.on('ConnectionOpened', () => {
 
         obs.send('SetSceneItemProperties',{
           'scene-name': '- Sidebar Big',
-          'item': 'broccoli',
+          'item': 'mom',
+          'scale': { 'x': scaleX, 'y': scaleY },
+          'position': { 'x': positionX, 'y': positionY }
+        });
+
+        obs.send('SetSceneItemProperties',{
+          'scene-name': '- Sidebar',
+          'item': 'mom',
           'scale': { 'x': scaleX, 'y': scaleY },
           'position': { 'x': positionX, 'y': positionY }
         });
@@ -131,12 +138,12 @@ obs.on('ConnectionOpened', () => {
       let positionY = null;
 
       client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'blurp', '- Sidebar Big');
-      setTimeout(hideItemWithinScene, 10000, obs, 'blurp', '- Sidebar Big');
+      showItemWithinScene(obs, 'sparkle', '- Sidebar Big');
+      setTimeout(hideItemWithinScene, 5000, obs, 'sparkle', '- Sidebar Big');
 
       obs.send('GetSceneItemProperties',{
         'scene-name': '- Sidebar Big',
-        'item': 'broccoli',
+        'item': 'mom',
       }).then(data => {
         scaleX = (Math.round(data.scale.x * 10) / 10) - 0.1;
         scaleY = (Math.round(data.scale.y * 10) / 10) - 0.1;
@@ -148,7 +155,14 @@ obs.on('ConnectionOpened', () => {
         if (scaleX > 0 && scaleY > 0) {
           obs.send('SetSceneItemProperties',{
             'scene-name': '- Sidebar Big',
-            'item': 'broccoli',
+            'item': 'mom',
+            'scale': { 'x': scaleX, 'y': scaleY },
+            'position': { 'x': positionX, 'y': positionY }
+          });
+
+          obs.send('SetSceneItemProperties',{
+            'scene-name': '- Sidebar',
+            'item': 'mom',
             'scale': { 'x': scaleX, 'y': scaleY },
             'position': { 'x': positionX, 'y': positionY }
           });
@@ -156,6 +170,16 @@ obs.on('ConnectionOpened', () => {
       });
     }
 
+    if (reward === 'Get Kokopilled') {
+      obs
+        .send('GetCurrentScene')
+        .then(response => {
+          var scene = response.name;
+          client.say('#gametimetelevision', `!yabbadabbaboo`);
+          setScene(obs, 'kokopilled');
+          setTimeout(setScene, 102000, obs, scene);
+        });
+    }
   }
 
   function onMessageHandler (target, context, msg, self) {
@@ -216,7 +240,14 @@ obs.on('ConnectionOpened', () => {
 
     obs.send('SetSceneItemProperties',{
       'scene-name': '- Sidebar Big',
-      'item': 'broccoli',
+      'item': 'mom',
+      'scale': { 'x': 1, 'y': 1 },
+      'position': { 'x': 1808, 'y': 968 }
+    })
+
+    obs.send('SetSceneItemProperties',{
+      'scene-name': '- Sidebar',
+      'item': 'mom',
       'scale': { 'x': 1, 'y': 1 },
       'position': { 'x': 1808, 'y': 968 }
     })
