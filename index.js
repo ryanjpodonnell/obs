@@ -28,8 +28,7 @@ obs.on('ConnectionOpened', () => {
   ComfyJS.Init('gametimetelevision', process.env.OAUTH);
 
   var urkels = ['u1', 'u2', 'u3'];
-  var timAllens = ['t1', 't2', 't3', 't4'];
-  var masks = ['g1', 'g2', 'g3'];
+  var masks = ['m1', 'm2', 'm3'];
 
   var commands = [
     '!red',
@@ -42,8 +41,7 @@ obs.on('ConnectionOpened', () => {
     '!yellow',
     '!setcolor',
     '!yabbadabbadoo',
-    '!urkelcam',
-    '!timallencam'
+    '!urkelcam'
   ];
 
   function onRewardHander (user, reward, cost, extra) {
@@ -102,6 +100,9 @@ obs.on('ConnectionOpened', () => {
       showItemWithinScene(obs, 'bassoon', '- Sidebar Big');
       setTimeout(hideItemWithinScene, 5000, obs, 'bassoon', '- Sidebar Big');
 
+      showItemWithinScene(obs, 'bassoon', '- Sidebar');
+      setTimeout(hideItemWithinScene, 5000, obs, 'bassoon', '- Sidebar');
+
       obs.send('GetSceneItemProperties',{
         'scene-name': '- Sidebar Big',
         'item': 'mom',
@@ -140,6 +141,9 @@ obs.on('ConnectionOpened', () => {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
       showItemWithinScene(obs, 'sparkle', '- Sidebar Big');
       setTimeout(hideItemWithinScene, 5000, obs, 'sparkle', '- Sidebar Big');
+
+      showItemWithinScene(obs, 'sparkle', '- Sidebar');
+      setTimeout(hideItemWithinScene, 5000, obs, 'sparkle', '- Sidebar');
 
       obs.send('GetSceneItemProperties',{
         'scene-name': '- Sidebar Big',
@@ -193,11 +197,6 @@ obs.on('ConnectionOpened', () => {
     if (commandName === '!urkelcam') {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
       showRandomCam(obs, urkels);
-    }
-
-    if (commandName === '!timallencam') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showRandomCam(obs, timAllens);
     }
 
     if (commandName === '!bobl' || commandName === '!böbl') {
