@@ -2,7 +2,6 @@ require('log-timestamp');
 require('dotenv').config();
 require("./helpers.js")();
 require("./obs-helpers.js")();
-require("./scorbit.js")();
 require("./sidebar-cam.js")();
 
 const ComfyJS = require('comfy.js');
@@ -38,7 +37,6 @@ obs.on('ConnectionOpened', () => {
   ComfyJS.Init('gametimetelevision', process.env.OAUTH);
 
   var urkels = ['u1', 'u2', 'u3'];
-  var timAllens = ['t1', 't2', 't3', 't4'];
   var masks = ['g1', 'g2', 'g3'];
 
   var commands = [
@@ -52,26 +50,18 @@ obs.on('ConnectionOpened', () => {
     '!yellow',
     '!setcolor',
     '!yabbadabbadoo',
+    '!bobl',
     '!recipe',
     '!game',
-    '!timallencam',
-    '!urkelcam',
-    '!scorbit'
+    '!urkelcam'
   ];
-
-  initializeScorbit(obs);
 
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
 
     if (reward === 'The Mask Cam (DECEMBER SPECIAL)') {
-      showRandomCam(obs, masks);
-    }
-
-    if (reward === 'Alfred Molina on Rod and Les') {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'dococ', '- Player Cam');
-      setTimeout(hideItemWithinScene, 17000, obs, 'dococ', '- Player Cam');
+      showRandomCam(obs, masks);
     }
 
     if (reward === 'Bananas on Rod and Les') {
@@ -98,11 +88,8 @@ obs.on('ConnectionOpened', () => {
     }
 
     if (commandName === '!urkelcam') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
       showRandomCam(obs, urkels);
-    }
-
-    if (commandName === '!timallencam') {
-      showRandomCam(obs, timAllens);
     }
 
     if (commandName === '!bobl' || commandName === '!böbl') {
@@ -135,12 +122,6 @@ obs.on('ConnectionOpened', () => {
           setSidebarColor(obs, hex)
         }
       }
-    }
-
-    if (commandName === '!scorbit') {
-      client.say(target, `The High Score brought to you by Scorbit: ${numberWithCommas(bestScore())}`);
-      client.say(target, `The Low Score brought to you by Scorbit: ${numberWithCommas(worstScore())}`);
-      client.say(target, `The Number of Games Played brought to you by Scorbit: ${gamesPlayed()}`);
     }
   }
 
