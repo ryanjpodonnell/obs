@@ -69,6 +69,15 @@ obs.on('ConnectionOpened', () => {
       showItemWithinScene(obs, 'bananas', '- Player Cam');
       setTimeout(hideItemWithinScene, 8000, obs, 'bananas', '- Player Cam');
     }
+
+    if (reward === 'Check in on Twin Peaks Season 2') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
+      showRandomCam(obs, ['twinpeaks']);
+    }
+
+    if (reward === 'Get Bent') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
+    }
   }
 
   function onMessageHandler (target, context, msg, self) {
