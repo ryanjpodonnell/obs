@@ -88,101 +88,8 @@ obs.on('ConnectionOpened', () => {
       showRandomCam(obs, masks);
     }
 
-    if (reward === 'BIGGER') {
-      let width = null;
-      let height = null;
-      let scaleX = null;
-      let scaleY = null;
-      let positionX = null;
-      let positionY = null;
-
+    if (reward === 'Get Bent') {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'bassoon', '- Sidebar Big');
-      setTimeout(hideItemWithinScene, 5000, obs, 'bassoon', '- Sidebar Big');
-
-      showItemWithinScene(obs, 'bassoon', '- Sidebar');
-      setTimeout(hideItemWithinScene, 5000, obs, 'bassoon', '- Sidebar');
-
-      obs.send('GetSceneItemProperties',{
-        'scene-name': '- Sidebar Big',
-        'item': 'mom',
-      }).then(data => {
-        scaleX = (Math.round(data.scale.x * 10) / 10) + 0.1;
-        scaleY = (Math.round(data.scale.y * 10) / 10) + 0.1;
-        width = Math.floor(112 * scaleX);
-        height = Math.floor(112 * scaleY);
-        positionX = 1920 - (width);
-        positionY = 1080 - (height);
-
-        obs.send('SetSceneItemProperties',{
-          'scene-name': '- Sidebar Big',
-          'item': 'mom',
-          'scale': { 'x': scaleX, 'y': scaleY },
-          'position': { 'x': positionX, 'y': positionY }
-        });
-
-        obs.send('SetSceneItemProperties',{
-          'scene-name': '- Sidebar',
-          'item': 'mom',
-          'scale': { 'x': scaleX, 'y': scaleY },
-          'position': { 'x': positionX, 'y': positionY }
-        });
-      });
-    }
-
-    if (reward === 'smaller') {
-      let width = null;
-      let height = null;
-      let scaleX = null;
-      let scaleY = null;
-      let positionX = null;
-      let positionY = null;
-
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'sparkle', '- Sidebar Big');
-      setTimeout(hideItemWithinScene, 5000, obs, 'sparkle', '- Sidebar Big');
-
-      showItemWithinScene(obs, 'sparkle', '- Sidebar');
-      setTimeout(hideItemWithinScene, 5000, obs, 'sparkle', '- Sidebar');
-
-      obs.send('GetSceneItemProperties',{
-        'scene-name': '- Sidebar Big',
-        'item': 'mom',
-      }).then(data => {
-        scaleX = (Math.round(data.scale.x * 10) / 10) - 0.1;
-        scaleY = (Math.round(data.scale.y * 10) / 10) - 0.1;
-        width = Math.floor(112 * scaleX);
-        height = Math.floor(112 * scaleY);
-        positionX = 1920 - (width);
-        positionY = 1080 - (height);
-
-        if (scaleX > 0 && scaleY > 0) {
-          obs.send('SetSceneItemProperties',{
-            'scene-name': '- Sidebar Big',
-            'item': 'mom',
-            'scale': { 'x': scaleX, 'y': scaleY },
-            'position': { 'x': positionX, 'y': positionY }
-          });
-
-          obs.send('SetSceneItemProperties',{
-            'scene-name': '- Sidebar',
-            'item': 'mom',
-            'scale': { 'x': scaleX, 'y': scaleY },
-            'position': { 'x': positionX, 'y': positionY }
-          });
-        }
-      });
-    }
-
-    if (reward === 'Get Kokopilled') {
-      obs
-        .send('GetCurrentScene')
-        .then(response => {
-          var scene = response.name;
-          client.say('#gametimetelevision', `!yabbadabbaboo`);
-          setScene(obs, 'kokopilled');
-          setTimeout(setScene, 102000, obs, scene);
-        });
     }
   }
 
@@ -236,20 +143,6 @@ obs.on('ConnectionOpened', () => {
     console.log(`* Connected to ${addr}:${port}`);
 
     setSidebarColor(obs, 4278190080);
-
-    obs.send('SetSceneItemProperties',{
-      'scene-name': '- Sidebar Big',
-      'item': 'mom',
-      'scale': { 'x': 1, 'y': 1 },
-      'position': { 'x': 1808, 'y': 968 }
-    })
-
-    obs.send('SetSceneItemProperties',{
-      'scene-name': '- Sidebar',
-      'item': 'mom',
-      'scale': { 'x': 1, 'y': 1 },
-      'position': { 'x': 1808, 'y': 968 }
-    })
   }
 });
 
