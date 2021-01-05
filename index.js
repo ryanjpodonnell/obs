@@ -36,8 +36,7 @@ obs.on('ConnectionOpened', () => {
   ComfyJS.onReward = onRewardHander;
   ComfyJS.Init('gametimetelevision', process.env.OAUTH);
 
-  var urkels = ['u1', 'u2', 'u3'];
-  var masks = ['g1', 'g2', 'g3'];
+  var jasons = ['ja1', 'ja2', 'ja3'];
 
   var commands = [
     '!red',
@@ -53,30 +52,28 @@ obs.on('ConnectionOpened', () => {
     '!bobl',
     '!recipe',
     '!game',
-    '!urkelcam'
+    '!jasonalexander(notthatone)cam'
   ];
 
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
 
-    if (reward === 'The Mask Cam (DECEMBER SPECIAL)') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showRandomCam(obs, masks);
-    }
-
-    if (reward === 'Bananas on Rod and Les') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'bananas', '- Player Cam');
-      setTimeout(hideItemWithinScene, 8000, obs, 'bananas', '- Player Cam');
+    if (reward === 'Jason Alexander Video of the Day') {
+      obs
+        .send('GetCurrentScene')
+        .then(response => {
+          var scene = response.name;
+          if (scene !== 'JASON') {
+            client.say('#gametimetelevision', `!yabbadabbaboo`);
+            setScene(obs, 'JASON');
+            setTimeout(setScene, 56000, obs, scene);
+          }
+        });
     }
 
     if (reward === 'Check in on Twin Peaks Season 2') {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
       showRandomCam(obs, ['twinpeaks']);
-    }
-
-    if (reward === 'Get Bent') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
     }
   }
 
@@ -96,9 +93,9 @@ obs.on('ConnectionOpened', () => {
       showRandomCam(obs, ['game']);
     }
 
-    if (commandName === '!urkelcam') {
+    if (commandName === '!jasonalexander(notthatone)cam') {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showRandomCam(obs, urkels);
+      showRandomCam(obs, jasons);
     }
 
     if (commandName === '!bobl' || commandName === '!böbl') {
