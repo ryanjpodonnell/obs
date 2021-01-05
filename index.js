@@ -37,6 +37,7 @@ obs.on('ConnectionOpened', () => {
   ComfyJS.Init('gametimetelevision', process.env.OAUTH);
 
   var jasons = ['ja1', 'ja2', 'ja3'];
+  var wotdWinner;
 
   var commands = [
     '!red',
@@ -66,7 +67,7 @@ obs.on('ConnectionOpened', () => {
           if (scene !== 'JASON') {
             client.say('#gametimetelevision', `!yabbadabbaboo`);
             setScene(obs, 'JASON');
-            setTimeout(setScene, 56000, obs, scene);
+            setTimeout(setScene, 32000, obs, scene);
           }
         });
     }
@@ -75,11 +76,26 @@ obs.on('ConnectionOpened', () => {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
       showRandomCam(obs, ['twinpeaks']);
     }
+
+    if (reward === 'Word Of The Day Clue') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
+    }
   }
 
   function onMessageHandler (target, context, msg, self) {
     console.log(`${context.username} - ${msg}`);
     const commandName = msg.trim().toLowerCase();
+
+    if (commandName === '!fidelio' && wotdWinner === undefined) {
+      wotdWinner = context.username;
+      client.say('#gametimetelevision', `Congrats @${wotdWinner}! You've officially won the rebooted 2021 WORD OF THE DAY! It was FIDELIO from Eyes Wide Shut!`);
+    }
+
+    if (commandName === '!fidelio') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
+      showItemWithinScene(obs, '- fidelio', '- Player Cam');
+      setTimeout(hideItemWithinScene, 10000, obs, '- fidelio', '- Player Cam');
+    }
 
     if (commandName === '!commands') {
       client.say(target, `The INNOVATIVE commands are: ${commands.join(', ')}`);
