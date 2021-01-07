@@ -81,8 +81,11 @@ obs.on('ConnectionOpened', () => {
     console.log(`${context.username} - ${msg}`);
     const commandName = msg.trim().toLowerCase();
 
-    if (commandName === './execute iehack.krak' && context.username === 'iepinball') {
+    if (commandName === 'execute iehack.krak' && context.username === 'iepinball') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
       showItemWithinScene(obs, 'hack', '- Poll');
+      hideItemWithinScene(obs, 'jukebox', 'Tiki Scene');
+      showItemWithinScene(obs, 'hacked jukebox', 'Tiki Scene');
     }
 
     if (commandName === '!commands') {
@@ -103,7 +106,7 @@ obs.on('ConnectionOpened', () => {
     }
 
     if (commandName === '!bobl' || commandName === '!böbl') {
-      client.say(target, `I am way better at Böbl than my man ChucklesW69. But you should follow him anyways. Remember when Danny Torrance was maybe molested?`);
+      client.say(target, `I am way better at Böbl than my man ChucklesW69. But you should follow him anyways.`);
       client.say(target, `http://twitch.tv/chucklesw73`);
       client.say(target, `https://morphcatgames.itch.io/bobl`);
     }
