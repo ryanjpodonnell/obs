@@ -82,13 +82,6 @@ obs.on('ConnectionOpened', () => {
     console.log(`${context.username} - ${msg}`);
     const commandName = msg.trim().toLowerCase();
 
-    if (commandName === 'execute iehack.krak' && context.username === 'iepinball') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'hack', '- Poll');
-      hideItemWithinScene(obs, 'jukebox', 'Tiki Scene');
-      showItemWithinScene(obs, 'hacked jukebox', 'Tiki Scene');
-    }
-
     if (commandName === '!commands') {
       client.say(target, `The INNOVATIVE commands are: ${commands.join(', ')}`);
     }
@@ -102,7 +95,7 @@ obs.on('ConnectionOpened', () => {
     }
 
     if (commandName === '!jasonalexander(notthatone)cam') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
+      client.say(target, `!yabbadabbaboo`);
       showRandomCam(obs, jasons);
     }
 
@@ -140,7 +133,7 @@ obs.on('ConnectionOpened', () => {
 
     fetch("http://localhost:4567/enqueue", {
       method: "POST",
-      body: JSON.stringify({ name: context.username, comment: escape(msg) }),
+      body: JSON.stringify({ user: context.username, comment: escape(msg) }),
       headers: {'Content-Type': 'application/json'}
     }).then(res => {
       console.log("Request complete!");
