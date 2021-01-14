@@ -6,6 +6,7 @@ require("./sidebar-cam.js")();
 
 const ComfyJS = require('comfy.js');
 const OBSWebSocket = require('obs-websocket-js');
+const fetch = require('node-fetch');
 const tmi = require('tmi.js');
 const obs = new OBSWebSocket();
 const client = new tmi.client({
@@ -136,6 +137,14 @@ obs.on('ConnectionOpened', () => {
         }
       }
     }
+
+    fetch("http://localhost:4567/enqueue", {
+      method: "POST",
+      body: JSON.stringify({ name: context.username, comment: escape(msg) }),
+      headers: {'Content-Type': 'application/json'}
+    }).then(res => {
+      console.log("Request complete!");
+    });
   }
 
   function onConnectedHandler (addr, port) {
