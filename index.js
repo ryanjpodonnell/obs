@@ -6,6 +6,7 @@ require("./sidebar-cam.js")();
 
 const ComfyJS = require('comfy.js');
 const OBSWebSocket = require('obs-websocket-js');
+const fetch = require('node-fetch');
 const tmi = require('tmi.js');
 const obs = new OBSWebSocket();
 const client = new tmi.client({
@@ -27,8 +28,7 @@ obs.on('ConnectionOpened', () => {
   ComfyJS.onReward = onRewardHander;
   ComfyJS.Init('gametimetelevision', process.env.OAUTH);
 
-  var urkels = ['u1', 'u2', 'u3'];
-  var masks = ['m1', 'm2', 'm3'];
+  var jasons = ['ja1', 'ja2', 'ja3', 'ja4'];
 
   var commands = [
     '!red',
@@ -41,7 +41,7 @@ obs.on('ConnectionOpened', () => {
     '!yellow',
     '!setcolor',
     '!yabbadabbadoo',
-    '!urkelcam'
+    '!jasonalexander(notthatone)cam'
   ];
 
   function onRewardHander (user, reward, cost, extra) {
@@ -83,13 +83,16 @@ obs.on('ConnectionOpened', () => {
       setTimeout(hideItemWithinScene, 20000, obs, 'bobl-les', '- Logi Les');
     }
 
-    if (reward === 'The Mask Cam (DECEMBER SPECIAL)') {
+    if (reward === 'Alfred Molina on Rod') {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showRandomCam(obs, masks);
+      showItemWithinScene(obs, 'alfred-rod', '- Logi Rod');
+      setTimeout(hideItemWithinScene, 16000, obs, 'alfred-rod', '- Logi Rod');
     }
 
-    if (reward === 'Get Bent') {
+    if (reward === 'Alfred Molina on Les') {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
+      showItemWithinScene(obs, 'alfred-les', '- Logi Les');
+      setTimeout(hideItemWithinScene, 16000, obs, 'alfred-les', '- Logi Les');
     }
   }
 
@@ -101,15 +104,9 @@ obs.on('ConnectionOpened', () => {
       client.say(target, `The INNOVATIVE commands are: ${commands.join(', ')}`);
     }
 
-    if (commandName === '!urkelcam') {
+    if (commandName === '!jasonalexander(notthatone)cam') {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
       showRandomCam(obs, urkels);
-    }
-
-    if (commandName === '!bobl' || commandName === '!böbl') {
-      client.say(target, `I am way better at Böbl than my man ChucklesW69. But you should follow him anyways.`);
-      client.say(target, `http://twitch.tv/chucklesw73`);
-      client.say(target, `https://morphcatgames.itch.io/bobl`);
     }
 
     if (commandName === '!red' ||
@@ -136,6 +133,16 @@ obs.on('ConnectionOpened', () => {
           setSidebarColor(obs, hex)
         }
       }
+    }
+
+    if (context.username !== 'roddog_hogbot') {
+      fetch("http://localhost:4567/enqueue", {
+        method: "POST",
+        body: JSON.stringify({ user: context.username, comment: escape(msg) }),
+        headers: {'Content-Type': 'application/json'}
+      }).then(res => {
+        console.log("Request complete!");
+      });
     }
   }
 
