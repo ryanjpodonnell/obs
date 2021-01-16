@@ -76,6 +76,16 @@ obs.on('ConnectionOpened', () => {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
       showRandomCam(obs, ['twinpeaks']);
     }
+
+    if (reward === 'Am I Funny, Daddy?') {
+      fetch("http://localhost:4567/enqueue", {
+        method: "POST",
+        body: JSON.stringify({ user: user, comment: escape(extra) }),
+        headers: {'Content-Type': 'application/json'}
+      }).then(res => {
+        console.log("Request complete!");
+      });
+    }
   }
 
   function onMessageHandler (target, context, msg, self) {
@@ -130,14 +140,6 @@ obs.on('ConnectionOpened', () => {
         }
       }
     }
-
-    fetch("http://localhost:4567/enqueue", {
-      method: "POST",
-      body: JSON.stringify({ user: context.username, comment: escape(msg) }),
-      headers: {'Content-Type': 'application/json'}
-    }).then(res => {
-      console.log("Request complete!");
-    });
   }
 
   function onConnectedHandler (addr, port) {
