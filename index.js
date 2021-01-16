@@ -106,7 +106,7 @@ obs.on('ConnectionOpened', () => {
 
     if (commandName === '!jasonalexander(notthatone)cam') {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showRandomCam(obs, urkels);
+      showRandomCam(obs, jasons);
     }
 
     if (commandName === '!red' ||
