@@ -67,7 +67,7 @@ obs.on('ConnectionOpened', () => {
           if (scene !== 'JASON') {
             client.say('#gametimetelevision', `!yabbadabbaboo`);
             setScene(obs, 'JASON');
-            setTimeout(setScene, 32000, obs, scene);
+            setTimeout(setScene, 18000, obs, scene);
           }
         });
     }
@@ -78,6 +78,7 @@ obs.on('ConnectionOpened', () => {
     }
 
     if (reward === 'Am I Funny, Daddy?') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`)
       fetch("http://localhost:4567/enqueue", {
         method: "POST",
         body: JSON.stringify({ user: user, comment: escape(extra) }),
