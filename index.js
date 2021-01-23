@@ -47,6 +47,17 @@ obs.on('ConnectionOpened', () => {
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
 
+    if (reward === 'Am I Funny, Daddy?') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`)
+      fetch("http://localhost:4567/enqueue", {
+        method: "POST",
+        body: JSON.stringify({ user: user, comment: escape(extra) }),
+        headers: { 'Content-Type': 'application/json' }
+      }).then(res => {
+        console.log("Request complete!");
+      });
+    }
+
     if (reward === 'Bananas on Rod') {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
       showItemWithinScene(obs, 'bananas-rod', '- Logi Rod');
@@ -133,16 +144,6 @@ obs.on('ConnectionOpened', () => {
           setSidebarColor(obs, hex)
         }
       }
-    }
-
-    if (context.username !== 'roddog_hogbot') {
-      fetch("http://localhost:4567/enqueue", {
-        method: "POST",
-        body: JSON.stringify({ user: context.username, comment: escape(msg) }),
-        headers: {'Content-Type': 'application/json'}
-      }).then(res => {
-        console.log("Request complete!");
-      });
     }
   }
 
