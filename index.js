@@ -37,7 +37,7 @@ obs.on('ConnectionOpened', () => {
   ComfyJS.onReward = onRewardHander;
   ComfyJS.Init('gametimetelevision', process.env.OAUTH);
 
-  var jasons = ['ja1', 'ja2', 'ja3'];
+  var jasons = ['ja1', 'ja2', 'ja3', 'ja4'];
 
   var commands = [
     '!red',
@@ -75,17 +75,6 @@ obs.on('ConnectionOpened', () => {
     if (reward === 'Check in on Twin Peaks Season 2') {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
       showRandomCam(obs, ['twinpeaks']);
-    }
-
-    if (reward === 'Am I Funny, Daddy?') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`)
-      fetch("http://localhost:4567/enqueue", {
-        method: "POST",
-        body: JSON.stringify({ user: user, comment: escape(extra) }),
-        headers: {'Content-Type': 'application/json'}
-      }).then(res => {
-        console.log("Request complete!");
-      });
     }
   }
 
