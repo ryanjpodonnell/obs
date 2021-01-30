@@ -47,17 +47,6 @@ obs.on('ConnectionOpened', () => {
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
 
-    if (reward === 'Am I Funny, Daddy?') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`)
-      fetch("http://localhost:4567/enqueue", {
-        method: "POST",
-        body: JSON.stringify({ user: user, comment: escape(extra) }),
-        headers: { 'Content-Type': 'application/json' }
-      }).then(res => {
-        console.log("Request complete!");
-      });
-    }
-
     if (reward === 'Bananas on Rod') {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
       showItemWithinScene(obs, 'bananas-rod', '- Logi Rod');
@@ -82,28 +71,222 @@ obs.on('ConnectionOpened', () => {
       setTimeout(hideItemWithinScene, 10000, obs, 'pokeball-les', '- Logi Les');
     }
 
-    if (reward === 'Böbl on Rod') {
+    if (reward === 'ROD BIGGER') {
+      let width = null;
+      let height = null;
+      let scaleX = null;
+      let scaleY = null;
+      let positionX = null;
+      let positionY = null;
+
       client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'bobl-rod', '- Logi Rod');
-      setTimeout(hideItemWithinScene, 20000, obs, 'bobl-rod', '- Logi Rod');
+      showItemWithinScene(obs, 'bassoon', '- Logi Rod');
+      setTimeout(hideItemWithinScene, 5000, obs, 'bassoon', '- Logi Rod');
+
+      obs.send('GetSceneItemProperties', {
+        'scene-name': '- Logi Rod',
+        'item': 'Logi-Left',
+      }).then(data => {
+        scaleX = (Math.round(data.scale.x * 10) / 10) + 0.1;
+        scaleY = (Math.round(data.scale.y * 10) / 10) + 0.1;
+        width = Math.floor(640 * scaleX);
+        height = Math.floor(360 * scaleY);
+        positionX = (1920 - width) / 2.0;
+        positionY = (1080 - height) / 2.0;
+
+        obs.send('SetSceneItemProperties', {
+          'scene-name': '- Logi Rod',
+          'item': 'Logi-Left',
+          'scale': { 'x': scaleX, 'y': scaleY },
+          'position': { 'x': positionX, 'y': positionY }
+        });
+      });
     }
 
-    if (reward === 'Böbl on Les') {
+    if (reward === 'rod smaller') {
+      let width = null;
+      let height = null;
+      let scaleX = null;
+      let scaleY = null;
+      let positionX = null;
+      let positionY = null;
+
       client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'bobl-les', '- Logi Les');
-      setTimeout(hideItemWithinScene, 20000, obs, 'bobl-les', '- Logi Les');
+      showItemWithinScene(obs, 'sparkle', '- Logi Rod');
+      setTimeout(hideItemWithinScene, 5000, obs, 'sparkle', '- Logi Rod');
+
+      obs.send('GetSceneItemProperties', {
+        'scene-name': '- Logi Rod',
+        'item': 'Logi-Left',
+      }).then(data => {
+        scaleX = (Math.round(data.scale.x * 10) / 10) - 0.1;
+        scaleY = (Math.round(data.scale.y * 10) / 10) - 0.1;
+        width = Math.floor(640 * scaleX);
+        height = Math.floor(360 * scaleY);
+        positionX = (1920 - width) / 2.0;
+        positionY = (1080 - height) / 2.0;
+
+        if (scaleX > 0 && scaleY > 0) {
+          obs.send('SetSceneItemProperties', {
+            'scene-name': '- Logi Rod',
+            'item': 'Logi-Left',
+            'scale': { 'x': scaleX, 'y': scaleY },
+            'position': { 'x': positionX, 'y': positionY }
+          });
+        }
+      });
     }
 
-    if (reward === 'Alfred Molina on Rod') {
+    if (reward === 'LES BIGGER') {
+      let width = null;
+      let height = null;
+      let scaleX = null;
+      let scaleY = null;
+      let positionX = null;
+      let positionY = null;
+
       client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'alfred-rod', '- Logi Rod');
-      setTimeout(hideItemWithinScene, 16000, obs, 'alfred-rod', '- Logi Rod');
+      showItemWithinScene(obs, 'bassoon', '- Logi Les');
+      setTimeout(hideItemWithinScene, 5000, obs, 'bassoon', '- Logi Les');
+
+      obs.send('GetSceneItemProperties', {
+        'scene-name': '- Logi Les',
+        'item': 'Logi-Right',
+      }).then(data => {
+        scaleX = (Math.round(data.scale.x * 10) / 10) + 0.1;
+        scaleY = (Math.round(data.scale.y * 10) / 10) + 0.1;
+        width = Math.floor(640 * scaleX);
+        height = Math.floor(360 * scaleY);
+        positionX = (1920 - width) / 2.0;
+        positionY = (1080 - height) / 2.0;
+
+        obs.send('SetSceneItemProperties', {
+          'scene-name': '- Logi Les',
+          'item': 'Logi-Right',
+          'scale': { 'x': scaleX, 'y': scaleY },
+          'position': { 'x': positionX, 'y': positionY }
+        });
+      });
     }
 
-    if (reward === 'Alfred Molina on Les') {
+    if (reward === 'les smaller') {
+      let width = null;
+      let height = null;
+      let scaleX = null;
+      let scaleY = null;
+      let positionX = null;
+      let positionY = null;
+
       client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showItemWithinScene(obs, 'alfred-les', '- Logi Les');
-      setTimeout(hideItemWithinScene, 16000, obs, 'alfred-les', '- Logi Les');
+      showItemWithinScene(obs, 'sparkle', '- Logi Les');
+      setTimeout(hideItemWithinScene, 5000, obs, 'sparkle', '- Logi Les');
+
+      obs.send('GetSceneItemProperties', {
+        'scene-name': '- Logi Les',
+        'item': 'Logi-Right',
+      }).then(data => {
+        scaleX = (Math.round(data.scale.x * 10) / 10) - 0.1;
+        scaleY = (Math.round(data.scale.y * 10) / 10) - 0.1;
+        width = Math.floor(640 * scaleX);
+        height = Math.floor(360 * scaleY);
+        positionX = (1920 - width) / 2.0;
+        positionY = (1080 - height) / 2.0;
+
+        if (scaleX > 0 && scaleY > 0) {
+          obs.send('SetSceneItemProperties', {
+            'scene-name': '- Logi Les',
+            'item': 'Logi-Right',
+            'scale': { 'x': scaleX, 'y': scaleY },
+            'position': { 'x': positionX, 'y': positionY }
+          });
+        }
+      });
+    }
+
+    if (reward === 'ZMAC BIGGER') {
+      let width = null;
+      let height = null;
+      let scaleX = null;
+      let scaleY = null;
+      let positionX = null;
+      let positionY = null;
+
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
+      showItemWithinScene(obs, 'bassoon', '- Sidebar Big');
+      setTimeout(hideItemWithinScene, 5000, obs, 'bassoon', '- Sidebar Big');
+
+      showItemWithinScene(obs, 'bassoon', '- Sidebar');
+      setTimeout(hideItemWithinScene, 5000, obs, 'bassoon', '- Sidebar');
+
+      obs.send('GetSceneItemProperties', {
+        'scene-name': '- Sidebar Big',
+        'item': 'zmac',
+      }).then(data => {
+        scaleX = (Math.round(data.scale.x * 10) / 10) + 0.1;
+        scaleY = (Math.round(data.scale.y * 10) / 10) + 0.1;
+        width = Math.floor(112 * scaleX);
+        height = Math.floor(112 * scaleY);
+        positionX = 1920 - (width);
+        positionY = 1080 - (height);
+
+        obs.send('SetSceneItemProperties', {
+          'scene-name': '- Sidebar Big',
+          'item': 'zmac',
+          'scale': { 'x': scaleX, 'y': scaleY },
+          'position': { 'x': positionX, 'y': positionY }
+        });
+
+        obs.send('SetSceneItemProperties', {
+          'scene-name': '- Sidebar',
+          'item': 'zmac',
+          'scale': { 'x': scaleX, 'y': scaleY },
+          'position': { 'x': positionX, 'y': positionY }
+        });
+      });
+    }
+
+    if (reward === 'zmac smaller') {
+      let width = null;
+      let height = null;
+      let scaleX = null;
+      let scaleY = null;
+      let positionX = null;
+      let positionY = null;
+
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
+      showItemWithinScene(obs, 'sparkle', '- Sidebar Big');
+      setTimeout(hideItemWithinScene, 5000, obs, 'sparkle', '- Sidebar Big');
+
+      showItemWithinScene(obs, 'sparkle', '- Sidebar');
+      setTimeout(hideItemWithinScene, 5000, obs, 'sparkle', '- Sidebar');
+
+      obs.send('GetSceneItemProperties', {
+        'scene-name': '- Sidebar Big',
+        'item': 'zmac',
+      }).then(data => {
+        scaleX = (Math.round(data.scale.x * 10) / 10) - 0.1;
+        scaleY = (Math.round(data.scale.y * 10) / 10) - 0.1;
+        width = Math.floor(112 * scaleX);
+        height = Math.floor(112 * scaleY);
+        positionX = 1920 - (width);
+        positionY = 1080 - (height);
+
+        if (scaleX > 0 && scaleY > 0) {
+          obs.send('SetSceneItemProperties', {
+            'scene-name': '- Sidebar Big',
+            'item': 'zmac',
+            'scale': { 'x': scaleX, 'y': scaleY },
+            'position': { 'x': positionX, 'y': positionY }
+          });
+
+          obs.send('SetSceneItemProperties', {
+            'scene-name': '- Sidebar',
+            'item': 'zmac',
+            'scale': { 'x': scaleX, 'y': scaleY },
+            'position': { 'x': positionX, 'y': positionY }
+          });
+        }
+      });
     }
   }
 
@@ -151,6 +334,34 @@ obs.on('ConnectionOpened', () => {
     console.log(`* Connected to ${addr}:${port}`);
 
     setSidebarColor(obs, 4278190080);
+
+    obs.send('SetSceneItemProperties', {
+      'scene-name': '- Sidebar Big',
+      'item': 'zmac',
+      'scale': { 'x': 1, 'y': 1 },
+      'position': { 'x': 1808, 'y': 968 }
+    })
+
+    obs.send('SetSceneItemProperties', {
+      'scene-name': '- Sidebar',
+      'item': 'zmac',
+      'scale': { 'x': 1, 'y': 1 },
+      'position': { 'x': 1808, 'y': 968 }
+    })
+
+    obs.send('SetSceneItemProperties', {
+      'scene-name': '- Logi Rod',
+      'item': 'Logi-Left',
+      'scale': { 'x': 3, 'y': 3 },
+      'position': { 'x': 0, 'y': 0 }
+    })
+
+    obs.send('SetSceneItemProperties', {
+      'scene-name': '- Logi Les',
+      'item': 'Logi-Right',
+      'scale': { 'x': 3, 'y': 3 },
+      'position': { 'x': 0, 'y': 0 }
+    })
   }
 });
 
