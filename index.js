@@ -37,7 +37,7 @@ obs.on('ConnectionOpened', () => {
   ComfyJS.onReward = onRewardHander;
   ComfyJS.Init('gametimetelevision', process.env.OAUTH);
 
-  var jasons = ['ja1', 'ja2', 'ja3', 'ja4'];
+  var funkorfreshes = ['ff1'];
 
   var commands = [
     '!red',
@@ -53,28 +53,33 @@ obs.on('ConnectionOpened', () => {
     '!bobl',
     '!recipe',
     '!game',
-    '!jasonalexander(notthatone)cam'
+    '!funkorfresh(notthatone)cam'
   ];
 
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
 
-    if (reward === 'Jason Alexander Video of the Day') {
+    if (reward === 'BIGGER') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
+      bigger(obs, '- Player Cam', 'Player Cam', 1920, 1080, 640, 360);
+    }
+
+    if (reward === 'smaller') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
+      smaller(obs, '- Player Cam', 'Player Cam', 1920, 1080, 640, 360);
+    }
+
+    if (reward === 'Get Kokopilled') {
       obs
         .send('GetCurrentScene')
         .then(response => {
           var scene = response.name;
-          if (scene !== 'JASON') {
+          if (scene !== 'KOKO') {
             client.say('#gametimetelevision', `!yabbadabbaboo`);
-            setScene(obs, 'JASON');
-            setTimeout(setScene, 18000, obs, scene);
+            setScene(obs, 'KOKO');
+            setTimeout(setScene, 102000, obs, scene);
           }
         });
-    }
-
-    if (reward === 'Check in on Twin Peaks Season 2') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showRandomCam(obs, ['twinpeaks']);
     }
   }
 
@@ -94,9 +99,9 @@ obs.on('ConnectionOpened', () => {
       showRandomCam(obs, ['game']);
     }
 
-    if (commandName === '!jasonalexander(notthatone)cam') {
+    if (commandName === '!funkorfresh(notthatone)cam') {
       client.say(target, `!yabbadabbaboo`);
-      showRandomCam(obs, jasons);
+      showRandomCam(obs, funkorfreshes);
     }
 
     if (commandName === '!bobl' || commandName === '!böbl') {
@@ -149,6 +154,13 @@ obs.on('ConnectionOpened', () => {
           showMainCam(obs, 'game');
         }
       });
+
+    obs.send('SetSceneItemProperties', {
+      'scene-name': '- Player Cam',
+      'item': 'Player Cam',
+      'scale': { 'x': 3, 'y': 3 },
+      'position': { 'x': 0, 'y': 0 }
+    });
   }
 });
 
