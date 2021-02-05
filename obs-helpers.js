@@ -118,12 +118,14 @@ module.exports = function() {
       positionX = (basePositionX - width) / 2.0;
       positionY = (basePositionY - height) / 2.0;
 
-      obs.send('SetSceneItemProperties', {
-        'scene-name': sceneName,
-        'item': item,
-        'scale': { 'x': scaleX, 'y': scaleY },
-        'position': { 'x': positionX, 'y': positionY }
-      });
+      if (scaleX > 0 && scaleY > 0) {
+        obs.send('SetSceneItemProperties', {
+          'scene-name': sceneName,
+          'item': item,
+          'scale': { 'x': scaleX, 'y': scaleY },
+          'position': { 'x': positionX, 'y': positionY }
+        });
+      }
     });
   }
 }
