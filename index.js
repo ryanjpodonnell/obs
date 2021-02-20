@@ -37,8 +37,6 @@ obs.on('ConnectionOpened', () => {
   ComfyJS.onReward = onRewardHander;
   ComfyJS.Init('gametimetelevision', process.env.OAUTH);
 
-  var funkorfreshes = ['ff1'];
-
   var commands = [
     '!red',
     '!aqua',
@@ -101,7 +99,7 @@ obs.on('ConnectionOpened', () => {
 
     if (commandName === '!funkorfresh(notthatone)cam') {
       client.say(target, `!yabbadabbaboo`);
-      showRandomCam(obs, funkorfreshes);
+      showRandomCam(obs, ['TPIR']);
     }
 
     if (commandName === '!bobl' || commandName === '!böbl') {
