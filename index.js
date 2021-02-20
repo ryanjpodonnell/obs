@@ -39,6 +39,7 @@ obs.on('ConnectionOpened', () => {
     '!yellow',
     '!setcolor',
     '!yabbadabbadoo',
+    '!discord',
     '!funkorfresh(notthatone)cam'
   ];
 
@@ -109,8 +110,28 @@ obs.on('ConnectionOpened', () => {
     console.log(`${context.username} - ${msg}`);
     const commandName = msg.trim().toLowerCase();
 
+    if (context.username === 'sam88mph') {
+      fetch("http://localhost:4567/enqueue", {
+        method: "POST",
+        body: JSON.stringify({ user: context.username, comment: escape(msg) }),
+        headers: { 'Content-Type': 'application/json' }
+      }).then(res => {
+        client.deletemessage("gametimetelevision", context.id)
+          .then((data) => {
+            client.say('#gametimetelevision', `!yabbadabbaboo`);
+            console.log("Request complete!");
+          }).catch((err) => {
+            console.log(err);
+          });
+      });
+    }
+
     if (commandName === '!commands') {
       client.say(target, `The INNOVATIVE commands are: ${commands.join(', ')}`);
+    }
+
+    if (commandName === '!discord') {
+      client.say(target, `https://discord.gg/Z8dQREj`);
     }
 
     if (commandName === '!funkorfresh(notthatone)cam') {
