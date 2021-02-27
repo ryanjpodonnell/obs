@@ -48,7 +48,7 @@ obs.on('ConnectionOpened', () => {
     '!yellow',
     '!setcolor',
     '!yabbadabbadoo',
-    '!bobl',
+    '!discord',
     '!recipe',
     '!game',
     '!funkorfresh(notthatone)cam'
@@ -65,6 +65,10 @@ obs.on('ConnectionOpened', () => {
     if (reward === 'smaller') {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
       smaller(obs, '- Player Cam', 'Player Cam', 1920, 1080, 640, 360);
+    }
+
+    if (reward === 'Rod Folds His Laundry') {
+      client.say('#gametimetelevision', `!yabbadabbaboo`);
     }
 
     if (reward === 'Get Kokopilled') {
@@ -106,6 +110,10 @@ obs.on('ConnectionOpened', () => {
       client.say(target, `I am way better at Böbl than my man ChucklesW69. But you should follow him anyways.`);
       client.say(target, `http://twitch.tv/chucklesw73`);
       client.say(target, `https://morphcatgames.itch.io/bobl`);
+    }
+
+    if (commandName === '!discord') {
+      client.say(target, `https://discord.gg/Z8dQREj`);
     }
 
     if (commandName === '!red' ||
