@@ -42,6 +42,7 @@ obs.on('ConnectionOpened', () => {
     '!discord',
     '!funkorfresh(notthatone)cam'
   ];
+  var badBoys = [];
 
   function onRewardHander (user, reward, cost, extra) {
     console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
@@ -110,20 +111,39 @@ obs.on('ConnectionOpened', () => {
     console.log(`${context.username} - ${msg}`);
     const commandName = msg.trim().toLowerCase();
 
-    if (context.username === 'sam88mph') {
-      fetch("http://localhost:4567/enqueue", {
-        method: "POST",
+    if (badBoys.includes(context.username)) {
+      fetch('http://localhost:4567/enqueue', {
+        method: 'POST',
         body: JSON.stringify({ user: context.username, comment: escape(msg) }),
         headers: { 'Content-Type': 'application/json' }
       }).then(res => {
         client.deletemessage("gametimetelevision", context.id)
           .then((data) => {
             client.say('#gametimetelevision', `!yabbadabbaboo`);
-            console.log("Request complete!");
+            console.log('Request complete!');
           }).catch((err) => {
             console.log(err);
           });
       });
+    }
+
+    if (commandName.startsWith('!badboy') && context.username === 'gametimetelevision') {
+      var badBoy = commandName.split(' ')[1];
+
+      badBoys.push(badBoy);
+      client.say('#gametimetelevision', `${badBoy} added to Bad Boy list`);
+    }
+
+    if (commandName.startsWith('!goodboy') && context.username === 'gametimetelevision') {
+      var goodBoy = commandName.split(' ')[1];
+
+      for (var i = 0; i < badBoys.length; i++) {
+        if ( badBoys[i] === goodBoy) {
+            badBoys.splice(i, 1);
+        }
+      }
+
+      client.say('#gametimetelevision', `${goodBoy} removed from Bad Boy list`);
     }
 
     if (commandName === '!commands') {
