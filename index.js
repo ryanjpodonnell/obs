@@ -51,7 +51,7 @@ obs.on('ConnectionOpened', () => {
     '!discord',
     '!recipe',
     '!game',
-    '!funkorfresh(notthatone)cam'
+    '!tikikoncam'
   ];
 
   function onRewardHander (user, reward, cost, extra) {
@@ -101,7 +101,7 @@ obs.on('ConnectionOpened', () => {
       showRandomCam(obs, ['game']);
     }
 
-    if (commandName === '!funkorfresh(notthatone)cam') {
+    if (commandName === '!tikikoncam') {
       client.say(target, `!yabbadabbaboo`);
       showRandomCam(obs, ['TPIR']);
     }
