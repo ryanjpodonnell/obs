@@ -40,7 +40,7 @@ obs.on('ConnectionOpened', () => {
     '!setcolor',
     '!yabbadabbadoo',
     '!discord',
-    '!funkorfresh(notthatone)cam'
+    '!tikikoncam'
   ];
   var badBoys = [];
 
@@ -154,7 +154,7 @@ obs.on('ConnectionOpened', () => {
       client.say(target, `https://discord.gg/Z8dQREj`);
     }
 
-    if (commandName === '!funkorfresh(notthatone)cam') {
+    if (commandName === '!tikikoncam') {
       client.say('#gametimetelevision', `!yabbadabbaboo`);
       showRandomCam(obs, ['TPIR']);
     }
