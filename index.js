@@ -25,6 +25,9 @@ obs.on('ConnectionOpened', () => {
   client.on('connected', onConnectedHandler);
   client.connect();
 
+  var Map = require('sorted-map');
+  var bangers = new Map();
+
   obs.on('SwitchScenes', data => {
     if (data['scene-name'] === 'Tiki Scene') {
       showMainCam(obs, 'recipe');
@@ -46,11 +49,13 @@ obs.on('ConnectionOpened', () => {
     '!orange',
     '!purple',
     '!yellow',
-    '!setcolor',
+    '!setcolor #{6-DIGIT-HEX}',
     '!yabbadabbadoo',
     '!discord',
     '!recipe',
     '!game',
+    '!kisses @{USERNAME}',
+    '!leaderboard',
     '!tikikoncam'
   ];
 
@@ -139,6 +144,30 @@ obs.on('ConnectionOpened', () => {
         if (hex >= 4278190080 && hex <= 4294967295) {
           setSidebarColor(obs, hex)
         }
+      }
+    }
+
+    if (commandName.startsWith('!kisses')) {
+      let username = commandName.split('@')[1];
+
+      if (username !== undefined) {
+        showItemWithinScene(obs, 'kiss', '- Overlay');
+        setTimeout(hideItemWithinScene, 1000, obs, 'kiss', '- Overlay');
+
+        let bangs = bangers.get(username);
+        bangers.set(username, (bangs || 0) + 1);
+        bangs = bangers.get(username);
+
+        client.say(target, `@${username} has been kissed ${bangs} time(s)`);
+      }
+    }
+
+    if (commandName === '!leaderboard') {
+      let startLength = bangers.length - 3;
+      if (startLength < 0) { startLength = 0 };
+      const leaders = bangers.slice(startLength, bangers.length)
+      for (index = leaders.length-1; index >= 0; index--) {
+        client.say(target, `@${leaders[index].key} - ${leaders[index].value} kiss(es)`)
       }
     }
   }
