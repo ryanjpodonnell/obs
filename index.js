@@ -28,6 +28,9 @@ obs.on('ConnectionOpened', () => {
   ComfyJS.onReward = onRewardHander;
   ComfyJS.Init('gametimetelevision', process.env.OAUTH);
 
+  var Map = require('sorted-map');
+  var bangers = new Map();
+
   var commands = [
     '!red',
     '!aqua',
@@ -37,9 +40,11 @@ obs.on('ConnectionOpened', () => {
     '!orange',
     '!purple',
     '!yellow',
-    '!setcolor',
+    '!setcolor #{6-DIGIT-HEX}',
     '!yabbadabbadoo',
     '!discord',
+    '!kisses @{USERNAME}',
+    '!leaderboard',
     '!tikikoncam'
   ];
   var badBoys = [];
@@ -182,6 +187,33 @@ obs.on('ConnectionOpened', () => {
         if (hex >= 4278190080 && hex <= 4294967295) {
           setSidebarColor(obs, hex)
         }
+      }
+    }
+
+    if (commandName.startsWith('!kisses')) {
+      let username = commandName.split('@')[1];
+
+      if (username !== undefined) {
+        showItemWithinScene(obs, 'kiss', '- Sidebar');
+        setTimeout(hideItemWithinScene, 1000, obs, 'kiss', '- Sidebar');
+
+        showItemWithinScene(obs, 'kiss', '- Sidebar Big');
+        setTimeout(hideItemWithinScene, 1000, obs, 'kiss', '- Sidebar Big');
+
+        let bangs = bangers.get(username);
+        bangers.set(username, (bangs || 0) + 1);
+        bangs = bangers.get(username);
+
+        client.say(target, `@${username} has been kissed ${bangs} time(s)`);
+      }
+    }
+
+    if (commandName === '!leaderboard') {
+      let startLength = bangers.length - 3;
+      if (startLength < 0) { startLength = 0 };
+      const leaders = bangers.slice(startLength, bangers.length)
+      for (index = leaders.length-1; index >= 0; index--) {
+        client.say(target, `@${leaders[index].key} - ${leaders[index].value} kiss(es)`)
       }
     }
   }
