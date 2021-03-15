@@ -54,6 +54,7 @@ obs.on('ConnectionOpened', () => {
     '!discord',
     '!recipe',
     '!game',
+    '!fartson @{USERNAME}',
     '!kisses @{USERNAME}',
     '!leaderboard',
     '!tikikoncam'
@@ -162,6 +163,21 @@ obs.on('ConnectionOpened', () => {
       }
     }
 
+    if (commandName.startsWith('!fartson')) {
+      let username = commandName.split('@')[1];
+
+      if (username !== undefined) {
+        showItemWithinScene(obs, 'fart', '- Overlay');
+        setTimeout(hideItemWithinScene, 1000, obs, 'fart', '- Overlay');
+
+        let bangs = bangers.get(username);
+        bangers.set(username, (bangs || 0) - 1);
+        bangs = bangers.get(username);
+
+        client.say(target, `@${username} has been kissed ${bangs} time(s)`);
+      }
+    }
+
     if (commandName === '!leaderboard') {
       let startLength = bangers.length - 3;
       if (startLength < 0) { startLength = 0 };
@@ -193,7 +209,7 @@ obs.on('ConnectionOpened', () => {
     obs.send('SetSceneItemProperties', {
       'scene-name': '- Player Cam',
       'item': 'Player Cam',
-      'scale': { 'x': 3, 'y': 3 },
+      'scale': { 'x': 1.875, 'y': 1.875 },
       'position': { 'x': 0, 'y': 0 }
     });
   }
