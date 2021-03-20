@@ -4,7 +4,6 @@ require("./helpers.js")();
 require("./obs-helpers.js")();
 require("./sidebar-cam.js")();
 
-const ComfyJS = require('comfy.js');
 const OBSWebSocket = require('obs-websocket-js');
 const fetch = require('node-fetch');
 const tmi = require('tmi.js');
@@ -37,9 +36,6 @@ obs.on('ConnectionOpened', () => {
     }
   });
 
-  ComfyJS.onReward = onRewardHander;
-  ComfyJS.Init('gametimetelevision', process.env.OAUTH);
-
   var commands = [
     '!red',
     '!aqua',
@@ -60,37 +56,6 @@ obs.on('ConnectionOpened', () => {
     '!tikikoncam'
   ];
 
-  function onRewardHander (user, reward, cost, extra) {
-    console.log(`****** ${user} redeemed ${reward} for ${cost} ******`);
-
-    if (reward === 'BIGGER') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      bigger(obs, '- Player Cam', 'Player Cam', 1920, 1080, 640, 360);
-    }
-
-    if (reward === 'smaller') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      smaller(obs, '- Player Cam', 'Player Cam', 1920, 1080, 640, 360);
-    }
-
-    if (reward === 'Rod Folds His Laundry') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-    }
-
-    if (reward === 'Get Kokopilled') {
-      obs
-        .send('GetCurrentScene')
-        .then(response => {
-          var scene = response.name;
-          if (scene !== 'KOKO') {
-            client.say('#gametimetelevision', `!yabbadabbaboo`);
-            setScene(obs, 'KOKO');
-            setTimeout(setScene, 102000, obs, scene);
-          }
-        });
-    }
-  }
-
   function onMessageHandler (target, context, msg, self) {
     console.log(`${context.username} - ${msg}`);
     const commandName = msg.trim().toLowerCase();
@@ -110,12 +75,6 @@ obs.on('ConnectionOpened', () => {
     if (commandName === '!tikikoncam') {
       client.say(target, `!yabbadabbaboo`);
       showRandomCam(obs, ['TPIR']);
-    }
-
-    if (commandName === '!bobl' || commandName === '!böbl') {
-      client.say(target, `I am way better at Böbl than my man ChucklesW69. But you should follow him anyways.`);
-      client.say(target, `http://twitch.tv/chucklesw73`);
-      client.say(target, `https://morphcatgames.itch.io/bobl`);
     }
 
     if (commandName === '!discord') {
