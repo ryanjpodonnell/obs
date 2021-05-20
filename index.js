@@ -37,11 +37,19 @@ obs.on('ConnectionOpened', () => {
     '!purple',
     '!yellow',
     '!setcolor #{6-DIGIT-HEX}',
-    '!yabbadabbadoo',
     '!discord',
     '!kisses @{USERNAME}',
     '!fartson @{USERNAME}',
-    '!tikikoncam'
+    '!monkeycam',
+    '!bananasonrod',
+    '!bananasonles',
+    '!spinningmonkeyonrod',
+    '!spinningmonkeyonles',
+    '!ozerikhistoricalsmokersession',
+    '!rodbigger',
+    '!rodsmaller',
+    '!lesbigger',
+    '!lessmaller'
   ];
 
   function onMessageHandler (target, context, msg, self) {
@@ -56,9 +64,8 @@ obs.on('ConnectionOpened', () => {
       client.say(target, `https://discord.gg/Z8dQREj`);
     }
 
-    if (commandName === '!tikikoncam') {
-      client.say('#gametimetelevision', `!yabbadabbaboo`);
-      showRandomCam(obs, ['TPIR']);
+    if (commandName === '!monkeycam') {
+      showRandomCam(obs, ['m1', 'm2', 'm3', 'm4', 'm5', 'm6']);
     }
 
     if (commandName === '!red' ||
@@ -89,37 +96,29 @@ obs.on('ConnectionOpened', () => {
 
     if (commandName.startsWith('!kisses')) {
       let username = commandName.split('@')[1];
+      let bangs = bangers.get(username);
+      bangers.set(username, (bangs || 0) + 1);
 
       if (username !== undefined) {
-        showItemWithinScene(obs, 'kiss', '- Sidebar');
-        setTimeout(hideItemWithinScene, 1000, obs, 'kiss', '- Sidebar');
+        showItemWithinScene(obs, 'kiss', '- Sidebar Thin');
+        setTimeout(hideItemWithinScene, 1000, obs, 'kiss', '- Sidebar Thin');
 
         showItemWithinScene(obs, 'kiss', '- Sidebar Big');
         setTimeout(hideItemWithinScene, 1000, obs, 'kiss', '- Sidebar Big');
-
-        let bangs = bangers.get(username);
-        bangers.set(username, (bangs || 0) + 1);
-        bangs = bangers.get(username);
-
-        client.say(target, `@${username} has been kissed ${bangs} time(s)`);
       }
     }
 
     if (commandName.startsWith('!fartson')) {
       let username = commandName.split('@')[1];
+      let bangs = bangers.get(username);
+      bangers.set(username, (bangs || 0) - 1);
 
       if (username !== undefined) {
-        showItemWithinScene(obs, 'fart', '- Sidebar');
-        setTimeout(hideItemWithinScene, 1000, obs, 'fart', '- Sidebar');
+        showItemWithinScene(obs, 'fart', '- Sidebar Thin');
+        setTimeout(hideItemWithinScene, 1000, obs, 'fart', '- Sidebar Thin');
 
         showItemWithinScene(obs, 'fart', '- Sidebar Big');
         setTimeout(hideItemWithinScene, 1000, obs, 'fart', '- Sidebar Big');
-
-        let bangs = bangers.get(username);
-        bangers.set(username, (bangs || 0) - 1);
-        bangs = bangers.get(username);
-
-        client.say(target, `@${username} has been kissed ${bangs} time(s)`);
       }
     }
 
@@ -130,6 +129,54 @@ obs.on('ConnectionOpened', () => {
       for (index = leaders.length-1; index >= 0; index--) {
         client.say(target, `@${leaders[index].key} - ${leaders[index].value} kiss(es)`)
       }
+    }
+
+    if (commandName === '!bananasonrod') {
+      showItemWithinScene(obs, 'bananas-rod', '- Logi Rod');
+      setTimeout(hideItemWithinScene, 10000, obs, 'bananas-rod', '- Logi Rod');
+    }
+
+    if (commandName === '!bananasonles') {
+      showItemWithinScene(obs, 'bananas-les', '- Logi Les');
+      setTimeout(hideItemWithinScene, 10000, obs, 'bananas-les', '- Logi Les');
+    }
+
+    if (commandName === '!spinningmonkeyonrod') {
+      showItemWithinScene(obs, 'monkey-rod', '- Logi Rod');
+      setTimeout(hideItemWithinScene, 10000, obs, 'monkey-rod', '- Logi Rod');
+    }
+
+    if (commandName === '!spinningmonkeyonles') {
+      showItemWithinScene(obs, 'monkey-les', '- Logi Les');
+      setTimeout(hideItemWithinScene, 10000, obs, 'monkey-les', '- Logi Les');
+    }
+
+    if (commandName === '!rodbigger') {
+      bigger(obs, '- Logi Rod', 'Logi-Left', 1920, 1080, 1024, 576)
+    }
+
+    if (commandName === '!rodsmaller') {
+      smaller(obs, '- Logi Rod', 'Logi-Left', 1920, 1080, 1024, 576)
+    }
+
+    if (commandName === '!lesbigger') {
+      bigger(obs, '- Logi Les', 'Logi-Right', 1920, 1080, 1024, 576)
+    }
+
+    if (commandName === '!lessmaller') {
+      smaller(obs, '- Logi Les', 'Logi-Right', 1920, 1080, 1024, 576)
+    }
+
+    if (commandName === '!ozerikhistoricalsmokersession') {
+      obs
+        .send('GetCurrentScene')
+        .then(response => {
+          var scene = response.name;
+          if (scene !== 'ozerik') {
+            setScene(obs, 'ozerik');
+            setTimeout(setScene, 10000, obs, scene);
+          }
+        });
     }
   }
 
@@ -154,4 +201,4 @@ obs.on('ConnectionOpened', () => {
   }
 });
 
-obs.connect({ address: '10.0.1.57:4444', password: process.env.OBSPASSWORD});
+obs.connect({ address: 'localhost:4444', password: process.env.OBSPASSWORD});
