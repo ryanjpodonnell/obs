@@ -28,28 +28,12 @@ obs.on('ConnectionOpened', () => {
   var bangers = new Map();
 
   var commands = [
-    '!red',
-    '!aqua',
-    '!blue',
-    '!pink',
-    '!green',
-    '!orange',
-    '!purple',
-    '!yellow',
-    '!setcolor #{6-DIGIT-HEX}',
-    '!discord',
     '!kisses @{USERNAME}',
     '!fartson @{USERNAME}',
     '!monkeycam',
-    '!bananasonrod',
-    '!bananasonles',
-    '!spinningmonkeyonrod',
-    '!spinningmonkeyonles',
-    '!ozerikhistoricalsmokersession',
-    '!rodbigger',
-    '!rodsmaller',
-    '!lesbigger',
-    '!lessmaller'
+    '!bananas',
+    '!spinningmonkey',
+    '!ozerikhistoricalsmokersession'
   ];
 
   function onMessageHandler (target, context, msg, self) {
@@ -60,38 +44,8 @@ obs.on('ConnectionOpened', () => {
       client.say(target, `The INNOVATIVE commands are: ${commands.join(', ')}`);
     }
 
-    if (commandName === '!discord') {
-      client.say(target, `https://discord.gg/Z8dQREj`);
-    }
-
     if (commandName === '!monkeycam') {
       showRandomCam(obs, ['m1', 'm2', 'm3', 'm4', 'm5', 'm6']);
-    }
-
-    if (commandName === '!red' ||
-      commandName === '!aqua' ||
-      commandName === '!blue' ||
-      commandName === '!pink' ||
-      commandName === '!green' ||
-      commandName === '!orange' ||
-      commandName === '!purple' ||
-      commandName === '!yellow'
-    ) {
-      setSidebarColor(obs, commandName);
-    }
-
-    if (commandName.startsWith('!setcolor')) {
-      var arr = commandName.split('#');
-      if (arr.length !== 1) {
-        var hex = arr[arr.length - 1]
-        var r = hex.substring(4, 6);
-        var g = hex.substring(2, 4);
-        var b = hex.substring(0, 2);
-        hex = parseInt(`ff${r}${g}${b}`, 16);
-        if (hex >= 4278190080 && hex <= 4294967295) {
-          setSidebarColor(obs, hex)
-        }
-      }
     }
 
     if (commandName.startsWith('!kisses')) {
@@ -131,40 +85,14 @@ obs.on('ConnectionOpened', () => {
       }
     }
 
-    if (commandName === '!bananasonrod') {
-      showItemWithinScene(obs, 'bananas-rod', '- Logi Rod');
-      setTimeout(hideItemWithinScene, 10000, obs, 'bananas-rod', '- Logi Rod');
+    if (commandName === '!bananas') {
+      showItemWithinScene(obs, 'bananas', '- Game');
+      setTimeout(hideItemWithinScene, 10000, obs, 'bananas', '- Game');
     }
 
-    if (commandName === '!bananasonles') {
-      showItemWithinScene(obs, 'bananas-les', '- Logi Les');
-      setTimeout(hideItemWithinScene, 10000, obs, 'bananas-les', '- Logi Les');
-    }
-
-    if (commandName === '!spinningmonkeyonrod') {
-      showItemWithinScene(obs, 'monkey-rod', '- Logi Rod');
-      setTimeout(hideItemWithinScene, 10000, obs, 'monkey-rod', '- Logi Rod');
-    }
-
-    if (commandName === '!spinningmonkeyonles') {
-      showItemWithinScene(obs, 'monkey-les', '- Logi Les');
-      setTimeout(hideItemWithinScene, 10000, obs, 'monkey-les', '- Logi Les');
-    }
-
-    if (commandName === '!rodbigger') {
-      bigger(obs, '- Logi Rod', 'Logi-Left', 1920, 1080, 1024, 576)
-    }
-
-    if (commandName === '!rodsmaller') {
-      smaller(obs, '- Logi Rod', 'Logi-Left', 1920, 1080, 1024, 576)
-    }
-
-    if (commandName === '!lesbigger') {
-      bigger(obs, '- Logi Les', 'Logi-Right', 1920, 1080, 1024, 576)
-    }
-
-    if (commandName === '!lessmaller') {
-      smaller(obs, '- Logi Les', 'Logi-Right', 1920, 1080, 1024, 576)
+    if (commandName === '!spinningmonkey') {
+      showItemWithinScene(obs, 'monkey', '- Game');
+      setTimeout(hideItemWithinScene, 10000, obs, 'monkey', '- Game');
     }
 
     if (commandName === '!ozerikhistoricalsmokersession') {
@@ -185,20 +113,17 @@ obs.on('ConnectionOpened', () => {
 
     setSidebarColor(obs, 4278190080);
 
-    obs.send('SetSceneItemProperties', {
-      'scene-name': '- Logi Rod',
-      'item': 'Logi-Left',
-      'scale': { 'x': 3, 'y': 3 },
-      'position': { 'x': -576, 'y': -324 }
-    })
-
-    obs.send('SetSceneItemProperties', {
-      'scene-name': '- Logi Les',
-      'item': 'Logi-Right',
-      'scale': { 'x': 3, 'y': 3 },
-      'position': { 'x': -576, 'y': -324 }
-    })
+    setTimeout(executeRandomCommand, 100, obs);
   }
+
+  function executeRandomCommand (obs) {
+    const rndInt = Math.floor(Math.random() * 16777215) + 4278190080
+    setSidebarColor(obs, rndInt)
+
+    setTimeout(executeRandomCommand, 100, obs);
+  }
+
+
 });
 
 obs.connect({ address: 'localhost:4444', password: process.env.OBSPASSWORD});
