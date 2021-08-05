@@ -37,19 +37,15 @@ obs.on('ConnectionOpened', () => {
     '!purple',
     '!yellow',
     '!setcolor #{6-DIGIT-HEX}',
-    '!discord',
     '!kisses @{USERNAME}',
     '!fartson @{USERNAME}',
     '!monkeycam',
     '!bananasonrod',
-    '!bananasonles',
+    '!bananasonlost',
     '!spinningmonkeyonrod',
-    '!spinningmonkeyonles',
-    '!ozerikhistoricalsmokersession',
+    '!spinningmonkeyonlost',
     '!rodbigger',
-    '!rodsmaller',
-    '!lesbigger',
-    '!lessmaller'
+    '!rodsmaller'
   ];
 
   function onMessageHandler (target, context, msg, self) {
@@ -58,10 +54,6 @@ obs.on('ConnectionOpened', () => {
 
     if (commandName === '!commands') {
       client.say(target, `The INNOVATIVE commands are: ${commands.join(', ')}`);
-    }
-
-    if (commandName === '!discord') {
-      client.say(target, `https://discord.gg/Z8dQREj`);
     }
 
     if (commandName === '!monkeycam') {
@@ -136,7 +128,7 @@ obs.on('ConnectionOpened', () => {
       setTimeout(hideItemWithinScene, 10000, obs, 'bananas-rod', '- Logi Rod');
     }
 
-    if (commandName === '!bananasonles') {
+    if (commandName === '!bananasonlost') {
       showItemWithinScene(obs, 'bananas-les', '- Logi Les');
       setTimeout(hideItemWithinScene, 10000, obs, 'bananas-les', '- Logi Les');
     }
@@ -146,7 +138,7 @@ obs.on('ConnectionOpened', () => {
       setTimeout(hideItemWithinScene, 10000, obs, 'monkey-rod', '- Logi Rod');
     }
 
-    if (commandName === '!spinningmonkeyonles') {
+    if (commandName === '!spinningmonkeyonlost') {
       showItemWithinScene(obs, 'monkey-les', '- Logi Les');
       setTimeout(hideItemWithinScene, 10000, obs, 'monkey-les', '- Logi Les');
     }
@@ -159,25 +151,25 @@ obs.on('ConnectionOpened', () => {
       smaller(obs, '- Logi Rod', 'Logi-Left', 1920, 1080, 1024, 576)
     }
 
-    if (commandName === '!lesbigger') {
-      bigger(obs, '- Logi Les', 'Logi-Right', 1920, 1080, 1024, 576)
-    }
+    // if (commandName === '!lesbigger') {
+    //   bigger(obs, '- Logi Les', 'Logi-Right', 1920, 1080, 1024, 576)
+    // }
 
-    if (commandName === '!lessmaller') {
-      smaller(obs, '- Logi Les', 'Logi-Right', 1920, 1080, 1024, 576)
-    }
+    // if (commandName === '!lessmaller') {
+    //   smaller(obs, '- Logi Les', 'Logi-Right', 1920, 1080, 1024, 576)
+    // }
 
-    if (commandName === '!ozerikhistoricalsmokersession') {
-      obs
-        .send('GetCurrentScene')
-        .then(response => {
-          var scene = response.name;
-          if (scene !== 'ozerik') {
-            setScene(obs, 'ozerik');
-            setTimeout(setScene, 10000, obs, scene);
-          }
-        });
-    }
+    // if (commandName === '!good4ucam') {
+    //   obs
+    //     .send('GetCurrentScene')
+    //     .then(response => {
+    //       var scene = response.name;
+    //       if (scene !== 'ozerik') {
+    //         setScene(obs, 'ozerik');
+    //         setTimeout(setScene, 198000, obs, scene);
+    //       }
+    //     });
+    // }
   }
 
   function onConnectedHandler (addr, port) {
@@ -192,12 +184,12 @@ obs.on('ConnectionOpened', () => {
       'position': { 'x': -576, 'y': -324 }
     })
 
-    obs.send('SetSceneItemProperties', {
-      'scene-name': '- Logi Les',
-      'item': 'Logi-Right',
-      'scale': { 'x': 3, 'y': 3 },
-      'position': { 'x': -576, 'y': -324 }
-    })
+    // obs.send('SetSceneItemProperties', {
+    //   'scene-name': '- Logi Les',
+    //   'item': 'Logi-Right',
+    //   'scale': { 'x': 3, 'y': 3 },
+    //   'position': { 'x': -576, 'y': -324 }
+    // })
   }
 });
 
