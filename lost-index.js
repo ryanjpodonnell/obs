@@ -33,6 +33,7 @@ obs.on('ConnectionOpened', () => {
 
   let acceptInputBool = false;
   let endStreamTimer;
+  let initialConnection = true;
 
   const clocks = [
     'clock1',
@@ -82,8 +83,12 @@ obs.on('ConnectionOpened', () => {
   function onConnectedHandler (addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
 
-    setScene(obs, randomElementFromArray(clocks));
-    setTimeout(acceptInput, 6266000);
+    if (initialConnection === true) {
+      setScene(obs, randomElementFromArray(clocks));
+      setTimeout(acceptInput, 6266000);
+
+      initialConnection = false;
+    }
   }
 
   function acceptInput() {
