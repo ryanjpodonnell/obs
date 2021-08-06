@@ -11,6 +11,9 @@ process.on('unhandledRejection', (reason, p) => {
 const OBSWebSocket = require('obs-websocket-js');
 const obs = new OBSWebSocket();
 
+const fs = require('fs');
+const bangers = readMapFromTxtFile(fs, 'leaderboard.txt');
+
 const tmi = require('tmi.js');
 const client = new tmi.client({
   identity: {
@@ -27,9 +30,6 @@ obs.on('ConnectionOpened', () => {
   client.on('message', onMessageHandler);
   client.on('connected', onConnectedHandler);
   client.connect();
-
-  const Map = require('sorted-map');
-  const bangers = new Map();
 
   let acceptInputBool = false;
   let endStreamTimer;
@@ -68,6 +68,7 @@ obs.on('ConnectionOpened', () => {
 
       const bangs = bangers.get(username);
       bangers.set(username, (bangs || 0) + 1);
+      writeMapToTxtFile(fs, bangers);
     }
 
     if (message === '!leaderboard') {
