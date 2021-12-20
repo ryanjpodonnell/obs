@@ -37,15 +37,9 @@ obs.on('ConnectionOpened', () => {
     '!purple',
     '!yellow',
     '!setcolor #{6-DIGIT-HEX}',
-    '!discord',
     '!kisses @{USERNAME}',
     '!fartson @{USERNAME}',
-    '!monkeycam',
-    '!bananasonrod',
-    '!bananasonles',
-    '!spinningmonkeyonrod',
-    '!spinningmonkeyonles',
-    '!ozerikhistoricalsmokersession',
+    '!oneminuteofultimatereality',
     '!rodbigger',
     '!rodsmaller',
     '!lesbigger',
@@ -58,14 +52,6 @@ obs.on('ConnectionOpened', () => {
 
     if (commandName === '!commands') {
       client.say(target, `The INNOVATIVE commands are: ${commands.join(', ')}`);
-    }
-
-    if (commandName === '!discord') {
-      client.say(target, `https://discord.gg/Z8dQREj`);
-    }
-
-    if (commandName === '!monkeycam') {
-      showRandomCam(obs, ['m1', 'm2', 'm3', 'm4', 'm5', 'm6']);
     }
 
     if (commandName === '!red' ||
@@ -131,26 +117,6 @@ obs.on('ConnectionOpened', () => {
       }
     }
 
-    if (commandName === '!bananasonrod') {
-      showItemWithinScene(obs, 'bananas-rod', '- Logi Rod');
-      setTimeout(hideItemWithinScene, 10000, obs, 'bananas-rod', '- Logi Rod');
-    }
-
-    if (commandName === '!bananasonles') {
-      showItemWithinScene(obs, 'bananas-les', '- Logi Les');
-      setTimeout(hideItemWithinScene, 10000, obs, 'bananas-les', '- Logi Les');
-    }
-
-    if (commandName === '!spinningmonkeyonrod') {
-      showItemWithinScene(obs, 'monkey-rod', '- Logi Rod');
-      setTimeout(hideItemWithinScene, 10000, obs, 'monkey-rod', '- Logi Rod');
-    }
-
-    if (commandName === '!spinningmonkeyonles') {
-      showItemWithinScene(obs, 'monkey-les', '- Logi Les');
-      setTimeout(hideItemWithinScene, 10000, obs, 'monkey-les', '- Logi Les');
-    }
-
     if (commandName === '!rodbigger') {
       bigger(obs, '- Logi Rod', 'Logi-Left', 1920, 1080, 1024, 576)
     }
@@ -167,14 +133,14 @@ obs.on('ConnectionOpened', () => {
       smaller(obs, '- Logi Les', 'Logi-Right', 1920, 1080, 1024, 576)
     }
 
-    if (commandName === '!ozerikhistoricalsmokersession') {
+    if (commandName === '!oneminuteofultimatereality') {
       obs
         .send('GetCurrentScene')
         .then(response => {
           var scene = response.name;
           if (scene !== 'ozerik') {
             setScene(obs, 'ozerik');
-            setTimeout(setScene, 10000, obs, scene);
+            setTimeout(setScene, 60000, obs, scene);
           }
         });
     }
