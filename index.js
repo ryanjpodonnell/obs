@@ -4,10 +4,13 @@ require("./helpers.js")();
 require("./obs-helpers.js")();
 require("./sidebar-cam.js")();
 
+const SortedMap = require('sorted-map');
+const bangers = new SortedMap();
+
 const OBSWebSocket = require('obs-websocket-js');
-const fetch = require('node-fetch');
-const tmi = require('tmi.js');
 const obs = new OBSWebSocket();
+
+const tmi = require('tmi.js');
 const client = new tmi.client({
   identity: {
     username: 'roddog_hogbot',
@@ -18,33 +21,30 @@ const client = new tmi.client({
   ]
 });
 
+const commands = [
+  '!red',
+  '!aqua',
+  '!blue',
+  '!pink',
+  '!green',
+  '!orange',
+  '!purple',
+  '!yellow',
+  '!setcolor #{6-DIGIT-HEX}',
+  '!kisses @{USERNAME}',
+  '!fartson @{USERNAME}',
+  '!bestcountryintheworld',
+  '!rodbigger',
+  '!rodsmaller',
+  '!pabsbigger',
+  '!pabssmaller'
+];
+
 obs.on('ConnectionOpened', () => {
   console.log('* Connection Opened');
   client.on('message', onMessageHandler);
   client.on('connected', onConnectedHandler);
   client.connect();
-
-  var Map = require('sorted-map');
-  var bangers = new Map();
-
-  var commands = [
-    '!red',
-    '!aqua',
-    '!blue',
-    '!pink',
-    '!green',
-    '!orange',
-    '!purple',
-    '!yellow',
-    '!setcolor #{6-DIGIT-HEX}',
-    '!kisses @{USERNAME}',
-    '!fartson @{USERNAME}',
-    '!oneminuteofultimatereality',
-    '!rodbigger',
-    '!rodsmaller',
-    '!lesbigger',
-    '!lessmaller'
-  ];
 
   function onMessageHandler (target, context, msg, self) {
     console.log(`${context.username} - ${msg}`);
@@ -82,10 +82,11 @@ obs.on('ConnectionOpened', () => {
 
     if (commandName.startsWith('!kisses')) {
       let username = commandName.split('@')[1];
-      let bangs = bangers.get(username);
-      bangers.set(username, (bangs || 0) + 1);
 
       if (username !== undefined) {
+        let bangs = bangers.get(username);
+        bangers.set(username, (bangs || 0) + 1);
+
         showItemWithinScene(obs, 'kiss', '- Sidebar Thin');
         setTimeout(hideItemWithinScene, 1000, obs, 'kiss', '- Sidebar Thin');
 
@@ -96,10 +97,11 @@ obs.on('ConnectionOpened', () => {
 
     if (commandName.startsWith('!fartson')) {
       let username = commandName.split('@')[1];
-      let bangs = bangers.get(username);
-      bangers.set(username, (bangs || 0) - 1);
 
       if (username !== undefined) {
+        let bangs = bangers.get(username);
+        bangers.set(username, (bangs || 0) - 1);
+
         showItemWithinScene(obs, 'fart', '- Sidebar Thin');
         setTimeout(hideItemWithinScene, 1000, obs, 'fart', '- Sidebar Thin');
 
@@ -125,15 +127,15 @@ obs.on('ConnectionOpened', () => {
       smaller(obs, '- Logi Rod', 'Logi-Left', 1920, 1080, 1024, 576)
     }
 
-    if (commandName === '!lesbigger') {
+    if (commandName === '!pabsbigger') {
       bigger(obs, '- Logi Les', 'Logi-Right', 1920, 1080, 1024, 576)
     }
 
-    if (commandName === '!lessmaller') {
+    if (commandName === '!pabssmaller') {
       smaller(obs, '- Logi Les', 'Logi-Right', 1920, 1080, 1024, 576)
     }
 
-    if (commandName === '!oneminuteofultimatereality') {
+    if (commandName === '!bestcountryintheworld') {
       obs
         .send('GetCurrentScene')
         .then(response => {
